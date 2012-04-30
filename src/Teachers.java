@@ -8,6 +8,7 @@ public class Teachers implements Comparable<Teachers> {
 	// tracks the classes a teacher can teach. ordering most preferred in position 0.
 	private ArrayList<Integer> preference;
 	private int cls;
+	private int room;
 	
 	public Teachers(int id, String name, ArrayList<Integer> preference){
 		this.id = id;
@@ -43,6 +44,14 @@ public class Teachers implements Comparable<Teachers> {
 	// number of classes available to teach
 	public int availability(){
 		return this.preference.size();
+	}
+	
+	public void setRoom(int num){
+		this.room = num;
+	}
+	
+	public int getRoom(){
+		return room;
 	}
 	
 	// returns n > 0, if this.teacher has more available classes compare to teacher
