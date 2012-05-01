@@ -18,8 +18,16 @@ public class Teachers implements Comparable<Teachers> {
 		this.capable = new ArrayList<Integer>(classes);
 	}
 	
+	public Teachers(String name) {
+		this.name = name;
+	}
+	
 	public String getName(){
 		return this.name;
+	}
+	
+	public void setName(String n){
+		name = n;
 	}
 	
 	public int getCls(){
@@ -53,6 +61,14 @@ public class Teachers implements Comparable<Teachers> {
 	
 	public int getRoom(){
 		return room;
+	}
+	
+	public ArrayList<Integer> getPreference() {
+		return preference;
+	}
+	
+	public void setPreference(ArrayList<Integer> p) {
+		preference = p;
 	}
 	
 	// returns n > 0, if this.teacher has more available classes compare to teacher

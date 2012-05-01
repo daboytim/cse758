@@ -39,6 +39,16 @@ public class TeacherDB {
 				}
 			}
 		}
+		
+		public void modifyTeacher (String name, Teachers tch) {
+			for (int i = 0; i < teachers.size(); i ++) {
+				Teachers t = teachers.get(i);
+				if (t.getName().equals(name)) {
+					teachers.remove(i);
+					teachers.add(tch);
+				}
+			}
+		}
 
 		public int getSize() {
 			return teachers.size();
