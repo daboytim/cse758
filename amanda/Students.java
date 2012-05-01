@@ -15,7 +15,7 @@ public class Students implements Comparable<Students> {
 	private int read;
 	private static int totalStudents=0;
 	private int bl;
-    private static int s = 0;
+
 	//TODO: Replace Age with BDate and calculate Age.
 	//Largest age gap 3yrs 11 months
 
