@@ -11,31 +11,41 @@ public class TeacherDB {
 			teachers.add(t);
 		}
 		
-		public Teachers getTeacher (int id) {
+		public Teachers getTeacher (String name) {
 			for (int i = 0; i < teachers.size(); i ++) {
 				Teachers t = teachers.get(i);
-				if (t.getId() == id) {
+				if (t.getName().equals(name)) {
 					return t;
 				}
 			}
 			return null;
 		}
 		
-		public boolean hasTeacher (int id) {
+		public boolean hasTeacher (String name) {
 			for (int i = 0; i < teachers.size(); i ++) {
 				Teachers t = teachers.get(i);
-				if (t.getId() == id) {
+				if (t.getName().equals(name)) {
 					return true;
 				}
 			}
 			return false;
 		}
 
-		public void removeTeacher (int id) {
+		public void removeTeacher (String name) {
 			for (int i = 0; i < teachers.size(); i ++) {
 				Teachers t = teachers.get(i);
-				if (t.getId() == id) {
+				if (t.getName().equals(name)) {
 					teachers.remove(i);
+				}
+			}
+		}
+		
+		public void modifyTeacher (String name, Teachers tch) {
+			for (int i = 0; i < teachers.size(); i ++) {
+				Teachers t = teachers.get(i);
+				if (t.getName().equals(name)) {
+					teachers.remove(i);
+					teachers.add(tch);
 				}
 			}
 		}

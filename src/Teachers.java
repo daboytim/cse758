@@ -3,25 +3,32 @@ import java.util.ArrayList;
 
 public class Teachers implements Comparable<Teachers> {
 
-	private int id;
+	//private int id;
 	private String name;
 	// tracks the classes a teacher can teach. ordering most preferred in position 0.
 	private ArrayList<Integer> preference;
 	private int cls;
 	private int room;
 	
-	public Teachers(int id, String name, ArrayList<Integer> preference){
-		this.id = id;
+	public Teachers(String name) {
+		this.name = name;
+	}
+	public Teachers(String name, ArrayList<Integer> preference){
+		//this.id = id;
 		this.name = name;
 		this.preference = preference;
 	}
 	
-	public int getId() {
+	/*public int getId() {
 		return this.id;
-	}
+	}*/
 	
 	public String getName(){
 		return this.name;
+	}
+	
+	public void setName(String n){
+		name = n;
 	}
 	
 	public int getCls(){
@@ -52,6 +59,14 @@ public class Teachers implements Comparable<Teachers> {
 	
 	public int getRoom(){
 		return room;
+	}
+	
+	public ArrayList<Integer> getPreference() {
+		return preference;
+	}
+	
+	public void setPreference(ArrayList<Integer> p) {
+		preference = p;
 	}
 	
 	// returns n > 0, if this.teacher has more available classes compare to teacher
