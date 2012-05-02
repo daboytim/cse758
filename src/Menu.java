@@ -129,6 +129,8 @@ public class Menu extends JFrame implements ActionListener {
 		} else if (obj.equals(scheduleb)) {
 			// Code here to call schedule algorithm and display schedules
 			Schedulizer.genSchedule(students);
+			ScheduleDisplay disp = new ScheduleDisplay();
+			disp.display();
 		}
 		// Starting Kai's edit
 		else if (obj.equals(pref1)) {

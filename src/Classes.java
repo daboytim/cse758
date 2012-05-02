@@ -33,6 +33,10 @@ public class Classes {
 		totalStd++;
 	}
 	
+	public List<Students> getStudents() {
+		return students;
+	}
+	
 	public Students removeStd(int id){
 		for(Students std: this.students){
 			if (std.getId()==id){
