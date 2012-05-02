@@ -6,10 +6,11 @@ public class Teachers implements Comparable<Teachers> {
 	private String name;
 	// tracks the classes a teacher can teach. K-8:1-9
 	// ordering most preferred in position 0. changes while scheduling.
-	private ArrayList<Integer> preference;
+	private ArrayList<Integer> preference; //TODO: math/read/la are most likely 3 separate sets
 	// order does not matter. does not change. 
 	private ArrayList<Integer> capable;
-	private int cls;
+	private int clsID;
+	private int clsLvl;
 	private int room;
 	
 	public Teachers(String name, ArrayList<Integer> classes){
@@ -30,15 +31,22 @@ public class Teachers implements Comparable<Teachers> {
 		name = n;
 	}
 	
-	public int getCls(){
-		return this.cls;
+	public int getClsID(){
+		return this.clsID;
 	}
 
-	public void setCls(Integer cls){
-		this.cls = cls;
+	public int getClsLvl(){
+		return this.clsLvl;
+	}
+	
+	public void setCls(Integer clsLvl, Integer clsID){
+		this.clsLvl = clsLvl;
+		this.clsID = clsID;
 	}
 	
 	public int firstPref(){
+		if(this.preference.size() <= 0)
+			return -1;
 		return this.preference.get(0);
 	}
 	
@@ -75,6 +83,11 @@ public class Teachers implements Comparable<Teachers> {
 	@Override
 	public int compareTo(Teachers teacher) {
 		return this.availability()-teacher.availability();
+	}
+	
+	@Override
+	public String toString() {
+		return name + " :: Class: " + clsLvl + ", ClassID: " + clsID + ", Room: " + room;
 	}
 
 }

@@ -127,8 +127,8 @@ public class TeacherMenu extends JFrame implements ActionListener {
 			// Probably want to do checking here if user wants to save
 			System.exit(0);
 		} else if (obj.equals(scheduleb)) {
-			// Code here to call schedule algorithm and display schedules
-
+			// TODO: Code here to call schedule algorithm and display schedules
+			ScheduleTeachers.assign(teachers);
 		}
 		// Starting Kai's edit
 		else if (obj.equals(pref1)) {
