@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassFactory {
+	public static final int MATH = 1;
+	public static final int LA = 2;
+	public static final int READ = 3;
 
 	private static int totalClasses = 0;
 	private static int totalMath = 0;
@@ -35,19 +38,27 @@ public class ClassFactory {
 		return true;
 	}
 
-	public static Classes createClass(String name, int lvl) {
+	public static Classes createClass(int type, int lvl) {
 		totalClasses++;
-		if (name.equals("math")) {
+		if (type == MATH) {
 			totalMath++;
-		} else if (name.equals("la")) {
+		} else if (type == LA) {
 			totalLA++;
-		} else if (name.equals("read")) {
+		} else if (type == READ) {
 			totalRead++;
 		} else {
-			System.err.println("Wrong class name passed into class factory:"
-					+ name);
+			System.err.println("Wrong class type passed into class factory:"
+					+ type);
 		}
-		return new Classes(name, lvl, clsID++);
+		String name="";
+		if (type == MATH) {
+			name = "Math-" + lvl + "_" + totalMath;
+		} else if (type == LA) {
+			name = "LangArt-" + lvl + "_" + totalLA;
+		} else if (type == READ) {
+			name = "Reading-" + lvl + "_" + totalRead;
+		}
+		return new Classes(name, type, lvl, clsID++);
 	}
 
 	public static int getTotalClasses() {

@@ -75,7 +75,7 @@ public class Schedulizer {
 
 			if (!foundCls) {
 				if (ClassFactory.getTotalMath() < ClassFactory.getMaxCls()) {
-					mathClass = ClassFactory.createClass("math", std.get(i)
+					mathClass = ClassFactory.createClass(ClassFactory.MATH, std.get(i)
 							.getMath());
 					ClassFactory.mathClsLst.add(mathClass);
 					mathClass.addStd(std.get(i));
@@ -110,7 +110,7 @@ public class Schedulizer {
 			if (!foundCls) {
 				if (ClassFactory.getTotalLA() < ClassFactory.getMaxCls()) {
 					laClass = ClassFactory
-							.createClass("la", std.get(i).getLA());
+							.createClass(ClassFactory.LA, std.get(i).getLA());
 					ClassFactory.laClsLst.add(laClass);
 					laClass.addStd(std.get(i));
 					foundCls = true;
@@ -148,7 +148,7 @@ public class Schedulizer {
 
 			if (!foundCls) {
 				if (ClassFactory.getTotalRead() < ClassFactory.getMaxCls()) {
-					readClass = ClassFactory.createClass("read", std.get(i)
+					readClass = ClassFactory.createClass(ClassFactory.READ, std.get(i)
 							.getRead());
 					ClassFactory.readClsLst.add(readClass);
 					readClass.addStd(std.get(i));

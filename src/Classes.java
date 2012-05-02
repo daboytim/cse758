@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Classes {
 	private String classname;
+	private int type;
 	private int lvl;
 	private int totalStd;
 	private List<Students> students;
@@ -12,9 +13,10 @@ public class Classes {
 	private int bl2=0;
 	private int id;
 	
-	public Classes(String name, int lvl, int ID){
+	public Classes(String name, int type, int lvl, int ID){
 		students = new ArrayList<Students>();
 		this.classname=name;
+		this.type=type;
 		this.lvl=lvl;
 		this.id=ID;
 		totalStd=0;
@@ -40,6 +42,12 @@ public class Classes {
 	public Students removeStd(int id){
 		for(Students std: this.students){
 			if (std.getId()==id){
+				if(std.getBL()==3){
+					this.bl3--;
+				}else if(std.getBL()==2){
+					this.bl2--;
+				}
+				totalStd--;
 				this.students.remove(std);
 				return std;
 			}
@@ -49,6 +57,10 @@ public class Classes {
 	
 	public String getClsName(){
 		return this.classname;
+	}
+	
+	public int getType() {
+		return this.type;
 	}
 	
 	public int getLvl(){
