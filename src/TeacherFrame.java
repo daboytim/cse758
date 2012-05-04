@@ -27,7 +27,8 @@ public class TeacherFrame implements TableModelListener {
 	TeacherDB teachers;
 	static Object[][] data;
 	Object[][] backup;
-	String[] columnNames = { "Name", "Class Levels" };
+	String[] columnNames = { "Name", "Math Class Levels",
+			"Reading Class Levels", "Language Arts Class Levels" };
 
 	public TeacherFrame(JFrame f, TeacherDB t) {
 		frame = f;
@@ -84,7 +85,7 @@ public class TeacherFrame implements TableModelListener {
 	// JTable
 	private void populateTable() {
 		int i = 0;
-		data = new Object[300][2];
+		data = new Object[300][4];
 		if (teachers.getSize() > 0) {
 			ArrayList<Teachers> tList = teachers.getTeachers();
 			Iterator<Teachers> it = tList.iterator();
@@ -92,11 +93,25 @@ public class TeacherFrame implements TableModelListener {
 				Teachers t = it.next();
 				data[i][0] = t.getName();
 				StringBuilder line = new StringBuilder();
-				ArrayList<Integer> classes = t.getPreference();
-				for (int j = 0; j < classes.size(); j++) {
-					line.append(classes.get(j) + ";");
+				ArrayList<Integer> mClasses = t
+						.getPreference(Teachers.Type.MATH);
+				for (int j = 0; j < mClasses.size(); j++) {
+					line.append(mClasses.get(j) + ";");
 				}
 				data[i][1] = line.toString();
+				line = new StringBuilder();
+				ArrayList<Integer> rClasses = t
+						.getPreference(Teachers.Type.READ);
+				for (int j = 0; j < rClasses.size(); j++) {
+					line.append(rClasses.get(j) + ";");
+				}
+				data[i][2] = line.toString();
+				line = new StringBuilder();
+				ArrayList<Integer> lClasses = t.getPreference(Teachers.Type.LA);
+				for (int j = 0; j < lClasses.size(); j++) {
+					line.append(lClasses.get(j) + ";");
+				}
+				data[i][3] = line.toString();
 				i++;
 
 			}
@@ -176,7 +191,53 @@ public class TeacherFrame implements TableModelListener {
 						// inputting integers so we'll need to do conversions
 					}
 				}
-				t.setPreference(classes);
+				t.setPreference(classes, Teachers.Type.MATH);
+			}
+			break;
+		case 2:
+			if (data[row][0].toString().isEmpty()) {
+				if (!isBlank) {
+					JOptionPane.showMessageDialog(frame,
+							"Please provide a name first.\n");
+					table.setValueAt("", row, column);
+				}
+			} else {
+				String[] classList = d.toString().split(";");
+				ArrayList<Integer> classes = new ArrayList<Integer>();
+				for (int i = 0; i < classList.length; i++) {
+					try {
+						int tmp = Integer.parseInt(classList[i]);
+						classes.add(tmp);
+
+					} catch (NumberFormatException ne) {
+						// maybe an error here, but they probably wont be
+						// inputting integers so we'll need to do conversions
+					}
+				}
+				t.setPreference(classes, Teachers.Type.READ);
+			}
+			break;
+		case 3:
+			if (data[row][0].toString().isEmpty()) {
+				if (!isBlank) {
+					JOptionPane.showMessageDialog(frame,
+							"Please provide a name first.\n");
+					table.setValueAt("", row, column);
+				}
+			} else {
+				String[] classList = d.toString().split(";");
+				ArrayList<Integer> classes = new ArrayList<Integer>();
+				for (int i = 0; i < classList.length; i++) {
+					try {
+						int tmp = Integer.parseInt(classList[i]);
+						classes.add(tmp);
+
+					} catch (NumberFormatException ne) {
+						// maybe an error here, but they probably wont be
+						// inputting integers so we'll need to do conversions
+					}
+				}
+				t.setPreference(classes, Teachers.Type.LA);
 			}
 			break;
 		}

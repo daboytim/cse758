@@ -38,6 +38,10 @@ public class Teachers {
 		this.name = name;
 	}
 	
+	public Teachers() {
+		
+	};
+	
 	public String getName(){
 		return this.name;
 	}

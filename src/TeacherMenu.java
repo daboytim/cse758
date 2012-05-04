@@ -165,17 +165,63 @@ public class TeacherMenu extends JFrame implements ActionListener {
 			while (br.ready()) {
 				String line = br.readLine();
 				String[] params = line.split(",");
-				String[] classList = params[1].split(";");
-				ArrayList<Integer> classes = new ArrayList<Integer>();
-				for (int i = 0; i < classList.length; i++) {
+				Teachers t;
+				if (!Utilities.isBlank(params[0])) {
+					t = new Teachers(params[0]);
+				} else {
+					return;
+				}
+				if (params.length == 1) {
+					teachers.addTeacher(t);
+					return;
+				}
+				String[] mClassList = params[1].split(";");
+				ArrayList<Integer> mClasses = new ArrayList<Integer>();
+				for (int i = 0; i < mClassList.length; i++) {
 					try {
-						int tmp = Integer.parseInt(classList[i]);
-						classes.add(tmp);
+						int tmp = Integer.parseInt(mClassList[i]);
+						mClasses.add(tmp);
 					} catch (NumberFormatException e) {
 						// maybe an error here, but they probably wont be
 						// inputting integers so we'll need to do conversions
 					}
 				}
+				t.setPreference(mClasses, Teachers.Type.MATH);
+				if (params.length == 2) {
+					teachers.addTeacher(t);
+					return;
+				}
+
+				String[] rClassList = params[2].split(";");
+				ArrayList<Integer> rClasses = new ArrayList<Integer>();
+				for (int i = 0; i < rClassList.length; i++) {
+					try {
+						int tmp = Integer.parseInt(rClassList[i]);
+						rClasses.add(tmp);
+					} catch (NumberFormatException e) {
+						// maybe an error here, but they probably wont be
+						// inputting integers so we'll need to do conversions
+					}
+				}
+				t.setPreference(rClasses, Teachers.Type.READ);
+				if (params.length == 3) {
+					teachers.addTeacher(t);
+					return;
+				}
+
+				String[] lClassList = params[3].split(";");
+				ArrayList<Integer> lClasses = new ArrayList<Integer>();
+				for (int i = 0; i < lClassList.length; i++) {
+					try {
+						int tmp = Integer.parseInt(lClassList[i]);
+						lClasses.add(tmp);
+					} catch (NumberFormatException e) {
+						// maybe an error here, but they probably wont be
+						// inputting integers so we'll need to do conversions
+					}
+				}
+				t.setPreference(lClasses, Teachers.Type.LA);
+				teachers.addTeacher(t);
 
 			}
 		} catch (FileNotFoundException e) {
@@ -199,10 +245,22 @@ public class TeacherMenu extends JFrame implements ActionListener {
 			for (int i = 0; i < teachers.getSize(); i++) {
 				Teachers t = tchrs.get(i);
 				System.out.println(t.getName());
-				StringBuilder line = new StringBuilder(t.getName()+",");
-				ArrayList<Integer> classes = t.getPreference();
-				for (int j = 0; j < classes.size(); j ++) {
-					line.append(classes.get(j) + ";");
+				StringBuilder line = new StringBuilder(t.getName() + ",");
+				ArrayList<Integer> mClasses = t
+						.getPreference(Teachers.Type.MATH);
+				for (int j = 0; j < mClasses.size(); j++) {
+					line.append(mClasses.get(j) + ";");
+				}
+				line.append(',');
+				ArrayList<Integer> rClasses = t
+						.getPreference(Teachers.Type.READ);
+				for (int j = 0; j < rClasses.size(); j++) {
+					line.append(rClasses.get(j) + ";");
+				}
+				line.append(',');
+				ArrayList<Integer> lClasses = t.getPreference(Teachers.Type.LA);
+				for (int j = 0; j < lClasses.size(); j++) {
+					line.append(lClasses.get(j) + ";");
 				}
 				bw.append(line.toString());
 			}
