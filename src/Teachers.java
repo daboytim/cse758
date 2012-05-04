@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 public class Teachers {
 
 	public enum Type {MATH, READ, LA}
@@ -10,9 +11,9 @@ public class Teachers {
 	private ArrayList<Integer> readPreference;
 	private ArrayList<Integer> laPreference;
 	// capable: order does not matter. does not change. 
-	private ArrayList<Integer> capableM;
-	private ArrayList<Integer> capableR;
-	private ArrayList<Integer> capableL;
+	public ArrayList<Integer> capableM;
+	public ArrayList<Integer> capableR;
+	public ArrayList<Integer> capableL;
 	private int clsIDM;
 	private int clsIDR;
 	private int clsIDL;
@@ -70,7 +71,7 @@ public class Teachers {
 			return this.clsLvlR;
 			
 		case LA:
-			return this.clsLvlR;
+			return this.clsLvlL;
 			
 		default:
 			return -1;			
@@ -80,36 +81,43 @@ public class Teachers {
 	public void setCls(Integer clsLvl, Integer clsID, Type t){
 		switch(t) {
 		case MATH:
+		{
 			this.clsLvlM = clsLvl;
 			this.clsIDM = clsID;
-			
+		}
 		case READ:
+		{
 			this.clsLvlR = clsLvl;
 			this.clsIDR = clsID;
-			
+		}	
 		case LA:
+		{
 			this.clsLvlL = clsLvl;
 			this.clsIDL = clsID;
+		}
 		}
 	}
 	
 	public int firstPref(Type t){
 		switch(t) {
 		case MATH:
+		{
 			if(this.mathPreference.size() <= 0)
 				return -1;
 			return this.mathPreference.get(0);
-			
+		}
 		case READ:
+		{
 			if(this.readPreference.size() <=0)
 				return -1;
 			return this.readPreference.get(0);
-			
+		}
 		case LA:
+		{
 			if(this.laPreference.size() <=0)
 				return -1;
 			return this.laPreference.get(0);
-			
+		}
 		default:
 			return -1;
 		}
@@ -194,14 +202,20 @@ public class Teachers {
 	public void setPreference(ArrayList<Integer> p, Type t) {
 		switch(t) {
 		case MATH:
+		{
 			this.mathPreference = p;
 			this.capableM = new ArrayList<Integer>(p);
+		}
 		case READ:
+		{
 			this.readPreference = p;
 			this.capableR = new ArrayList<Integer>(p);
+		}
 		case LA:
+		{
 			this.laPreference = p;
 			this.capableR = new ArrayList<Integer>(p);
+		}
 		}
 	}
 	

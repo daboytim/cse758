@@ -66,6 +66,7 @@ public class ScheduleTeachers {
 					classes.add(clsID);
 					assigned.add(teachers.remove(min));
 				} else {
+					t.setCls(0, 0, type);
 					unlucky.add(teachers.remove(min));
 				}
 			}
