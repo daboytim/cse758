@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
@@ -46,7 +45,7 @@ public class StudentFrame {
 		frame.setSize(dimension);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		StudentMenu menu = new StudentMenu(students, frame);
+		StudentMenu menu = new StudentMenu(students, frame, controller);
 		JMenuBar menuBar = menu.getMenu();
 		frame.setJMenuBar(menuBar);
 		menuBar.setPreferredSize(new Dimension(200, 20));

@@ -1,19 +1,6 @@
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,7 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
@@ -44,8 +30,7 @@ public class StudentMenu extends JFrame {
 	BufferedWriter bwriter;
 	StudentDB students;
 
-	public StudentMenu(StudentDB s, JFrame f) {
-		StudentController controller = new StudentController(f, s);
+	public StudentMenu(StudentDB s, JFrame f, StudentController controller) {
 		frame = f;
 		students = s;
 		bar = new JMenuBar();
