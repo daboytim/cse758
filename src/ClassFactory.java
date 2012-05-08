@@ -80,7 +80,7 @@ public class ClassFactory {
 
 		if (cls.getClsName().equals("math")) {
 			if (cls.getLvl() == std.getMath()
-					&& Math.abs(cls.getLowestAge() - std.getAge()) < 3
+					&& Math.abs(cls.getLowestAge() - std.getAge()) < 4.0
 					&& cls.getTotal() < 5) {
 				return true;
 			} else {
@@ -88,7 +88,7 @@ public class ClassFactory {
 			}
 		} else if (cls.getClsName().equals("la")) {
 			if (cls.getLvl() == std.getLA()
-					&& Math.abs(cls.getLowestAge() - std.getAge()) < 3
+					&& Math.abs(cls.getLowestAge() - std.getAge()) < 4.0
 					&& cls.getTotal() < 5) {
 				return true;
 			} else {
@@ -96,7 +96,7 @@ public class ClassFactory {
 			}
 		} else if (cls.getClsName().equals("read")) {
 			if (cls.getLvl() == std.getRead()
-					&& Math.abs(cls.getLowestAge() - std.getAge()) < 3
+					&& Math.abs(cls.getLowestAge() - std.getAge()) < 4.0
 					&& cls.getTotal() < 5) {
 				return true;
 			} else {

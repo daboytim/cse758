@@ -9,6 +9,12 @@ else:
 numOfRecord = input("Input number of test cases:")
 minYear = input("Input lower limit of age(YYYY):")
 maxYear = input("Input upper limit of age(YYYY):")
+bh = raw_input("Do you want to enforce behavior level rules?(Y/N)")
+bh=bh.lower()
+if bh=='y':
+	bh=True
+else:
+	bh=False
 
 f= open(fileName,'w')
 for i in range(0,int(numOfRecord)):
@@ -19,6 +25,11 @@ for i in range(0,int(numOfRecord)):
 	date = random.randint(1,28)
 	if date<10:
 		date = '0' +str(date)
-	f.write(str(i)+",Student,No."+str(i)+","+str(year)+"-"+str(month)+"-"+str(date)+","+str(random.randint(0,8))+","+str(random.randint(0,8))+","+str(random.randint(0,8))+","+str(random.randint(1,3))+"\n")
+	if bh:
+		bhLvl =str(random.randint(1,3))
+	else:
+		bhLvl='1'
+	
+	f.write(str(i)+",Student,No."+str(i)+","+str(year)+"-"+str(month)+"-"+str(date)+","+str(random.randint(0,8))+","+str(random.randint(0,8))+","+str(random.randint(0,8))+","+bhLvl+"\n")
 f.close()
 print "Record written to file:"+fileName
