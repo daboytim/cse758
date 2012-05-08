@@ -118,6 +118,9 @@ public class Schedulizer {
 					unluckyStd.add(std.get(i));
 					// roll back...
 					mathClass.removeStd(std.get(i).getId());
+					if(mathClass.getTotal()==0){
+						ClassFactory.mathClsLst.remove(mathClass);
+					}
 					continue;// those unlucky students...
 				}
 			}
@@ -157,7 +160,13 @@ public class Schedulizer {
 					unluckyStd.add(std.get(i));
 					// roll back...
 					mathClass.removeStd(std.get(i).getId());
+					if(mathClass.getTotal()==0){
+						ClassFactory.mathClsLst.remove(mathClass);
+					}
 					laClass.removeStd(std.get(i).getId());
+					if(laClass.getTotal()==0){
+						ClassFactory.laClsLst.remove(laClass);
+					}
 					continue;// those unlucky students...
 				}
 			}

@@ -3,10 +3,7 @@ import java.util.List;
 
 public class ClassFactory {
 
-	private static int totalClasses = 0;
-	private static int totalMath = 0;
-	private static int totalLA = 0;
-	private static int totalRead = 0;
+
 	private static int maxCls = 20;
 	private static int clsID = 1;
 
@@ -36,34 +33,24 @@ public class ClassFactory {
 	}
 
 	public static Classes createClass(String name, int lvl) {
-		totalClasses++;
-		if (name.equals("math")) {
-			totalMath++;
-		} else if (name.equals("la")) {
-			totalLA++;
-		} else if (name.equals("read")) {
-			totalRead++;
-		} else {
-			System.err.println("Wrong class name passed into class factory:"
-					+ name);
-		}
+		
 		return new Classes(name, lvl, clsID++);
 	}
 
 	public static int getTotalClasses() {
-		return totalClasses;
+		return mathClsLst.size()+laClsLst.size()+readClsLst.size();
 	}
 
 	public static int getTotalMath() {
-		return totalMath;
+		return mathClsLst.size();
 	}
 
 	public static int getTotalLA() {
-		return totalLA;
+		return laClsLst.size();
 	}
 
 	public static int getTotalRead() {
-		return totalRead;
+		return readClsLst.size();
 	}
 
 	/**
@@ -157,13 +144,13 @@ public class ClassFactory {
 	
 	
 	public static int getMostClasses() {
-		return Math.max(totalRead, Math.max(totalMath, totalLA));
+		return Math.max(getTotalRead(), Math.max(getTotalMath(), getTotalLA()));
 	}
 	
 	/**
 	 * Even distribute any 2 classes with movable students so that we won't have one class of 5 std while one in another.
 	 */
 	public static void evenDistribute(){
-		
+		//TODO
 	}
 }

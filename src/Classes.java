@@ -5,7 +5,6 @@ import java.util.List;
 public class Classes {
 	private String classname;
 	private int lvl;
-	private int totalStd;
 	private List<Students> students;
 	private int lowestAge=999;
 	private int bl3=0;
@@ -17,7 +16,6 @@ public class Classes {
 		this.classname=name;
 		this.lvl=lvl;
 		this.id=ID;
-		totalStd=0;
 	}
 	
 	public void addStd(Students std){
@@ -30,7 +28,7 @@ public class Classes {
 		}else if(std.getBL()==2){
 			this.bl2++;
 		}
-		totalStd++;
+		
 	}
 	
 	public List<Students> getStudents() {
@@ -56,7 +54,7 @@ public class Classes {
 	}
 	
 	public int getTotal(){
-		return this.totalStd;
+		return this.students.size();
 	}
 	
 	public int getLowestAge(){
