@@ -26,10 +26,23 @@ public class StudentFrame {
 	StudentController controller;
 
 	public StudentFrame(JFrame f, StudentDB s) {
-		ComboRenderer cr = new ComboRenderer();
-		frame = f;
+		
+		try {
+			if (f.isVisible())
+				frame = f;
+		} catch (NullPointerException np) {
+			frame = new JFrame();
+		}
+		
 		students = s;
-		controller = new StudentController(f, s);
+		controller = new StudentController(this, f, s);
+		update();
+		
+	}
+	
+	public void update () {
+		
+		ComboRenderer cr = new ComboRenderer();
 
 		try {
 			UIManager
@@ -38,7 +51,7 @@ public class StudentFrame {
 		}
 
 		// Create and set up the window.
-		frame = new JFrame("Scheduling");
+		//frame = new JFrame("Scheduling");
 		frame.setState(Frame.NORMAL);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension dimension = toolkit.getScreenSize();
@@ -103,6 +116,7 @@ public class StudentFrame {
 
 		// Display the window.
 		frame.setVisible(true);
+		
 	}
 
 }
