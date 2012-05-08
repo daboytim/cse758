@@ -28,6 +28,12 @@ public class Students implements Comparable<Students> {
 		this.fName=fName;
 		this.lName = lName;
 		this.birthDate = bDate;
+		Calendar c = new GregorianCalendar();
+		c.setTime(bDate);
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		
+		this.numBDate = year + (month/12.0);
 		this.math=math;
 		this.la=la;
 		this.read=read;
