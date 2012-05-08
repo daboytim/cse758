@@ -91,6 +91,8 @@ public class TeacherController implements ActionListener, TableModelListener {
 			while (br.ready()) {
 				String line = br.readLine();
 				String[] params = line.split(",");
+				System.out.println(params.length);
+
 				Teachers t;
 				if (!Utilities.isBlank(params[0])) {
 					t = new Teachers(params[0]);
@@ -150,6 +152,8 @@ public class TeacherController implements ActionListener, TableModelListener {
 				teachers.addTeacher(t);
 
 			}
+			new TeacherFrame(frame, teachers);
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -188,6 +192,7 @@ public class TeacherController implements ActionListener, TableModelListener {
 				for (int j = 0; j < lClasses.size(); j++) {
 					line.append(lClasses.get(j) + ";");
 				}
+				line.append("\n");
 				bw.append(line.toString());
 			}
 			bw.close();
