@@ -2,15 +2,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassFactory {
-	public static final int MATH = 1;
-	public static final int LA = 2;
-	public static final int READ = 3;
 
 	private static int totalClasses = 0;
 	private static int totalMath = 0;
 	private static int totalLA = 0;
 	private static int totalRead = 0;
-	private static int maxCls = 4;
+	private static int maxCls = 20;
 	private static int clsID = 1;
 
 	private ClassFactory() {
@@ -38,27 +35,19 @@ public class ClassFactory {
 		return true;
 	}
 
-	public static Classes createClass(int type, int lvl) {
+	public static Classes createClass(String name, int lvl) {
 		totalClasses++;
-		if (type == MATH) {
+		if (name.equals("math")) {
 			totalMath++;
-		} else if (type == LA) {
+		} else if (name.equals("la")) {
 			totalLA++;
-		} else if (type == READ) {
+		} else if (name.equals("read")) {
 			totalRead++;
 		} else {
-			System.err.println("Wrong class type passed into class factory:"
-					+ type);
+			System.err.println("Wrong class name passed into class factory:"
+					+ name);
 		}
-		String name="";
-		if (type == MATH) {
-			name = "Math-" + lvl + "_" + totalMath;
-		} else if (type == LA) {
-			name = "LangArt-" + lvl + "_" + totalLA;
-		} else if (type == READ) {
-			name = "Reading-" + lvl + "_" + totalRead;
-		}
-		return new Classes(name, type, lvl, clsID++);
+		return new Classes(name, lvl, clsID++);
 	}
 
 	public static int getTotalClasses() {
@@ -75,10 +64,6 @@ public class ClassFactory {
 
 	public static int getTotalRead() {
 		return totalRead;
-	}
-	
-	public static int getMostClasses() {
-		return Math.max(totalRead, Math.max(totalMath, totalLA));
 	}
 
 	/**
@@ -168,6 +153,11 @@ public class ClassFactory {
 			toCls.addStd(std);
 			fromCls.removeStd(std.getId());
 		}
+	}
+	
+	
+	public static int getMostClasses() {
+		return Math.max(totalRead, Math.max(totalMath, totalLA));
 	}
 	
 	/**
