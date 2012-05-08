@@ -51,7 +51,7 @@ public class StudentFrame {
 		}
 
 		// Create and set up the window.
-		//frame = new JFrame("Scheduling");
+		frame = new JFrame("Scheduling");
 		frame.setState(Frame.NORMAL);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension dimension = toolkit.getScreenSize();
