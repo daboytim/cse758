@@ -193,7 +193,7 @@ public class ScheduleMenu extends JFrame implements ActionListener {
 						Integer.parseInt(params[7]));
 				students.addStudent(s);
 			}
-			new NewFrame(frame, students);
+			new StudentFrame(frame, students);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
