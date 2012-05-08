@@ -76,6 +76,10 @@ public class ClassFactory {
 	public static int getTotalRead() {
 		return totalRead;
 	}
+	
+	public static int getMostClasses() {
+		return Math.max(totalRead, Math.max(totalMath, totalLA));
+	}
 
 	/**
 	 * Check if a student can be assigned to a particular class
