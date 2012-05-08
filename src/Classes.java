@@ -69,7 +69,7 @@ public class Classes {
 		StringBuilder sb =  new StringBuilder();
 		if(students.size()!=0){
 			for(Students std:students){
-				 sb.append(std.toString());
+				 sb.append(std.toString()+'\n');
 			}
 			return sb.toString();
 		}else{

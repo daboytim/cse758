@@ -117,12 +117,13 @@ public class Students implements Comparable<Students> {
 	
 	@Override
 	public int compareTo(Students std) {
-		return (int) Math.floor(this.getAge()-std.getAge());
+		
+		return (int)(this.getAge()-std.getAge())*100000;
 	}
 
 	@Override
 	public String toString(){
-		return "Student name:"+fName+" "+lName+"; age: "+Math.floor(getAge())+"; Math level: "+math+"; LA level: "+la+"; Reading level: "+read+".\n";
+		return "Student name:"+fName+" "+lName+"; age: "+Math.floor(getAge())+"; Math level: "+math+"; LA level: "+la+"; Reading level: "+read+".";
 		
 	}
 	
