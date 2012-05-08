@@ -2,7 +2,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -13,12 +12,13 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.border.Border;
+import javax.swing.table.TableColumnModel;
 
 public class ScheduleDisplay implements ActionListener {
 
@@ -146,19 +146,32 @@ public class ScheduleDisplay implements ActionListener {
 		// add toolbar to panel
 		JToolBar tb = scheduleMenu.getToolBar();
 		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(tb);
+		frame.add(panel);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 		panel.setAlignmentX(0);
 		panel.setVisible(true);
 
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setVisible(true);
+		
+		//Make table scrollable
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		TableColumnModel cm = table.getColumnModel();
+		cm.getColumn(0).setMinWidth(75);
+		for (int i = 1; i < cm.getColumnCount(); i ++) {
+			cm.getColumn(i).setMinWidth(150);
+		}
+		JScrollPane sp = new JScrollPane();  
+		sp.setPreferredSize(dimension);  
+		sp.getViewport().add(table);  
+        
 
 		// add top panel with toolbar, table, bottom panel (blank) to frame
 		frame.getContentPane().setLayout(blayout);
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
-		frame.getContentPane().add(table, BorderLayout.CENTER);
+		frame.getContentPane().add(sp, BorderLayout.CENTER);
 		frame.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 		frame.setVisible(true);
 
