@@ -337,8 +337,8 @@ public class StudentController implements TableModelListener, ActionListener {
 		} else if (obj.equals(StudentMenu.scheduleb)) {
 			// Code here to call schedule algorithm and display schedules
 			Schedulizer.genSchedule(students);
-			ScheduleDisplay disp = new ScheduleDisplay();
-			disp.display();
+			new ScheduleDisplay();
+
 		}
 		// Starting Kai's edit
 		else if (obj.equals(StudentMenu.pref1)) {

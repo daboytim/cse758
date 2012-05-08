@@ -1,7 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -22,7 +21,7 @@ import javax.swing.table.TableColumnModel;
 
 public class ScheduleDisplay implements ActionListener {
 
-	private JFrame frame = new JFrame();
+	private JFrame frame;
 	private JTable table;
 	private StudentDB students;
 	int maxStudentsPerClass;
@@ -37,21 +36,13 @@ public class ScheduleDisplay implements ActionListener {
 	 * Launch the application.
 	 */
 
-	public void display() {
+	/*public void display(JFrame f) {
 
 		// initialize to test
+		new ScheduleDisplay();
+		//window.frame.setVisible(true);
 
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ScheduleDisplay window = new ScheduleDisplay();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	}*/
 
 	/**
 	 * Create the application.
@@ -154,19 +145,18 @@ public class ScheduleDisplay implements ActionListener {
 		panel.setVisible(true);
 
 		JPanel bottomPanel = new JPanel();
-		bottomPanel.setVisible(true);
-		
-		//Make table scrollable
+		//bottomPanel.setVisible(true);
+
+		// Make table scrollable
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		TableColumnModel cm = table.getColumnModel();
 		cm.getColumn(0).setMinWidth(75);
-		for (int i = 1; i < cm.getColumnCount(); i ++) {
+		for (int i = 1; i < cm.getColumnCount(); i++) {
 			cm.getColumn(i).setMinWidth(150);
 		}
-		JScrollPane sp = new JScrollPane();  
-		sp.setPreferredSize(dimension);  
-		sp.getViewport().add(table);  
-        
+		JScrollPane sp = new JScrollPane();
+		sp.setPreferredSize(dimension);
+		sp.getViewport().add(table);
 
 		// add top panel with toolbar, table, bottom panel (blank) to frame
 		frame.getContentPane().setLayout(blayout);
