@@ -124,7 +124,7 @@ public class Students implements Comparable<Students> {
 	@Override
 	public int compareTo(Students std) {
 		
-		return (int)(this.getAge()-std.getAge())*100000;
+		return (int)(this.getAge()*10000-std.getAge()*10000);
 	}
 
 	@Override
