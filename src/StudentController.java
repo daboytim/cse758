@@ -29,7 +29,6 @@ public class StudentController implements TableModelListener, ActionListener {
 
 	JTable table;
 	JFrame frame;
-	StudentFrame sFrame;
 	StudentDB students;
 	Object[][] data;
 	Object[][] backup;
@@ -38,8 +37,7 @@ public class StudentController implements TableModelListener, ActionListener {
 			"Birth Date", "Math Level", "Reading Level", "Language Arts Level",
 			"Behavioral Level" };
 
-	public StudentController(StudentFrame sf, JFrame f, StudentDB s) {
-		sFrame = sf;
+	public StudentController(JFrame f, StudentDB s) {
 		frame = f;
 		students = s;
 	}
@@ -386,8 +384,7 @@ public class StudentController implements TableModelListener, ActionListener {
 						Integer.parseInt(params[7]));
 				students.addStudent(s);
 			}
-			//new StudentFrame(frame, students);
-			sFrame.update();
+			new StudentFrame(frame, students);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

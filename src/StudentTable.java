@@ -1,79 +1,28 @@
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Toolkit;
 
-import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.UIManager;
 import javax.swing.table.TableColumnModel;
 
-public class StudentFrame {
+public class StudentTable {
 
-	JFrame frame;
+	JScrollPane pane;
 	StudentDB students;
-	
+
 	String[] validStates = { "", "K", "1", "2", "3", "4", "5", "6", "7", "8" };
 	String[] behaviorLevels = { "1", "2", "3" };
 	StudentController controller;
 
-	public StudentFrame(JFrame f, StudentDB s) {
-		
-		try {
-			if (f.isVisible())
-				frame = f;
-		} catch (NullPointerException np) {
-			frame = new JFrame();
-		}
-		
+	public StudentTable(JFrame f, StudentDB s) {
+
 		students = s;
 		controller = new StudentController(f, s);
-		update();
-		
-	}
-	
-	public void update () {
-		
 		ComboRenderer cr = new ComboRenderer();
-
-		try {
-			UIManager
-					.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (Exception evt) {
-		}
-
-		// Create and set up the window.
-		frame = new JFrame("Scheduling");
-		frame.setState(Frame.NORMAL);
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		Dimension dimension = toolkit.getScreenSize();
-		frame.setSize(dimension);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		StudentMenu menu = new StudentMenu(students, frame, controller);
-		JMenuBar menuBar = menu.getMenu();
-		frame.setJMenuBar(menuBar);
-		menuBar.setPreferredSize(new Dimension(200, 20));
-		// Set the menu bar and add the label to the content pane.
-		frame.setJMenuBar(menuBar);
-
-		JToolBar tb = menu.getToolBar();
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(tb);
-		frame.add(panel, BorderLayout.NORTH);
-
 		controller.populateTable();
 
-		
 		controller.table.setShowGrid(true);
 		controller.table.setGridColor(Color.BLACK);
 		controller.table.setRowHeight(20);
@@ -106,17 +55,15 @@ public class StudentFrame {
 		tcm.getColumn(7).setCellEditor(bEditor);
 		tcm.getColumn(7).setCellRenderer(cr);
 
-		// Make Table Scrollable
-		JScrollPane pane = new JScrollPane(controller.table);
-		pane.setSize(dimension);
-
-		frame.add(pane);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-
-		// Display the window.
-		frame.setVisible(true);
-		
+		pane = new JScrollPane(controller.table);
+	}
+	
+	public StudentController getStudentController() {
+		return controller;
+	}
+	
+	public JScrollPane getStudentTable() {
+		return pane;
 	}
 
 }

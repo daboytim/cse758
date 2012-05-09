@@ -1,21 +1,22 @@
 	import javax.swing.JFrame;
 	
 public class DataEntry {
-	static JFrame frame;
-    static StudentDB students;
+	/*static JFrame frame;
+    static StudentDB students;*/
 
 	     /* 
 	      * Main
 	      */   
 	 
 	    public static void main(String[] args) {
-	    	students = new StudentDB(frame);
+	    	//students = new StudentDB(frame);
 
 	        //Schedule a job for the event-dispatching thread:
 	        //creating and showing this application's GUI.
 	        javax.swing.SwingUtilities.invokeLater(new Runnable() {
 	            public void run() {
-	                new StudentFrame(frame, students);
+	                //new StudentFrame(frame, students);
+	            	new MainFrame();
 	            }
 	        });
 	    }

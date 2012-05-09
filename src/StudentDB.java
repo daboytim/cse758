@@ -5,9 +5,7 @@ import javax.swing.JFrame;
 
 public class StudentDB {
 	ArrayList<Students> students;
-	JFrame frame;
-	public StudentDB (JFrame f){
-		frame = f;
+	public StudentDB (){
 		students = new ArrayList<Students>();
 	}
 	
