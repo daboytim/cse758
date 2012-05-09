@@ -7,6 +7,9 @@ public class Schedulizer {
 	/**
 	 * @param args
 	 */
+	
+	public static List<Students> unluckyStd;
+
 	public static void genSchedule(StudentDB stds) {
 
 		List<Students> std = stds.getStudents();
@@ -41,7 +44,7 @@ public class Schedulizer {
 		}
 
 		Classes mathClass = null, laClass = null, readClass = null;
-		List<Students> unluckyStd = new ArrayList<Students>();
+		unluckyStd = new ArrayList<Students>();
 		boolean foundCls;
 		for (int i = 0; i < std.size(); i++) {
 

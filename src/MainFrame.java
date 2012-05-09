@@ -1,56 +1,70 @@
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JToolBar;
 
-public class MainFrame {
+public class MainFrame implements ActionListener {
+	static JTabbedPane tabbedPane;
+	static JFrame frame;
+	StudentController sc;
+	TeacherController tc;
+	StudentTable sTab;
+	TeacherTable tTab;
+	JScrollPane panel1, panel2, panel3;
+	ScheduleDisplay sched;
+	StudentDB students;
+	TeacherDB teachers;
+	Menu menu;
 
 	public MainFrame() {
-		JFrame frame = new JFrame();
+		students = new StudentDB();
+		teachers = new TeacherDB();
+		frame = new JFrame();
+		update();
+	}
+	
+	public void update() {
+		frame.setVisible(false); // Hide the old frame, this is probably NOT efficient
+		frame = new JFrame();
+		frame.validate();
 		frame.setState(Frame.NORMAL);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension dimension = toolkit.getScreenSize();
 		frame.setSize(dimension);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		StudentDB students = new StudentDB();
-		TeacherDB teachers = new TeacherDB();
 
-		JTabbedPane tabbedPane = new JTabbedPane();
 
-		StudentTable sTab = new StudentTable(frame, students);
-		JScrollPane panel1 = sTab.getStudentTable();
+
+		tabbedPane = new JTabbedPane();
+
+		sTab = new StudentTable(frame, students);
+		panel1 = new JScrollPane(sTab.getStudentTable());
 		tabbedPane.addTab("Student Entry", panel1);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
-		TeacherTable tTab = new TeacherTable(frame, teachers);
-		JScrollPane panel2 = tTab.getTeacherTable();
+		tTab = new TeacherTable(frame, teachers);
+		panel2 = new JScrollPane(tTab.getTeacherTable());
 		tabbedPane.addTab("Teacher Entry", panel2);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
-		
-		StudentController sc = sTab.getStudentController();
-		TeacherController tc = tTab.getTeacherController();
-		
-		Menu menu = new Menu(students, frame, sc,  teachers,  tc);
-		frame.setJMenuBar(menu.getMenu());
-		
-		JToolBar tb = menu.getToolBar();
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(tb);
-		frame.add(panel);
-		/*JComponent panel3 = makeTextPanel("Panel #3");
-		tabbedPane.addTab("Tab 3", icon, panel3, "Still does nothing");
-		tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);*/
 
-		
+		sc = new StudentController(frame, students);
+		tc = new TeacherController(frame, teachers);
+
+		menu = new Menu(this, students, frame, sc, teachers, tc);
+		frame.setJMenuBar(menu.getMenu());
+
+		sched = new ScheduleDisplay();
+
+		panel3 = new JScrollPane(sched.getScheduleTable());
+		tabbedPane.addTab("Schedule", panel3);
+		tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 
 		// Add the tabbed pane to this panel.
 		frame.add(tabbedPane);
@@ -58,6 +72,39 @@ public class MainFrame {
 		// The following line enables to use scrolling tabs.
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		frame.setVisible(true);
+	}
+
+	//All actions that update the table view need to happen here
+	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
+		JFileChooser chooser = new JFileChooser();
+		if (obj.equals(Menu.sOpen)) {
+			// use chooser.getSelectedFile() to get file
+			// Some code here to parse or call a parser
+			if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
+				sc.readFile(chooser.getSelectedFile());
+			sTab.update();
+			
+		} else if (obj.equals(Menu.tOpen)) {
+			// use chooser.getSelectedFile() to get file
+			// Some code here to parse or call a parser
+			if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
+				tc.readFile(chooser.getSelectedFile());
+			tTab.update();
+		} else if (obj.equals(Menu.schedulize)) {
+			// Code here to call schedule algorithm and display schedules
+			Schedulizer.genSchedule(students);
+			sched.update();
+		} else if (obj.equals(Menu.assign)) {
+			// TODO: Code here to call schedule algorithm and display schedules
+			ScheduleTeachers.assign(teachers);
+			sched.update();
+		}
+		tabbedPane.revalidate();
+		tabbedPane.setVisible(false);
+		tabbedPane.repaint();
+		tabbedPane.setVisible(true);
+		//update();
 	}
 
 }

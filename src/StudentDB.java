@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-
 
 public class StudentDB {
 	ArrayList<Students> students;
