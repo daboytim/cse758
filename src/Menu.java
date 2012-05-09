@@ -2,7 +2,6 @@ import java.awt.Font;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -21,7 +20,6 @@ public class Menu extends JFrame {
 	JMenu student, teacher, schedule, edit, exit, pref;
 	static JMenuItem sOpen, sSave, tOpen, tSave, schedulize, assign, copy,paste,exit1,pref1;
 	JTextArea textArea;
-	static JFileChooser chooser;
 	FileOutputStream fos;
 	BufferedWriter bwriter;
 	StudentDB students;

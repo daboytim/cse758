@@ -12,9 +12,9 @@ public class MenuController implements ActionListener {
 
 	public void actionPerformed(ActionEvent event) {
 		Object obj = event.getSource();
-		Menu.chooser = new JFileChooser();
-		Menu.chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		Menu.chooser.setFileFilter(Menu.chooser.getAcceptAllFileFilter());
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		chooser.setFileFilter(chooser.getAcceptAllFileFilter());
 		if (obj.equals(Menu.exit1)) {
 			// Probably want to do checking here if user wants to save
 			System.exit(0);

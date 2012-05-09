@@ -27,7 +27,7 @@ public class TeacherController implements ActionListener {
 		Object obj = event.getSource();
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		chooser.setFileFilter(Menu.chooser.getAcceptAllFileFilter());
+		chooser.setFileFilter(chooser.getAcceptAllFileFilter());
 		if (obj.equals(Menu.tSave)) {
 			if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION)
 				writeFile(chooser.getSelectedFile());

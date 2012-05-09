@@ -1,5 +1,4 @@
-	import javax.swing.JFrame;
-	
+		
 public class DataEntry {
 	/*static JFrame frame;
     static StudentDB students;*/
