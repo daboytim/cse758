@@ -14,15 +14,15 @@ public class Teachers {
 	public ArrayList<Integer> capableM;
 	public ArrayList<Integer> capableR;
 	public ArrayList<Integer> capableL;
-	private int clsIDM;
-	private int clsIDR;
-	private int clsIDL;
-	private int clsLvlM;
-	private int clsLvlR;
-	private int clsLvlL;
-	private int roomM;
-	private int roomL;
-	private int roomR;
+	private int clsIDM=-1;
+	private int clsIDR=-1;
+	private int clsIDL=-1;
+	private int clsLvlM=-1;
+	private int clsLvlR=-1;
+	private int clsLvlL=-1;
+	private int roomM=-1;
+	private int roomL=-1;
+	private int roomR=-1;
 	
 	public Teachers(String name, ArrayList<Integer> math, ArrayList<Integer> read, ArrayList<Integer> la){
 		this.name = name;
@@ -37,10 +37,6 @@ public class Teachers {
 	public Teachers(String name) {
 		this.name = name;
 	}
-	
-	public Teachers() {
-		
-	};
 	
 	public String getName(){
 		return this.name;
@@ -88,16 +84,19 @@ public class Teachers {
 		{
 			this.clsLvlM = clsLvl;
 			this.clsIDM = clsID;
+			break;
 		}
 		case READ:
 		{
 			this.clsLvlR = clsLvl;
 			this.clsIDR = clsID;
+			break;
 		}	
 		case LA:
 		{
 			this.clsLvlL = clsLvl;
 			this.clsIDL = clsID;
+			break;
 		}
 		}
 	}
@@ -131,11 +130,20 @@ public class Teachers {
 	public void changePref(Integer cls, Type t){
 		switch(t) {
 		case MATH:
+		{
 			this.mathPreference.remove(cls);
+			break;
+		}
 		case READ:
+		{
 			this.readPreference.remove(cls);
+			break;
+		}
 		case LA:
+		{
 			this.laPreference.remove(cls);
+			break;
+		}
 		}
 	}
 	
@@ -169,11 +177,20 @@ public class Teachers {
 	public void setRoom(int num, Type t){
 		switch(t) {
 		case MATH:
+		{
 			this.roomM = num;
+			break;
+		}
 		case READ:
+		{
 			this.roomR = num;
+			break;
+		}
 		case LA:
+		{
 			this.roomL = num;
+			break;
+		}
 		}
 	}
 	
@@ -209,16 +226,19 @@ public class Teachers {
 		{
 			this.mathPreference = p;
 			this.capableM = new ArrayList<Integer>(p);
+			break;
 		}
 		case READ:
 		{
 			this.readPreference = p;
 			this.capableR = new ArrayList<Integer>(p);
+			break;
 		}
 		case LA:
 		{
 			this.laPreference = p;
-			this.capableR = new ArrayList<Integer>(p);
+			this.capableL = new ArrayList<Integer>(p);
+			break;
 		}
 		}
 	}
