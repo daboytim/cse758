@@ -7,7 +7,7 @@ public class Schedulizer {
 	/**
 	 * @param args
 	 */
-	
+
 	public static List<Students> unluckyStd;
 
 	public static void genSchedule(StudentDB stds) {
@@ -121,7 +121,7 @@ public class Schedulizer {
 					unluckyStd.add(std.get(i));
 					// roll back...
 					mathClass.removeStd(std.get(i).getId());
-					if(mathClass.getTotal()==0){
+					if (mathClass.getTotal() == 0) {
 						ClassFactory.mathClsLst.remove(mathClass);
 					}
 					continue;// those unlucky students...
@@ -163,21 +163,25 @@ public class Schedulizer {
 					unluckyStd.add(std.get(i));
 					// roll back...
 					mathClass.removeStd(std.get(i).getId());
-					if(mathClass.getTotal()==0){
+					if (mathClass.getTotal() == 0) {
 						ClassFactory.mathClsLst.remove(mathClass);
 					}
 					laClass.removeStd(std.get(i).getId());
-					if(laClass.getTotal()==0){
+					if (laClass.getTotal() == 0) {
 						ClassFactory.laClsLst.remove(laClass);
 					}
 					continue;// those unlucky students...
 				}
 			}
+			//distribute class size evenly
+			ClassFactory.evenDistribute();
 
-			// //get ready for next round.
-			// mathClass=null;
-			// laClass=null;
-			// readClass = null;
+			// make clone from math class list to homeroom and special classes.
+			for (Classes cls : ClassFactory.mathClsLst) {
+				ClassFactory.homeroomClsLst.add(cls);
+				ClassFactory.specialClsLst.add(cls);
+			}
+			
 		}
 
 		System.out.println("*********Results************");
@@ -276,16 +280,18 @@ public class Schedulizer {
 			System.out.println("\tAt least one reading class failed");
 			System.exit(0);
 		}
-		//========================
+		// ========================
 		System.out.println("Testing on age restriction:");
-		//========================
+		// ========================
 		System.out.println("Testing on behavior level restriction:");
-		//========================
-		System.out.println("Testing on whether each class has only one level of students:");
-		//=======================
-		System.out.println("Testing on unlucky students are truly unlucky, and cannot be assgined to any class:");
-		//======================
-		
+		// ========================
+		System.out
+				.println("Testing on whether each class has only one level of students:");
+		// =======================
+		System.out
+				.println("Testing on unlucky students are truly unlucky, and cannot be assgined to any class:");
+		// ======================
+
 	}
 
 }
