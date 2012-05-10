@@ -21,6 +21,8 @@ public class StdClsCompatibleException extends Exception {
 			errMsg="The student is being moved to a class of wrong behavior level.";
 		case 4:
 			errMsg = "The student is being moved to a class of different subject level.";
+		case 5:
+			errMsg = "The new student cannot be added to any existing class.";
 		default:
 			break;
 

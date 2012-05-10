@@ -54,8 +54,7 @@ public class Schedulizer {
 			// check if there is already a class compatible with current student
 			for (Classes cls : ClassFactory.mathClsLst) {
 				if (ClassFactory.compatible(std.get(i), cls)) {
-					mathClass = cls;
-					mathClass.addStd(std.get(i));
+					cls.addStd(std.get(i));
 					foundCls = true;
 					break;
 				}
@@ -63,19 +62,6 @@ public class Schedulizer {
 
 			// no compatible cls, check if we can create a new class, remember
 			// there is a limit on max#ofCls
-			// if(mathClass == null &&
-			// ClassFactory.getMaxCls()<=ClassFactory.getTotalMath()){
-			// unluckyStd.add(std.get(i));
-			//
-			// continue;// those unlucky students...
-			// }else if (mathClass == null) {
-			// mathClass = ClassFactory.createClass("math", std.get(i)
-			// .getMath());
-			// ClassFactory.mathClsLst.add(mathClass);
-			// mathClass.addStd(std.get(i));
-			//
-			// }
-
 			if (!foundCls) {
 				if (ClassFactory.getTotalMath() < ClassFactory.getMaxCls()) {
 					mathClass = ClassFactory.createClass("math", std.get(i)
@@ -93,23 +79,12 @@ public class Schedulizer {
 			// schedulize LA class
 			for (Classes cls : ClassFactory.laClsLst) {
 				if (ClassFactory.compatible(std.get(i), cls)) {
-					laClass = cls;
-					laClass.addStd(std.get(i));
+					cls.addStd(std.get(i));
 					foundCls = true;
 					break;
 				}
 			}
-			// if(laClass == null &&
-			// ClassFactory.getMaxCls()<=ClassFactory.getTotalLA()){
-			// unluckyStd.add(std.get(i));
-			// //roll back...
-			// mathClass.removeStd(std.get(i).getName());
-			// continue;// those unlucky students...
-			// }else if (laClass == null) {
-			// laClass = ClassFactory.createClass("la", std.get(i).getLA());
-			// ClassFactory.laClsLst.add(laClass);
-			// laClass.addStd(std.get(i));
-			// }
+			
 			if (!foundCls) {
 				if (ClassFactory.getTotalLA() < ClassFactory.getMaxCls()) {
 					laClass = ClassFactory
@@ -132,26 +107,11 @@ public class Schedulizer {
 			// schedulize reading class
 			for (Classes cls : ClassFactory.readClsLst) {
 				if (ClassFactory.compatible(std.get(i), cls)) {
-					readClass = cls;
-					readClass.addStd(std.get(i));
+					cls.addStd(std.get(i));
 					foundCls = true;
 					break;
 				}
 			}
-			// if(readClass == null &&
-			// ClassFactory.getMaxCls()<=ClassFactory.getTotalRead()){
-			// unluckyStd.add(std.get(i));
-			// //roll back...
-			// mathClass.removeStd(std.get(i).getName());
-			// laClass.removeStd(std.get(i).getName());
-			// continue;// those unlucky students...
-			// }else if (readClass == null) {
-			// readClass = ClassFactory.createClass("read", std.get(i)
-			// .getRead());
-			// ClassFactory.readClsLst.add(readClass);
-			// readClass.addStd(std.get(i));
-			// }
-
 			if (!foundCls) {
 				if (ClassFactory.getTotalRead() < ClassFactory.getMaxCls()) {
 					readClass = ClassFactory.createClass("read", std.get(i)
@@ -173,7 +133,7 @@ public class Schedulizer {
 					continue;// those unlucky students...
 				}
 			}
-			//distribute class size evenly
+			// distribute class size evenly
 			ClassFactory.evenDistribute();
 
 			// make clone from math class list to homeroom and special classes.
@@ -181,7 +141,7 @@ public class Schedulizer {
 				ClassFactory.homeroomClsLst.add(cls);
 				ClassFactory.specialClsLst.add(cls);
 			}
-			
+
 		}
 
 		System.out.println("*********Results************");
@@ -209,6 +169,74 @@ public class Schedulizer {
 		System.out.println("*******Unlucky Students********");
 		for (Students stdss : unluckyStd) {
 			System.out.println(stdss.toString());
+		}
+
+	}
+
+	public void addNewStd(Students std) throws StdClsCompatibleException {
+		boolean foundCls = false;
+		// try to add to math class
+		for (Classes cls : ClassFactory.mathClsLst) {
+			if (ClassFactory.compatible(std, cls)) {
+				cls.addStd(std);
+				foundCls = true;
+				break;
+			}
+		}
+		if (!foundCls) {
+			throw new StdClsCompatibleException(5);
+		}
+
+		// try to add to la class
+		foundCls = false;
+		for (Classes cls : ClassFactory.laClsLst) {
+			if (ClassFactory.compatible(std, cls)) {
+				cls.addStd(std);
+				foundCls = true;
+				break;
+			}
+		}
+		if (!foundCls) {
+			throw new StdClsCompatibleException(5);
+		}
+
+		// try to add to read cls
+		foundCls = false;
+		for (Classes cls : ClassFactory.readClsLst) {
+			if (ClassFactory.compatible(std, cls)) {
+				cls.addStd(std);
+				foundCls = true;
+				break;
+			}
+		}
+		if (!foundCls) {
+			throw new StdClsCompatibleException(5);
+		}
+
+		// try to add to homeroom cls
+		foundCls = false;
+		for (Classes cls : ClassFactory.homeroomClsLst) {
+			if (ClassFactory.compatible(std, cls)) {
+				cls.addStd(std);
+				foundCls = true;
+				break;
+			}
+		}
+		if (!foundCls) {
+			throw new StdClsCompatibleException(5);
+		}
+
+		// try to add to special cls
+		foundCls = false;
+		for (Classes cls : ClassFactory.specialClsLst) {
+			if (ClassFactory.compatible(std, cls)) {
+				cls.addStd(std);
+				foundCls = true;
+				break;
+			}
+		}
+		if (!foundCls) {
+			throw new StdClsCompatibleException(5);
 		}
 
 	}
