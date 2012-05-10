@@ -94,6 +94,8 @@ public class MainFrame implements ActionListener, MouseListener{
 			if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
 				sc.readFile(chooser.getSelectedFile());
 			sTab.update();
+			tabbedPane.setSelectedIndex(0);
+
 			
 		} else if (obj.equals(Menu.tOpen)) {
 			// use chooser.getSelectedFile() to get file
@@ -101,14 +103,18 @@ public class MainFrame implements ActionListener, MouseListener{
 			if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
 				tc.readFile(chooser.getSelectedFile());
 			tTab.update();
+			tabbedPane.setSelectedIndex(1);
+
 		} else if (obj.equals(Menu.schedulize)) {
 			// Code here to call schedule algorithm and display schedules
 			Schedulizer.genSchedule(students);
 			sched.update();
+			tabbedPane.setSelectedIndex(2);
 		} else if (obj.equals(Menu.assign)) {
 			// TODO: Code here to call schedule algorithm and display schedules
 			ScheduleTeachers.assign(teachers);
 			sched.update();
+			tabbedPane.setSelectedIndex(2);
 		} else if (obj.equals(editItem)) {
 			showManualMod();
 			//sched.update();
