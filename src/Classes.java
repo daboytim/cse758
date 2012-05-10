@@ -45,6 +45,15 @@ public class Classes {
 		return null;
 	}
 	
+	public boolean hasStudent(Students student) {
+		for (Students std:students) {
+			if (std.equals(student)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public String getClsName(){
 		return this.classname;
 	}

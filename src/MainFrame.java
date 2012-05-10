@@ -4,13 +4,17 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-public class MainFrame implements ActionListener {
+public class MainFrame implements ActionListener, MouseListener{
 	static JTabbedPane tabbedPane;
 	static JFrame frame;
 	StudentController sc;
@@ -22,11 +26,18 @@ public class MainFrame implements ActionListener {
 	StudentDB students;
 	TeacherDB teachers;
 	Menu menu;
+	JPopupMenu rightClickMenu;
+	JMenuItem editItem;
 
 	public MainFrame() {
 		students = new StudentDB();
 		teachers = new TeacherDB();
 		frame = new JFrame();
+		//create the right click menu
+		rightClickMenu = new JPopupMenu();
+		editItem = new JMenuItem("Edit");
+		editItem.addActionListener(this);
+		rightClickMenu.add(editItem);
 		update();
 	}
 	
@@ -39,7 +50,6 @@ public class MainFrame implements ActionListener {
 		Dimension dimension = toolkit.getScreenSize();
 		frame.setSize(dimension);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 
 
 		tabbedPane = new JTabbedPane();
@@ -61,7 +71,7 @@ public class MainFrame implements ActionListener {
 		frame.setJMenuBar(menu.getMenu());
 
 		sched = new ScheduleDisplay();
-
+		sched.getScheduleTable().addMouseListener(this);
 		panel3 = new JScrollPane(sched.getScheduleTable());
 		tabbedPane.addTab("Schedule", panel3);
 		tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
@@ -99,12 +109,60 @@ public class MainFrame implements ActionListener {
 			// TODO: Code here to call schedule algorithm and display schedules
 			ScheduleTeachers.assign(teachers);
 			sched.update();
+		} else if (obj.equals(editItem)) {
+			showManualMod();
+			//sched.update();
 		}
 		tabbedPane.revalidate();
 		tabbedPane.setVisible(false);
 		tabbedPane.repaint();
 		tabbedPane.setVisible(true);
 		//update();
+	}
+	
+	private void showManualMod() {
+		int x, y;
+		x = sched.getScheduleTable().getSelectedColumn();
+		y = sched.getScheduleTable().getSelectedRow();
+		//make sure x and y correspond to a student
+		if (x > 0 && y >= 0) {
+			Object std = sched.getScheduleTable().getValueAt(y, x);
+			if (!std.equals("")) {
+				new ManualModFrame((Students)std, sched);
+			}
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		if (e.isPopupTrigger()) {
+			rightClickMenu.show(e.getComponent(), e.getX(), e.getY());
+		}
 	}
 
 }

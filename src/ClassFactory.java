@@ -126,20 +126,21 @@ public class ClassFactory {
 	 */
 	public static void moveStd(Classes fromCls, Classes toCls, Students std)
 			throws StdClsCompatibleException {
-		if (!fromCls.getClsName().equals(toCls.getClsName())) {
-			throw new StdClsCompatibleException(0);
-		} else if (toCls.getTotal() == 5) {
-			throw new StdClsCompatibleException(1);
-		} else if (Math.abs(fromCls.getLowestAge() - toCls.getLowestAge()) > 3.92) {
-			throw new StdClsCompatibleException(2);
-		} else if (!BLfit(std, toCls)) {
-			throw new StdClsCompatibleException(3);
-		} else if (!compatible(std, toCls)) {
-			throw new StdClsCompatibleException(4);
-		} else {
+//throwing these exceptions defeats the purpose of manual modification
+//		if (!fromCls.getClsName().equals(toCls.getClsName())) {
+//			throw new StdClsCompatibleException(0);
+//		} else if (toCls.getTotal() == 5) {
+//			throw new StdClsCompatibleException(1);
+//		} else if (Math.abs(fromCls.getLowestAge() - toCls.getLowestAge()) > 3.92) {
+//			throw new StdClsCompatibleException(2);
+//		} else if (!BLfit(std, toCls)) {
+//			throw new StdClsCompatibleException(3);
+//		} else if (!compatible(std, toCls)) {
+//			throw new StdClsCompatibleException(4);
+//		} else {
 			toCls.addStd(std);
 			fromCls.removeStd(std.getId());
-		}
+//		}
 	}
 	
 	
@@ -152,5 +153,26 @@ public class ClassFactory {
 	 */
 	public static void evenDistribute(){
 		//TODO
+	}
+	
+	public static Classes[] getStdClasses(Students std) {
+		Classes[] classes = new Classes[3];
+		//classes[0] - math / classes[1] - la / classes[2] - read
+		for (Classes cls:mathClsLst) {
+			if (cls.hasStudent(std)) {
+				classes[0] = cls;
+			}
+		}
+		for (Classes cls:laClsLst) {
+			if (cls.hasStudent(std)) {
+				classes[1] = cls;
+			}
+		}
+		for (Classes cls:readClsLst) {
+			if (cls.hasStudent(std)) {
+				classes[2] = cls;
+			}
+		}
+		return classes;
 	}
 }

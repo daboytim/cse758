@@ -47,12 +47,13 @@ public class ScheduleDisplay {
 		table.setRowHeight(20);
 		Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
 		table.setBorder(border);
+		table.setColumnSelectionAllowed(true);
 		// Make table scrollable
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		// Fix Sizing
 		TableColumnModel cm = table.getColumnModel();
-		cm.getColumn(0).setMinWidth(75);
+		cm.getColumn(0).setMinWidth(100);
 		for (int i = 1; i < cm.getColumnCount(); i++) {
 			cm.getColumn(i).setMinWidth(150);
 		}
@@ -88,7 +89,7 @@ public class ScheduleDisplay {
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
 				//table.setValueAt(stdNameStr, j + 1, i + 1);
-				data[j][i+1] = stdNameStr;
+				data[j][i+1] = std; //changed from stdNameStr
 			}
 		}
 
@@ -101,7 +102,7 @@ public class ScheduleDisplay {
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
 				//table.setValueAt(stdNameStr, j + 8, i + 1);
-				data[j+7][i+1] = stdNameStr;
+				data[j+7][i+1] = std; //changed from stdNameStr
 
 			}
 		}
@@ -115,7 +116,7 @@ public class ScheduleDisplay {
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
 				//table.setValueAt(stdNameStr, j + 15, i + 1);
-				data[j+14][i+1] = stdNameStr;
+				data[j+14][i+1] = std; //changed from stdNameStr
 
 			}
 		}
