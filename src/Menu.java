@@ -18,7 +18,7 @@ public class Menu extends JFrame {
 	JToolBar tb;
 	JFrame frame;
 	JMenu student, teacher, schedule, edit, file, pref;
-	static JMenuItem sOpen, sSave, tOpen, tSave, schedulize, assign, copy,paste,exit1,pref1, print, add;
+	static JMenuItem sOpen, sSave, tOpen, tSave, schedulize, assign, copy,paste,exit1,pref1, print;
 	JTextArea textArea;
 	FileOutputStream fos;
 	BufferedWriter bwriter;

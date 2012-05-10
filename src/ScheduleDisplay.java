@@ -83,7 +83,7 @@ public class ScheduleDisplay {
 		// fill in students for Reading
 		for (int i = 0; i < ClassFactory.readClsLst.size(); ++i) {
 			Classes cls = ClassFactory.readClsLst.get(i);
-			data[0][i+1] = "Level " + cls.getLvl();
+			data[0][i+1] = cls.getClsName() + " " + cls.getLvl();
 			List<Students> students = cls.getStudents();
 			for (int j = 1; j < students.size(); j++) {
 				Students std = students.get(j);
@@ -97,7 +97,7 @@ public class ScheduleDisplay {
 		// fill in students for LA
 		for (int i = 0; i < ClassFactory.getTotalLA(); ++i) {
 			Classes cls = ClassFactory.mathClsLst.get(i);
-			data[7][i+1] = "Level " + cls.getLvl();
+			data[7][i+1] = cls.getClsName() + " " + cls.getLvl();
 			List<Students> students = cls.getStudents();
 			for (int j = 1; j < students.size(); j++) {
 				Students std = students.get(j);
@@ -112,7 +112,7 @@ public class ScheduleDisplay {
 		// fill in students for Math
 		for (int i = 0; i < ClassFactory.getTotalMath(); ++i) {
 			Classes cls = ClassFactory.mathClsLst.get(i);
-			data[14][i+1] = "Level " + cls.getLvl();
+			data[14][i+1] = cls.getClsName() + " " + cls.getLvl();
 			List<Students> students = cls.getStudents();
 			for (int j = 1; j < students.size(); j++) {
 				Students std = students.get(j);
