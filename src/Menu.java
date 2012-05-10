@@ -17,8 +17,8 @@ public class Menu extends JFrame {
 	JMenuBar bar;
 	JToolBar tb;
 	JFrame frame;
-	JMenu student, teacher, schedule, edit, exit, pref;
-	static JMenuItem sOpen, sSave, tOpen, tSave, schedulize, assign, copy,paste,exit1,pref1;
+	JMenu student, teacher, schedule, edit, file, pref;
+	static JMenuItem sOpen, sSave, tOpen, tSave, schedulize, assign, copy,paste,exit1,pref1, print, add;
 	JTextArea textArea;
 	FileOutputStream fos;
 	BufferedWriter bwriter;
@@ -33,6 +33,19 @@ public class Menu extends JFrame {
 		teachers = t;
 		bar = new JMenuBar();
 		bar.setFont(new Font("Arial", Font.BOLD, 14));
+		
+		file = new JMenu("File");
+		exit1 = new JMenuItem("Exit Application");
+		
+		//TODO: Implement/test printing
+		print = new JMenuItem("Print Schedule");
+		
+		exit1.addActionListener(mc);
+		print.addActionListener(mc);
+		file.add(print);
+		file.add(exit1);
+		bar.add(file);
+		
 		student = new JMenu("Student");
 		sOpen = new JMenuItem(" Open... ");
 		sOpen.addActionListener(mf);
@@ -67,23 +80,17 @@ public class Menu extends JFrame {
 		edit.add(copy);
 		edit.add(paste);
 		bar.add(edit);
-		exit = new JMenu(" Exit ");
-		exit1 = new JMenuItem("Exit Application");
 		
-		exit1.addActionListener(mc);
 
 		// *****add by Kai****
 
 		pref = new JMenu(" Preference ");
 		pref1 = new JMenuItem("Set Max number of classes");
-		//TODO: create a main controller
 		pref1.addActionListener(mc);
 		pref.add(pref1);
 		bar.add(pref);
 		// end of Kai's edit
 
-		exit.add(exit1);
-		bar.add(exit);
 
 	}
 
