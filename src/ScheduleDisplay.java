@@ -28,7 +28,7 @@ public class ScheduleDisplay {
 		columnNames = new String[numRooms + 2];
 		columnNames[0] = "Subject";
 		for (int i = 1; i < numRooms + 1; i++) {
-			columnNames[i] = "Room " + i;
+			columnNames[i] = " ";
 		}
 		columnNames[numRooms + 1] = "Unable to Place";
 		tm = new DefaultTableModel(data, columnNames);
@@ -63,11 +63,11 @@ public class ScheduleDisplay {
 	public void populateTable() {
 		// TODO: constants for subjects and max students
 		// table.setValueAt("Reading", 1, 0);
-		data[0][0] = "Reading";
+		data[1][0] = "Reading";
 		// table.setValueAt("LA", 8, 0);
-		data[7][0] = "Language Arts";
+		data[8][0] = "Language Arts";
 		// table.setValueAt("Math", 15, 0);
-		data[14][0] = "Math";
+		data[15][0] = "Math";
 
 		// TODO: add rows for specials and homeroom (same as math)
 		// TODO: add formatting- times of classes
@@ -83,8 +83,9 @@ public class ScheduleDisplay {
 		// fill in students for Reading
 		for (int i = 0; i < ClassFactory.readClsLst.size(); ++i) {
 			Classes cls = ClassFactory.readClsLst.get(i);
+			data[0][i+1] = "Level " + cls.getLvl();
 			List<Students> students = cls.getStudents();
-			for (int j = 0; j < students.size(); ++j) {
+			for (int j = 1; j < students.size(); j++) {
 				Students std = students.get(j);
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
@@ -96,8 +97,9 @@ public class ScheduleDisplay {
 		// fill in students for LA
 		for (int i = 0; i < ClassFactory.getTotalLA(); ++i) {
 			Classes cls = ClassFactory.mathClsLst.get(i);
+			data[7][i+1] = "Level " + cls.getLvl();
 			List<Students> students = cls.getStudents();
-			for (int j = 0; j < students.size(); ++j) {
+			for (int j = 1; j < students.size(); j++) {
 				Students std = students.get(j);
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
@@ -110,8 +112,9 @@ public class ScheduleDisplay {
 		// fill in students for Math
 		for (int i = 0; i < ClassFactory.getTotalMath(); ++i) {
 			Classes cls = ClassFactory.mathClsLst.get(i);
+			data[14][i+1] = "Level " + cls.getLvl();
 			List<Students> students = cls.getStudents();
-			for (int j = 0; j < students.size(); ++j) {
+			for (int j = 1; j < students.size(); j++) {
 				Students std = students.get(j);
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
