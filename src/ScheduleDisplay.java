@@ -96,7 +96,7 @@ public class ScheduleDisplay {
 
 		// fill in students for LA
 		for (int i = 0; i < ClassFactory.getTotalLA(); ++i) {
-			Classes cls = ClassFactory.mathClsLst.get(i);
+			Classes cls = ClassFactory.laClsLst.get(i);
 			data[7][i+1] = cls.getClsName() + " " + cls.getLvl();
 			List<Students> students = cls.getStudents();
 			for (int j = 1; j < students.size(); j++) {

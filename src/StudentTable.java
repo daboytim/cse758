@@ -27,7 +27,6 @@ public class StudentTable implements TableModelListener {
 	JFrame frame;
 	
 	Object[][] data;
-	Object[][] backup;
 	String[] columnNames = { "Student ID", "First Name", "Last Name",
 			"Birth Date", "Math Level", "Reading Level", "Language Arts Level",
 			"Behavioral Level" };
@@ -56,8 +55,12 @@ public class StudentTable implements TableModelListener {
 	}
 	
 	public void update () {
-		ComboRenderer cr = new ComboRenderer();
 		populateTable(students);
+		renderTable();
+	}
+	
+	public void renderTable() {
+		ComboRenderer cr = new ComboRenderer();
 
 		table.setShowGrid(true);
 		table.setGridColor(Color.BLACK);
@@ -137,7 +140,6 @@ public class StudentTable implements TableModelListener {
 
 			i++;
 		}
-		backup = data;
 		tm.setDataVector(data, columnNames);
 	}
 	
@@ -167,6 +169,7 @@ public class StudentTable implements TableModelListener {
 		
 		TableModel model = (TableModel) e.getSource();
 		Object d = model.getValueAt(row, column);
+		data[row][column] = d;
 		boolean isBlank = Utilities.isBlank(d.toString());
 
 		if (row > 0 && Utilities.isBlank(data[row - 1][0].toString())
@@ -177,8 +180,7 @@ public class StudentTable implements TableModelListener {
 			return;
 		}
 
-		Object oldIDObj = backup[row][0];
-		backup = data;
+		Object oldIDObj = data[row][0];
 		int oldId;
 		try {
 			oldId = Integer.parseInt(oldIDObj.toString());
@@ -204,6 +206,7 @@ public class StudentTable implements TableModelListener {
 				cleanStudentDB();
 			} else {
 				try {
+					System.out.println("got here");
 					id = Integer.parseInt(d.toString());
 					if (students.hasStudent(id)) {
 						JOptionPane
@@ -339,6 +342,8 @@ public class StudentTable implements TableModelListener {
 				students.modifyStudent(oldId, s);
 			}
 		}
+		tm.setDataVector(data, columnNames);
+		renderTable();
 	}
 	
 
@@ -363,9 +368,6 @@ public class StudentTable implements TableModelListener {
 			// if we got here, the student is not in the data array anymore
 			students.removeStudent(id);
 		}
-
-		backup = data;
-
 	}
 	
 	

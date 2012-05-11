@@ -19,7 +19,6 @@ public class TeacherTable implements TableModelListener {
 	DefaultTableModel tm;
 	JFrame frame;
 	Object[][] data;
-	Object[][] backup;
 	String[] columnNames = { "Name", "Math Class Levels",
 			"Reading Class Levels", "Language Arts Class Levels" };
 	TeacherController controller;
@@ -43,7 +42,11 @@ public class TeacherTable implements TableModelListener {
 	
 	public void update() {
 		populateTable();
-
+		renderTable();
+		
+	}
+	
+	public void renderTable() {
 		table.setShowGrid(true);
 		table.setGridColor(Color.BLACK);
 		table.setRowHeight(20);
@@ -99,8 +102,6 @@ public class TeacherTable implements TableModelListener {
 				data[i][1] = "";
 				i++;
 			}
-
-			backup = data;
 			
 			tm.setDataVector(data, columnNames);
 
@@ -116,6 +117,7 @@ public class TeacherTable implements TableModelListener {
 			
 			TableModel model = (TableModel) e.getSource();
 			Object d = model.getValueAt(row, column);
+			data[row][column] = d;
 			boolean isBlank = Utilities.isBlank(d.toString());
 
 			if (row > 0 && Utilities.isBlank(data[row - 1][0].toString())
@@ -230,6 +232,8 @@ public class TeacherTable implements TableModelListener {
 					teachers.modifyTeacher(currName, t);
 				}
 			}
+			tm.setDataVector(data, columnNames);
+			renderTable();
 		}
 
 		/*
