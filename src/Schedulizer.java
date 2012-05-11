@@ -159,21 +159,21 @@ public class Schedulizer {
 		System.out.println("There are " + ClassFactory.mathClsLst.size()
 				+ " classes for math:");
 		for (Classes cls : ClassFactory.mathClsLst) {
-			System.out.println("=============");
+			System.out.println("=============" + cls.getClsID());
 			System.out.println(cls.toString());
 		}
 
 		System.out.println("\nThere are " + ClassFactory.laClsLst.size()
 				+ " classes for LA:");
 		for (Classes cls : ClassFactory.laClsLst) {
-			System.out.println("=============");
+			System.out.println("============="+ cls.getClsID());
 			System.out.println(cls.toString());
 		}
 
 		System.out.println("\nThere are " + ClassFactory.readClsLst.size()
 				+ " classes for reading:");
 		for (Classes cls : ClassFactory.readClsLst) {
-			System.out.println("=============");
+			System.out.println("============="+ cls.getClsID());
 			System.out.println(cls.toString());
 		}
 
