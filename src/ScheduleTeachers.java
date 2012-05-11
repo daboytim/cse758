@@ -138,6 +138,38 @@ public class ScheduleTeachers {
 			}
 		}
 		
+		for(int i = 0; i < assigned.size(); i++)
+		{
+			for(int j = 0; j < ClassFactory.getTotalMath(); j++)
+			{
+				if(ClassFactory.mathClsLst.get(j).getClsID() == assigned.get(i).getClsID(Teachers.Type.MATH))
+				{
+					if(!ClassFactory.mathClsLst.get(j).getStudents().isEmpty())
+					{
+						assigned.get(i).setCls(-1, ClassFactory.mathClsLst.get(j).
+								getStudents().get(0).getHomeroomCls().getClsID(), Teachers.Type.HR);
+						assigned.get(i).setCls(-1, ClassFactory.mathClsLst.get(j).
+								getStudents().get(0).getSpecialCls().getClsID(), Teachers.Type.SP);
+					}
+				}
+			}
+		}
+		for(int i = 0; i < unlucky.size(); i++)
+		{
+			for(int j = 0; j < ClassFactory.getTotalMath(); j++)
+			{
+				if(ClassFactory.mathClsLst.get(j).getClsID() == unlucky.get(i).getClsID(Teachers.Type.MATH))
+				{
+					if(!ClassFactory.mathClsLst.get(j).getStudents().isEmpty())
+					{
+					unlucky.get(i).setCls(-1, ClassFactory.mathClsLst.get(j).
+							getStudents().get(0).getHomeroomCls().getClsID(), Teachers.Type.HR);
+					unlucky.get(i).setCls(-1, ClassFactory.mathClsLst.get(j).
+							getStudents().get(0).getSpecialCls().getClsID(), Teachers.Type.SP);
+					}
+				}
+			}
+		}
 		//=== printouts for testing ===
 		System.out.println("assigned teachers: " +assigned.size());
 		for(int i = 0; i < assigned.size(); i++)
