@@ -179,19 +179,39 @@ public class Students implements Comparable<Students> {
 		}
 	}
 	
-	public int getMathCls(){
-		return this.mathClsID;
+	public Classes getMathCls(){
+		for(Classes cls:ClassFactory.mathClsLst){
+			if(cls.getClsID()==this.mathClsID)	return cls;
+		}
+		System.err.println("This should not happen.");
+		return null;
 	}
-	public int getLACls(){
-		return this.laClsID;
+	public Classes getLACls(){
+		for(Classes cls:ClassFactory.laClsLst){
+			if(cls.getClsID()==this.laClsID)	return cls;
+		}
+		System.err.println("This should not happen.");
+		return null;
 	}
-	public int getReadCls(){
-		return this.readClsID;
+	public Classes getReadCls(){
+		for(Classes cls:ClassFactory.readClsLst){
+			if(cls.getClsID()==this.readClsID)	return cls;
+		}
+		System.err.println("This should not happen.");
+		return null;
 	}
-	public int getHomeroomCls(){
-		return this.homeroomClsID;
+	public Classes getHomeroomCls(){
+		for(Classes cls:ClassFactory.homeroomClsLst){
+			if(cls.getClsID()==this.homeroomClsID)	return cls;
+		}
+		System.err.println("This should not happen.");
+		return null;
 	}
-	public int getSpecialCls(){
-		return this.specialClsID;
+	public Classes getSpecialCls(){
+		for(Classes cls:ClassFactory.specialClsLst){
+			if(cls.getClsID()==this.specialClsID)	return cls;
+		}
+		System.err.println("This should not happen.");
+		return null;
 	}
 }
