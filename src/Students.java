@@ -132,6 +132,9 @@ public class Students implements Comparable<Students> {
 		return (int)(this.getAge()*10000-std.getAge()*10000);
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public String toString(){
 		return fName + " " + lName;
@@ -179,6 +182,11 @@ public class Students implements Comparable<Students> {
 		}
 	}
 	
+	
+	/**
+	 * Get math cls this std is assigned to
+	 * @return 
+	 */
 	public Classes getMathCls(){
 		for(Classes cls:ClassFactory.mathClsLst){
 			if(cls.getClsID()==this.mathClsID)	return cls;
@@ -186,6 +194,10 @@ public class Students implements Comparable<Students> {
 		System.err.println("This should not happen.");
 		return null;
 	}
+	/**
+	 * Get LA cls this std is assigned to
+	 * @return
+	 */
 	public Classes getLACls(){
 		for(Classes cls:ClassFactory.laClsLst){
 			if(cls.getClsID()==this.laClsID)	return cls;
@@ -193,6 +205,10 @@ public class Students implements Comparable<Students> {
 		System.err.println("This should not happen.");
 		return null;
 	}
+	/**
+	 * Get Reading cls this std is assigned to
+	 * @return
+	 */
 	public Classes getReadCls(){
 		for(Classes cls:ClassFactory.readClsLst){
 			if(cls.getClsID()==this.readClsID)	return cls;
@@ -200,6 +216,10 @@ public class Students implements Comparable<Students> {
 		System.err.println("This should not happen.");
 		return null;
 	}
+	/**
+	 * Get homeroom cls this std is assigned to
+	 * @return
+	 */
 	public Classes getHomeroomCls(){
 		for(Classes cls:ClassFactory.homeroomClsLst){
 			if(cls.getClsID()==this.homeroomClsID)	return cls;
@@ -207,6 +227,10 @@ public class Students implements Comparable<Students> {
 		System.err.println("This should not happen.");
 		return null;
 	}
+	/**
+	 * Get special cls this std is assigned to
+	 * @return
+	 */
 	public Classes getSpecialCls(){
 		for(Classes cls:ClassFactory.specialClsLst){
 			if(cls.getClsID()==this.specialClsID)	return cls;

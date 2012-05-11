@@ -157,26 +157,26 @@ public class ClassFactory {
 		//TODO
 	}
 	
-	public static Classes[] getStdClasses(Students std) {
-		Classes[] classes = new Classes[3];
-		//classes[0] - math / classes[1] - la / classes[2] - read
-		for (Classes cls:mathClsLst) {
-			if (cls.hasStudent(std)) {
-				classes[0] = cls;
-			}
-		}
-		for (Classes cls:laClsLst) {
-			if (cls.hasStudent(std)) {
-				classes[1] = cls;
-			}
-		}
-		for (Classes cls:readClsLst) {
-			if (cls.hasStudent(std)) {
-				classes[2] = cls;
-			}
-		}
-		return classes;
-	}
+//	public static Classes[] getStdClasses(Students std) {
+//		Classes[] classes = new Classes[3];
+//		//classes[0] - math / classes[1] - la / classes[2] - read
+//		for (Classes cls:mathClsLst) {
+//			if (cls.hasStudent(std)) {
+//				classes[0] = cls;
+//			}
+//		}
+//		for (Classes cls:laClsLst) {
+//			if (cls.hasStudent(std)) {
+//				classes[1] = cls;
+//			}
+//		}
+//		for (Classes cls:readClsLst) {
+//			if (cls.hasStudent(std)) {
+//				classes[2] = cls;
+//			}
+//		}
+//		return classes;
+//	}
 	
 
 }
