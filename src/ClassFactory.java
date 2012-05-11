@@ -35,7 +35,6 @@ public class ClassFactory {
 	}
 
 	public static Classes createClass(String name, int lvl) {
-		
 		return new Classes(name, lvl, clsID++);
 	}
 

@@ -4,10 +4,6 @@ import java.util.List;
 
 public class Schedulizer {
 
-	/**
-	 * @param args
-	 */
-
 	public static List<Students> unluckyStd;
 
 	public static void genSchedule(StudentDB stds) {
@@ -46,6 +42,7 @@ public class Schedulizer {
 		Classes mathClass = null, laClass = null, readClass = null;
 		unluckyStd = new ArrayList<Students>();
 		boolean foundCls;
+
 		for (int i = 0; i < std.size(); i++) {
 
 			foundCls = false;
@@ -54,7 +51,8 @@ public class Schedulizer {
 			// check if there is already a class compatible with current student
 			for (Classes cls : ClassFactory.mathClsLst) {
 				if (ClassFactory.compatible(std.get(i), cls)) {
-					cls.addStd(std.get(i));
+					mathClass = cls;
+					mathClass.addStd(std.get(i));
 					foundCls = true;
 					break;
 				}
@@ -79,7 +77,8 @@ public class Schedulizer {
 			// schedulize LA class
 			for (Classes cls : ClassFactory.laClsLst) {
 				if (ClassFactory.compatible(std.get(i), cls)) {
-					cls.addStd(std.get(i));
+					laClass = cls;
+					laClass.addStd(std.get(i));
 					foundCls = true;
 					break;
 				}
@@ -95,10 +94,12 @@ public class Schedulizer {
 				} else {
 					unluckyStd.add(std.get(i));
 					// roll back...
+
 					mathClass.removeStd(std.get(i).getId());
 					if (mathClass.getTotal() == 0) {
 						ClassFactory.mathClsLst.remove(mathClass);
 					}
+
 					continue;// those unlucky students...
 				}
 			}
@@ -107,7 +108,8 @@ public class Schedulizer {
 			// schedulize reading class
 			for (Classes cls : ClassFactory.readClsLst) {
 				if (ClassFactory.compatible(std.get(i), cls)) {
-					cls.addStd(std.get(i));
+					readClass = cls;
+					readClass.addStd(std.get(i));
 					foundCls = true;
 					break;
 				}
@@ -122,58 +124,79 @@ public class Schedulizer {
 				} else {
 					unluckyStd.add(std.get(i));
 					// roll back...
+
 					mathClass.removeStd(std.get(i).getId());
 					if (mathClass.getTotal() == 0) {
 						ClassFactory.mathClsLst.remove(mathClass);
 					}
+
 					laClass.removeStd(std.get(i).getId());
 					if (laClass.getTotal() == 0) {
 						ClassFactory.laClsLst.remove(laClass);
 					}
+
 					continue;// those unlucky students...
 				}
 			}
-			// distribute class size evenly
-			ClassFactory.evenDistribute();
-
-			// make clone from math class list to homeroom and special classes.
-
-			for (Classes cls : ClassFactory.mathClsLst) {
-				Classes hrCls = ClassFactory.createClass("homeroom",
-						cls.getLvl());
-				Classes spCls = ClassFactory.createClass("special",
-						cls.getLvl());
-				
-				for (Students std2 : cls.getStudents()) {
-					hrCls.addStd(std2);
-					spCls.addStd(std2);
-				}
-				ClassFactory.homeroomClsLst.add(hrCls);
-				ClassFactory.specialClsLst.add(spCls);
-			}
 
 		}
-		
-		
+
+		// distribute class size evenly
+		ClassFactory.evenDistribute();
+
+		// make clone from math class list to homeroom and special classes.
+		for (Classes cls : ClassFactory.mathClsLst) {
+
+			Classes hrCls = ClassFactory.createClass("homeroom", cls.getLvl());
+
+			Classes spCls = ClassFactory.createClass("special", cls.getLvl());
+
+			for (Students std2 : cls.getStudents()) {
+				hrCls.addStd(std2);
+				spCls.addStd(std2);
+			}
+			ClassFactory.homeroomClsLst.add(hrCls);
+			ClassFactory.specialClsLst.add(spCls);
+		}
+
 		System.out.println("*********Results************");
 		System.out.println("There are " + ClassFactory.mathClsLst.size()
 				+ " classes for math:");
 		for (Classes cls : ClassFactory.mathClsLst) {
-			System.out.println("=============" + cls.getClsID());
+			System.out.println("=============" + cls.getClsName() + " "
+					+ cls.getClsID());
 			System.out.println(cls.toString());
 		}
 
 		System.out.println("\nThere are " + ClassFactory.laClsLst.size()
 				+ " classes for LA:");
 		for (Classes cls : ClassFactory.laClsLst) {
-			System.out.println("============="+ cls.getClsID());
+			System.out.println("=============" + cls.getClsName() + " "
+					+ cls.getClsID());
 			System.out.println(cls.toString());
 		}
 
 		System.out.println("\nThere are " + ClassFactory.readClsLst.size()
 				+ " classes for reading:");
 		for (Classes cls : ClassFactory.readClsLst) {
-			System.out.println("============="+ cls.getClsID());
+			System.out.println("=============" + cls.getClsName() + " "
+					+ cls.getClsID());
+			System.out.println(cls.toString());
+		}
+
+		System.out.println("\nThere are " + ClassFactory.homeroomClsLst.size()
+				+ " classes for homeroom:");
+		for (Classes cls : ClassFactory.homeroomClsLst) {
+			System.out.println("=============" + cls.getClsName() + " "
+					+ cls.getClsID());
+			System.out.println(cls.toString());
+		}
+
+		System.out.println("\nThere are " + ClassFactory.specialClsLst.size()
+				+ " classes for special:");
+		for (Classes cls : ClassFactory.specialClsLst) {
+			System.out.println("=============" + cls.getClsName() + " "
+					+ cls.getClsID());
 			System.out.println(cls.toString());
 		}
 

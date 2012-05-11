@@ -5,7 +5,7 @@ public class Classes {
 	private String classname;
 	private int lvl;
 	private List<Students> students;
-	private int lowestAge = 999;
+	private double lowestAge = 999;
 	private int bl3 = 0;
 	private int bl2 = 0;
 	private int id;
@@ -41,9 +41,27 @@ public class Classes {
 		for (Students std : this.students) {
 			if (std.getId() == id) {
 				this.students.remove(std);
+				
+				//update # of bl3 and bl2 std
+				if(std.getBL()==3){
+					this.bl3--;
+				}else if(std.getBL()==2){
+					this.bl2--;
+				}
+				//update new lowest age, if ever need to change.
+				if (std.getAge() == lowestAge) {
+					this.lowestAge = 999;
+					for(Students s:this.students){
+						if(s.getAge()<this.lowestAge){
+							this.lowestAge=s.getAge();
+						}
+					}
+				}
 				return std;
 			}
 		}
+		System.err.println("Student of ID:"+id+" is not in this class.");
+		System.exit(-1);
 		return null;
 	}
 
@@ -68,7 +86,7 @@ public class Classes {
 		return this.students.size();
 	}
 
-	public int getLowestAge() {
+	public double getLowestAge() {
 		return this.lowestAge;
 	}
 
