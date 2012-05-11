@@ -19,6 +19,9 @@ public class Classes {
 
 	public void addStd(Students std) {
 		students.add(std);
+		
+		std.assginCls(this.classname,this.id);
+		
 		if (std.getAge() < lowestAge) {
 			this.lowestAge = (int) Math.floor(std.getAge());
 		}

@@ -15,6 +15,11 @@ public class Students implements Comparable<Students> {
 	private int read;
 	private static int totalStudents=0;
 	private int bl;
+	private int mathClsID;
+	private int laClsID;
+	private int readClsID;
+	private int homeroomClsID;
+	private int specialClsID;
 	
 	//TODO: Replace Age with BDate and calculate Age.
 	//Largest age gap 3yrs 11 months
@@ -150,5 +155,43 @@ public class Students implements Comparable<Students> {
 	 */
 	public int getBL(){
 		return this.bl;
+	}
+	
+	/**
+	 * Store which class this std is assigned to.
+	 * 
+	 * @param clsName subject name
+	 * @param id class id
+	 */
+	public void assginCls(String clsName, int id) {
+		if(clsName.equals("math")){
+			this.mathClsID = id;
+		}else if(clsName.equals("la")){
+			this.laClsID=id;
+		}else if(clsName.equals("read")){
+			this.readClsID=id;
+		}else if(clsName.equals("homeroom")){
+			this.homeroomClsID = id;
+		}else if(clsName.equals("special")){
+			this.specialClsID = id;
+		}else{
+			System.err.println("This should never happen.");
+		}
+	}
+	
+	public int getMathCls(){
+		return this.mathClsID;
+	}
+	public int getLACls(){
+		return this.laClsID;
+	}
+	public int getReadCls(){
+		return this.readClsID;
+	}
+	public int getHomeroomCls(){
+		return this.homeroomClsID;
+	}
+	public int getSpecialCls(){
+		return this.specialClsID;
 	}
 }
