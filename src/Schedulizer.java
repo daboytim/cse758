@@ -84,7 +84,7 @@ public class Schedulizer {
 					break;
 				}
 			}
-			
+
 			if (!foundCls) {
 				if (ClassFactory.getTotalLA() < ClassFactory.getMaxCls()) {
 					laClass = ClassFactory
@@ -137,13 +137,24 @@ public class Schedulizer {
 			ClassFactory.evenDistribute();
 
 			// make clone from math class list to homeroom and special classes.
+
 			for (Classes cls : ClassFactory.mathClsLst) {
-				ClassFactory.homeroomClsLst.add(cls);
-				ClassFactory.specialClsLst.add(cls);
+				Classes hrCls = ClassFactory.createClass("homeroom",
+						cls.getLvl());
+				Classes spCls = ClassFactory.createClass("special",
+						cls.getLvl());
+				
+				for (Students std2 : cls.getStudents()) {
+					hrCls.addStd(std2);
+					spCls.addStd(std2);
+				}
+				ClassFactory.homeroomClsLst.add(hrCls);
+				ClassFactory.specialClsLst.add(spCls);
 			}
 
 		}
-
+		
+		
 		System.out.println("*********Results************");
 		System.out.println("There are " + ClassFactory.mathClsLst.size()
 				+ " classes for math:");
