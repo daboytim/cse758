@@ -27,7 +27,6 @@ public class StudentTable implements TableModelListener {
 	JFrame frame;
 	
 	Object[][] data;
-	Object[][] backup;
 	String[] columnNames = { "Student ID", "First Name", "Last Name",
 			"Birth Date", "Math Level", "Reading Level", "Language Arts Level",
 			"Behavioral Level" };
@@ -369,9 +368,6 @@ public class StudentTable implements TableModelListener {
 			// if we got here, the student is not in the data array anymore
 			students.removeStudent(id);
 		}
-
-		backup = data;
-
 	}
 	
 	
