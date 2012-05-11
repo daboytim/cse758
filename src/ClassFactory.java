@@ -177,4 +177,24 @@ public class ClassFactory {
 		}
 		return classes;
 	}
+	
+	public static Classes getClsByID(int id){
+		for(Classes cls: mathClsLst){
+			if (cls.getClsID()==id) return cls;
+		}
+		for(Classes cls: laClsLst){
+			if (cls.getClsID()==id) return cls;
+		}
+		for(Classes cls: readClsLst){
+			if (cls.getClsID()==id) return cls;
+		}
+		for(Classes cls: homeroomClsLst){
+			if (cls.getClsID()==id) return cls;
+		}
+		for(Classes cls: specialClsLst){
+			if (cls.getClsID()==id) return cls;
+		}
+		System.err.println("Class id "+id+" does not exist.");
+		return null;
+	}
 }
