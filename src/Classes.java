@@ -9,6 +9,8 @@ public class Classes {
 	private int bl3 = 0;
 	private int bl2 = 0;
 	private int id;
+	private Teachers teacher;
+	private boolean hasTeacher = false;
 
 	public Classes(String name, int lvl, int ID) {
 		students = new ArrayList<Students>();
@@ -72,6 +74,32 @@ public class Classes {
 			}
 		}
 		return false;
+	}
+
+	public boolean hasTeacher()
+	{
+		return this.hasTeacher;
+	}
+	
+	public Teachers getTeacher()
+	{
+		if(!this.hasTeacher())
+			return null;
+		return this.teacher;
+	}
+	
+	public void setTeacher(Teachers t)
+	{
+		this.teacher = t;
+		this.hasTeacher = true;
+	}
+	
+	public Teachers removeTeacher()
+	{
+		if(!this.hasTeacher())
+			return null;
+		this.hasTeacher = false;
+		return this.teacher;
 	}
 
 	public String getClsName() {

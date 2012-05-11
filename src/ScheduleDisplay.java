@@ -84,6 +84,8 @@ public class ScheduleDisplay {
 		for (int i = 0; i < ClassFactory.readClsLst.size(); ++i) {
 			Classes cls = ClassFactory.readClsLst.get(i);
 			data[0][i+1] = cls.getClsName() + " " + cls.getLvl();
+			if(cls.hasTeacher())
+				data[0][i+1] = cls.getClsName() + " " + cls.getLvl() + " : " + cls.getTeacher().getName();
 			List<Students> students = cls.getStudents();
 			for (int j = 1; j < students.size(); j++) {
 				Students std = students.get(j);
@@ -98,6 +100,8 @@ public class ScheduleDisplay {
 		for (int i = 0; i < ClassFactory.getTotalLA(); ++i) {
 			Classes cls = ClassFactory.laClsLst.get(i);
 			data[7][i+1] = cls.getClsName() + " " + cls.getLvl();
+			if(cls.hasTeacher())
+				data[7][i+1] = cls.getClsName() + " " + cls.getLvl() + " : " + cls.getTeacher().getName();
 			List<Students> students = cls.getStudents();
 			for (int j = 1; j < students.size(); j++) {
 				Students std = students.get(j);
@@ -113,6 +117,8 @@ public class ScheduleDisplay {
 		for (int i = 0; i < ClassFactory.getTotalMath(); ++i) {
 			Classes cls = ClassFactory.mathClsLst.get(i);
 			data[14][i+1] = cls.getClsName() + " " + cls.getLvl();
+			if(cls.hasTeacher())
+				data[14][i+1] = cls.getClsName() + " " + cls.getLvl() + " : " + cls.getTeacher().getName();
 			List<Students> students = cls.getStudents();
 			for (int j = 1; j < students.size(); j++) {
 				Students std = students.get(j);

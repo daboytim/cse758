@@ -28,6 +28,7 @@ public class ScheduleTeachers {
 		 */
 		
 		for (int classType = 0; classType < 3; classType++) {
+			// === reset ===
 			if (classType == 0)
 			{
 				type = Teachers.Type.MATH;
@@ -51,6 +52,8 @@ public class ScheduleTeachers {
 			while(unlucky.size() > 0)
 				teachers.add(unlucky.remove(0));
 			
+			// if teacher has class can teach, move to assigned
+			// else move to unlucky
 			while (teachers.size() > 0) {
 				int min = findMin(teachers, type);
 				Teachers t = teachers.get(min);
@@ -70,6 +73,8 @@ public class ScheduleTeachers {
 					unlucky.add(teachers.remove(min));
 				}
 			}
+			
+			// check assigned teachers, see if can swap with unlucky for classes unlucky can't teach
 			while (clsNum > classes.size()) {
 				int clsSize = classes.size();
 				int una = unassigned(classes, type);
@@ -96,6 +101,7 @@ public class ScheduleTeachers {
 			}
 		}
 		
+		// if any teacher doesn't have all 3 classes assigned, move to unlucky
 		for (int i = 0; i < assigned.size(); i++) {
 			if (assigned.get(i).getClsID(Teachers.Type.MATH) < 0
 					|| assigned.get(i).getClsID(Teachers.Type.READ) < 0
@@ -105,6 +111,7 @@ public class ScheduleTeachers {
 			}
 		}
 		
+		// === fill up all 3 classes for unlucky if possible, then move to assigned ===
 		for (int i = 0; i < unlucky.size(); ) {
 			for(int k = 0; k < 3; k++) {
 				if(k == 0){
@@ -138,6 +145,7 @@ public class ScheduleTeachers {
 			}
 		}
 		
+		//======= assign homeroom, special according to students in math class =======
 		for(int i = 0; i < assigned.size(); i++)
 		{
 			for(int j = 0; j < ClassFactory.getTotalMath(); j++)
@@ -177,9 +185,49 @@ public class ScheduleTeachers {
 		System.out.println("unassigned teachers: "+unlucky.size());
 		for(int i = 0; i < unlucky.size(); i++)
 			System.out.println(unlucky.get(i).toString());
+		
+		// assign to class
+		Teachers temp;
+		while(assigned.size() > 0)
+		{
+			temp = assigned.remove(0);
+			assignToClass(temp);
+			teachers.add(temp);
+		}
+		while(unlucky.size() > 0)
+		{
+			temp = unlucky.remove(0);
+			assignToClass(temp);
+			teachers.add(temp);
+		}
 	}
 	
-	
+	// assign teacher to classes
+	private static void assignToClass(Teachers t)
+	{
+		for(int i = 0; i < ClassFactory.getTotalMath(); i++)
+		{
+			if(ClassFactory.mathClsLst.get(i).getClsID() == t.getClsID(Teachers.Type.MATH))
+			{
+				ClassFactory.mathClsLst.get(i).setTeacher(t);
+			}
+		}
+		for(int i = 0; i < ClassFactory.getTotalRead(); i++)
+		{
+			if(ClassFactory.readClsLst.get(i).getClsID() == t.getClsID(Teachers.Type.READ))
+			{
+				ClassFactory.readClsLst.get(i).setTeacher(t);
+			}
+		}
+		for(int i = 0; i < ClassFactory.getTotalLA(); i++)
+		{
+			if(ClassFactory.laClsLst.get(i).getClsID() == t.getClsID(Teachers.Type.LA))
+			{
+				ClassFactory.laClsLst.get(i).setTeacher(t);
+			}
+			
+		}
+	}
 	// get unassigned class
 	private static int unassigned(ArrayList<Integer> classes, Teachers.Type type)
 	{
