@@ -11,7 +11,7 @@ public class ScheduleTeachers {
 		ArrayList<Teachers> unlucky = new ArrayList<Teachers>();
 		ArrayList<Integer> classes = new ArrayList<Integer>();
 		List<Classes> clsList;
-		int clsNum;
+		int clsNum=0;
 		
 		/* === Algorithm ===
 		 * find teacher with minimum classes able to teach
@@ -39,13 +39,13 @@ public class ScheduleTeachers {
 			{
 				type = Teachers.Type.READ;
 				clsList = ClassFactory.readClsLst;
-				clsNum = ClassFactory.getTotalRead();
+				clsNum += ClassFactory.getTotalRead();
 			}
 			else
 			{
 				type = Teachers.Type.LA;
 				clsList = ClassFactory.laClsLst;
-				clsNum = ClassFactory.getTotalLA();
+				clsNum += ClassFactory.getTotalLA();
 			}
 			while(assigned.size() > 0)
 				teachers.add(assigned.remove(0));
@@ -73,31 +73,29 @@ public class ScheduleTeachers {
 					unlucky.add(teachers.remove(min));
 				}
 			}
-			
 			// check assigned teachers, see if can swap with unlucky for classes unlucky can't teach
-			while (clsNum > classes.size()) {
-				int clsSize = classes.size();
-				int una = unassigned(classes, type);
-				int lvl = clsList.get(una).getLvl();
-				int ID = clsList.get(una).getClsID();
-				for (int i = 0; i < assigned.size(); i++) {
-					if (assigned.get(i).canTeach(lvl, type)) {
-						int assignedLvl = assigned.get(i).getClsLvl(type);
-						for (int j = 0; j < unlucky.size(); j++) {
-							if (unlucky.get(j).canTeach(assignedLvl, type)) {
-								unlucky.get(j).setCls(assignedLvl,
-										assigned.get(i).getClsID(type), type);
-								assigned.get(i).setCls(lvl, ID, type);
-								assigned.add(unlucky.remove(j));
-								classes.add(ID);
-								i = assigned.size();
-								break;
-							}
-						}
+			for (int i = 0; i < clsList.size(); i++) {
+				if(!classes.contains(clsList.get(i).getClsID()))
+				{
+					int unaLvl = clsList.get(i).getLvl();
+					int unaID = clsList.get(i).getClsID();
+					if(!swap(assigned, unlucky, classes, unaLvl, unaID, type))
+					{
+						String name;
+						if(type == Teachers.Type.MATH)
+							name = "   Math";
+						else if(type == Teachers.Type.READ)
+							name = "Reading";
+						else
+							name = "     LA";
+						System.out.println("unassigned class:: " + name + " lvl " + unaLvl + " ID " + unaID);
 					}
+					
 				}
-				if (clsSize == classes.size())
-					break;
+			}
+			if(classes.size() < clsList.size())
+			{
+				clsNum = clsNum - (clsList.size() - classes.size());
 			}
 		}
 		
@@ -113,6 +111,7 @@ public class ScheduleTeachers {
 		
 		// === fill up all 3 classes for unlucky if possible, then move to assigned ===
 		for (int i = 0; i < unlucky.size(); ) {
+			Teachers lucky = unlucky.remove(0);
 			for(int k = 0; k < 3; k++) {
 				if(k == 0){
 					type = Teachers.Type.MATH;
@@ -121,26 +120,45 @@ public class ScheduleTeachers {
 				} else {
 					type = Teachers.Type.LA;
 				}
-				if(unlucky.get(i).getClsID(type)< 0 )
+				if(lucky.getClsID(type) < 0 )
 				{
-					for(int j = 0; j != i && j < unlucky.size(); j++)
+					boolean fromUnlucky = false;
+					for(int j = 0; j < unlucky.size(); j++)
 					{
-						if(unlucky.get(i).canTeach(unlucky.get(j).getClsLvl(type), type))
+						if(lucky.canTeach(unlucky.get(j).getClsLvl(type), type))
 						{
-							unlucky.get(i).setCls(unlucky.get(j).getClsLvl(type), unlucky.get(j).getClsID(type), type);
+							lucky.setCls(unlucky.get(j).getClsLvl(type), unlucky.get(j).getClsID(type), type);
 							unlucky.get(j).setCls(-1, -1, type);
+							fromUnlucky = true;
 							break;
+						}
+					}
+					if(!fromUnlucky)
+					{
+						for(int j = 0; j < unlucky.size(); j++)
+						{
+							if(unlucky.get(j).getClsID(type) >= 0)
+							{
+								saveUnlucky(unlucky.get(j).getClsLvl(type), unlucky.get(j).getClsID(type), lucky, assigned, type);
+								if(lucky.getClsID(type) >= 0)
+								{
+									unlucky.get(j).setCls(-1, -1, type);
+									break;
+								}
+							}
 						}
 					}
 				}
 			}
-			if(unlucky.get(i).getClsID(Teachers.Type.MATH)>= 0 && 
-					unlucky.get(i).getClsID(Teachers.Type.READ) >= 0 &&
-					unlucky.get(i).getClsID(Teachers.Type.LA) >= 0)
+			if(lucky.getClsID(Teachers.Type.MATH)>= 0 && 
+					lucky.getClsID(Teachers.Type.READ) >= 0 &&
+					lucky.getClsID(Teachers.Type.LA) >= 0)
 			{
-				assigned.add(unlucky.remove(i));
+				assigned.add(lucky);
 			}
-			else{
+			else
+			{
+				unlucky.add(lucky);
 				i++;
 			}
 		}
@@ -191,17 +209,96 @@ public class ScheduleTeachers {
 		while(assigned.size() > 0)
 		{
 			temp = assigned.remove(0);
+			for(int i = 0; i < 3; i++)
+			{
+				temp.setPreference(temp.capableM, Teachers.Type.MATH);
+				temp.setPreference(temp.capableL, Teachers.Type.LA);
+				temp.setPreference(temp.capableR, Teachers.Type.READ);
+			}
 			assignToClass(temp);
 			teachers.add(temp);
 		}
 		while(unlucky.size() > 0)
 		{
 			temp = unlucky.remove(0);
+			temp.setPreference(temp.capableM, Teachers.Type.MATH);
+			temp.setPreference(temp.capableL, Teachers.Type.LA);
+			temp.setPreference(temp.capableR, Teachers.Type.READ);
 			assignToClass(temp);
 			teachers.add(temp);
 		}
 	}
+
+	private static void saveUnlucky(Integer unaLvl, Integer unaID, 
+			Teachers unlucky, ArrayList<Teachers> assigned, Teachers.Type type)
+	{
+		for (int i = 0; i < assigned.size(); i++)
+		{
+			if(assigned.get(i).canTeach(unaLvl, type))
+			{
+				if(unlucky.canTeach(assigned.get(i).getClsLvl(type), type))
+				{
+					unlucky.setCls(assigned.get(i).getClsLvl(type), assigned.get(i).getClsID(type), type);
+					assigned.get(i).setCls(unaLvl, unaID, type);
+					break;
+				}
+				else
+				{
+					Teachers temp = assigned.remove(i);
+					saveUnlucky(temp.getClsLvl(type), temp.getClsID(type), unlucky, assigned, type);
+					if(unlucky.getClsID(type) >= 0)
+					{
+						temp.setCls(unaLvl, unaID, type);
+						assigned.add(i, temp);
+						break;
+					}
+					assigned.add(i, temp);
+				}
+			}
+		}
+	}
 	
+	// search through assigned, to find teacher that can teach unaLvl 
+	// and swap with unlucky that can teach assigned
+	private static boolean swap(ArrayList<Teachers> assigned, ArrayList<Teachers> unlucky, 
+			ArrayList<Integer> classes, int unaLvl, int unaID, Teachers.Type type)
+	{
+		int i;
+		for (i = 0; i < assigned.size(); i++) {
+			if (assigned.get(i).canTeach(unaLvl, type)) {
+				int assignedLvl = assigned.get(i).getClsLvl(type);
+				int assignedID = assigned.get(i).getClsID(type);
+				for (int j = 0; j < unlucky.size(); j++) {
+					if (unlucky.get(j).canTeach(assignedLvl, type)) {
+						unlucky.get(j).setCls(assignedLvl, assignedID, type);
+						assigned.get(i).setCls(unaLvl, unaID, type);
+						assigned.add(unlucky.remove(j));
+						if(!classes.contains(unaID))
+						{
+							classes.add(unaID);
+						}
+						return true;
+					}
+				}
+				if(i < assigned.size())
+				{
+					Teachers resign = assigned.remove(i);
+					if(swap(assigned, unlucky, classes, assignedLvl, assignedID, type))
+					{
+						resign.setCls(unaLvl, unaID, type);
+						if(!classes.contains(unaID))
+						{
+							classes.add(unaID);
+						}
+						assigned.add(i, resign);
+						return true;
+					} 
+					assigned.add(i, resign);
+				}
+			}
+		}
+		return false;
+	}
 	// assign teacher to classes
 	private static void assignToClass(Teachers t)
 	{
@@ -226,33 +323,6 @@ public class ScheduleTeachers {
 				ClassFactory.laClsLst.get(i).setTeacher(t);
 			}
 			
-		}
-	}
-	// get unassigned class
-	private static int unassigned(ArrayList<Integer> classes, Teachers.Type type)
-	{
-		switch(type) {
-		case MATH:
-			for(int i = 0; i < ClassFactory.getTotalMath(); i++)
-			{
-				if(!classes.contains(ClassFactory.mathClsLst.get(i).getClsID()))
-					return i;
-			
-			}
-		case READ:
-			for(int i = 0; i < ClassFactory.getTotalRead(); i++)
-			{
-				if(!classes.contains(ClassFactory.readClsLst.get(i).getClsID()))
-					return i;
-			}
-		case LA:
-			for(int i = 0; i < ClassFactory.getTotalLA(); i++)
-			{
-				if(!classes.contains(ClassFactory.laClsLst.get(i).getClsID()))
-					return i;
-			}
-		default:
-			return -1;
 		}
 	}
 	
@@ -284,7 +354,9 @@ public class ScheduleTeachers {
 			{
 				if(ClassFactory.laClsLst.get(i).getLvl() == cls
 						&& !assignedIDs.contains(ClassFactory.laClsLst.get(i).getClsID()))
+				{
 					return ClassFactory.laClsLst.get(i).getClsID();
+				}
 			}
 			return -1;
 		default:
