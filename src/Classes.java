@@ -117,6 +117,17 @@ public class Classes {
 	public double getLowestAge() {
 		return this.lowestAge;
 	}
+	
+	public double getHighestAge(){
+		double highestAge = 0;
+		for(int i = 0; i < students.size(); i++){
+			double age = students.get(i).getAge();
+			if (age > highestAge){
+				highestAge = age;
+			}
+		}
+		return highestAge;
+	}
 
 	@Override
 	public String toString() {

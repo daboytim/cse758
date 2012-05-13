@@ -6,6 +6,7 @@ public class ClassFactory {
 
 	private static int maxCls = 20;
 	private static int clsID = 1;
+	private static int maxStdPerCls = 5;
 
 	private ClassFactory() {
 		// empty
@@ -69,7 +70,7 @@ public class ClassFactory {
 		if (cls.getClsName().equals("math")) {
 			if (cls.getLvl() == std.getMath()
 					&& Math.abs(cls.getLowestAge() - std.getAge()) < 4.0
-					&& cls.getTotal() < 5) {
+					&& cls.getTotal() < maxStdPerCls) {
 				return true;
 			} else {
 				return false;
@@ -77,7 +78,7 @@ public class ClassFactory {
 		} else if (cls.getClsName().equals("la")) {
 			if (cls.getLvl() == std.getLA()
 					&& Math.abs(cls.getLowestAge() - std.getAge()) < 4.0
-					&& cls.getTotal() < 5) {
+					&& cls.getTotal() < maxStdPerCls) {
 				return true;
 			} else {
 				return false;
@@ -85,7 +86,7 @@ public class ClassFactory {
 		} else if (cls.getClsName().equals("read")) {
 			if (cls.getLvl() == std.getRead()
 					&& Math.abs(cls.getLowestAge() - std.getAge()) < 4.0
-					&& cls.getTotal() < 5) {
+					&& cls.getTotal() < maxStdPerCls) {
 				return true;
 			} else {
 				return false;
@@ -115,6 +116,10 @@ public class ClassFactory {
 	 */
 	public static int getMaxCls() {
 		return maxCls;
+	}
+	
+	public static int getMaxStdPerCls(){
+		return maxStdPerCls;
 	}
 
 	/**
