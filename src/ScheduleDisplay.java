@@ -21,7 +21,7 @@ public class ScheduleDisplay {
 	JButton button = new JButton("Schedule Teachers");
 	// numClasses = #subjects; numRooms = #divisions
 	private int numRooms = ClassFactory.getMaxCls();
-	private List<Students> unluckyStudents = Schedulizer.unluckyStd;
+	private List<Students> unluckyStudents;
 
 	public ScheduleDisplay() {
 
@@ -196,8 +196,12 @@ public class ScheduleDisplay {
 			}
 			currCol++;
 		}
+
 		// fill in unlucky students
+		unluckyStudents = Schedulizer.unluckyStd;
+		System.out.println("unlucky students size: " + unluckyStudents);
 		if (unluckyStudents != null) {
+			System.out.println("there are unlucky students!");
 			System.out.println("unluckyStudents size:  "
 					+ unluckyStudents.size());
 			for (int i = 0; i < unluckyStudents.size(); ++i) {
