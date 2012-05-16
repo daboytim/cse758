@@ -22,11 +22,7 @@ public class Teachers {
 	private int clsLvlM=-1;
 	private int clsLvlR=-1;
 	private int clsLvlL=-1;
-	private int roomM=-1;
-	private int roomL=-1;
-	private int roomR=-1;
-	private int roomH=-1;
-	private int roomS=-1;
+	private int room=-1;
 	
 	public Teachers(String name, ArrayList<Integer> math, ArrayList<Integer> read, ArrayList<Integer> la){
 		this.name = name;
@@ -196,51 +192,12 @@ public class Teachers {
 		}
 	}
 	
-	public void setRoom(int num, Type t){
-		switch(t) {
-		case MATH:
-		{
-			this.roomM = num;
-			break;
-		}
-		case READ:
-		{
-			this.roomR = num;
-			break;
-		}
-		case LA:
-		{
-			this.roomL = num;
-			break;
-		}
-		case HR:
-		{
-			this.roomH = num;
-			break;
-		}
-		case SP:
-		{
-			this.roomS = num;
-			break;
-		}
-		}
+	public void setRoom(int num){
+		this.room = num;
 	}
 	
-	public int getRoom(Type t){
-		switch(t) {
-		case MATH:
-			return this.roomM;
-		case READ:
-			return this.roomR;
-		case LA:
-			return this.roomL;
-		case HR:
-			return this.roomH;
-		case SP:
-			return this.roomS;
-		default:
-			return -1;
-		}
+	public int getRoom(){
+		return this.room;
 	}
 	
 	public ArrayList<Integer> getPreference(Type t) {
@@ -286,12 +243,12 @@ public class Teachers {
 	
 	@Override
 	public String toString() {
-		return name + 
-		"\n\tMath: lv " + clsLvlM + ", ClassID: " + clsIDM + ", Room: " + roomM +
-		"\n\tRead: lv " + clsLvlR + ", ClassID: " + clsIDR + ", Room: " + roomR +
-		"\n\tLA  : lv " + clsLvlL + ", ClassID: " + clsIDL + ", Room: " + roomL +
-		"\n\tHomeroom    ClassID: " + clsIDH + ", Room: " + roomH +
-		"\n\tSpecial     ClassID: " + clsIDS + ", Room: " + roomS;
+		return name + "  Room: " + room +
+		"\n\tMath: lv " + clsLvlM + ", ClassID: " + clsIDM +
+		"\n\tRead: lv " + clsLvlR + ", ClassID: " + clsIDR +
+		"\n\tLA  : lv " + clsLvlL + ", ClassID: " + clsIDL +
+		"\n\tHomeroom    ClassID: " + clsIDH + 
+		"\n\tSpecial     ClassID: " + clsIDS;
 	}
 
 }
