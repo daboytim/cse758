@@ -26,8 +26,8 @@ public class MainFrame implements ActionListener, MouseListener{
 	StudentDB students;
 	TeacherDB teachers;
 	Menu menu;
-	JPopupMenu rightClickMenu;
-	JMenuItem editItem;
+	JPopupMenu rightClickMenu, rightClickMenu2;
+	JMenuItem editItem, editItem2;
 
 	public MainFrame() {
 		students = new StudentDB();
@@ -38,6 +38,11 @@ public class MainFrame implements ActionListener, MouseListener{
 		editItem = new JMenuItem("Edit");
 		editItem.addActionListener(this);
 		rightClickMenu.add(editItem);
+		//this one is for the teacher tab
+		rightClickMenu2 = new JPopupMenu();
+		editItem2 = new JMenuItem("Edit");
+		editItem2.addActionListener(this);
+		rightClickMenu2.add(editItem2);
 		update();
 	}
 	
@@ -60,6 +65,7 @@ public class MainFrame implements ActionListener, MouseListener{
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
 		tTab = new TeacherTable(frame, teachers);
+		tTab.getTeacherTable().addMouseListener(this);
 		panel2 = new JScrollPane(tTab.getTeacherTable());
 		tabbedPane.addTab("Teacher Entry", panel2);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
@@ -118,6 +124,9 @@ public class MainFrame implements ActionListener, MouseListener{
 		} else if (obj.equals(editItem)) {
 			showManualMod();
 			//sched.update();
+		} else if (obj.equals(editItem2)) {
+			showTeacherMod();
+			//sched.update();
 		}
 		tabbedPane.revalidate();
 		tabbedPane.setVisible(false);
@@ -135,6 +144,18 @@ public class MainFrame implements ActionListener, MouseListener{
 			Object std = sched.getScheduleTable().getValueAt(y, x);
 			if (!std.equals("")) {
 				new ManualModFrame((Students)std, sched);
+			}
+		}
+	}
+	
+	private void showTeacherMod() {
+		int x, y;
+		x = tTab.getTeacherTable().getSelectedColumn();
+		y = tTab.getTeacherTable().getSelectedRow();
+		if (x >= 0 && y >= 0) {
+			Object teach = tTab.getTeacherTable().getValueAt(y, 0);
+			if (!teach.equals("")) {
+				new TeacherModFrame((Teachers)teach);
 			}
 		}
 	}
@@ -158,17 +179,43 @@ public class MainFrame implements ActionListener, MouseListener{
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
+	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		if (e.getClickCount() == 2) {
+			if (e.getSource() == sched.getScheduleTable()) {
+				int x, y;
+				x = sched.getScheduleTable().getSelectedColumn();
+				y = sched.getScheduleTable().getSelectedRow();
+				if (x > 0 && y >= 0) {
+					Object std = sched.getScheduleTable().getValueAt(y, x);
+					if (!std.equals("")) {
+						new StudentScheduleFrame((Students)std);
+					}
+				}
+			} else if (e.getSource() == tTab.getTeacherTable()) {
+				int x, y;
+				x = tTab.getTeacherTable().getSelectedColumn();
+				y = tTab.getTeacherTable().getSelectedRow();
+				if (x == 0) {
+					Object teach = tTab.getTeacherTable().getValueAt(y, x);
+					if (!teach.equals("")) {
+						new TeacherScheduleFrame((Teachers)teach);
+					}
+				}
+			}
+			
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if (e.isPopupTrigger()) {
-			rightClickMenu.show(e.getComponent(), e.getX(), e.getY());
+			if (e.getSource() == sched.getScheduleTable()) {
+				rightClickMenu.show(e.getComponent(), e.getX(), e.getY());
+			} else if (e.getSource() == tTab.getTeacherTable()) {
+				rightClickMenu2.show(e.getComponent(), e.getX(), e.getY());
+			}
 		}
 	}
-
 }

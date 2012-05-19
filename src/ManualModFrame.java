@@ -4,17 +4,15 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
 import javax.swing.border.TitledBorder;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
-import java.awt.FlowLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
-import javax.swing.border.EtchedBorder;
-import java.awt.Color;
 
 
 public class ManualModFrame extends JFrame implements ActionListener{
@@ -36,6 +34,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 	private JComboBox combBoxRead;
 	private JComboBox combBoxHomeroom;
 	private JComboBox combBoxSpecials;
+	private JButton disenroll;
 	private JButton btnOk;
 	private JButton btnCancel;
 	private ScheduleDisplay sched;
@@ -205,9 +204,10 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		//create button panel
 		JPanel btnPanel = new JPanel();
 		btnPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		btnPanel.setBorder(null);
-		btnPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		contentPane.add(btnPanel);
+		
+		disenroll = new JButton("Disenroll");
+		disenroll.addActionListener(this);
 		
 		btnOk = new JButton("Ok");
 		btnOk.addActionListener(this);
@@ -215,6 +215,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(this);
 		
+		btnPanel.add(disenroll);
 		btnPanel.add(btnOk);
 		btnPanel.add(btnCancel);
 		
@@ -224,7 +225,19 @@ public class ManualModFrame extends JFrame implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnOk) {
+		if (e.getSource() == disenroll) {
+			int rtn = JOptionPane.showConfirmDialog(this,
+					"You are about to remove the student from the database.\n" +
+					"Are you sure you want to continue?", "Warning!",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (rtn == JOptionPane.YES_OPTION) {
+				System.out.println("removing the student " + std.getId());
+				//remove the student from all classes and the database
+				removeStudent();
+				this.dispose();
+			}
+		} else if (e.getSource() == btnOk) {
 			updateStdInfo();
 			moveStudent();
 			//update the schedule table
@@ -237,6 +250,10 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		} else if (e.getSource() == btnCancel) {
 			this.dispose();
 		}
+		
+	}
+	
+	private void removeStudent() {
 		
 	}
 	
@@ -318,8 +335,8 @@ public class ManualModFrame extends JFrame implements ActionListener{
 			}
 		}
 		if (newMath==null || newRead==null || newLA==null || newHmrm==null || newSpec==null) {
-			System.out.println("Error: new class does not exist");
-			return;
+			//System.out.println("Error: new class does not exist");
+			//return;
 			//error
 		}
 		//put the student in the new class
@@ -356,27 +373,27 @@ public class ManualModFrame extends JFrame implements ActionListener{
 				}
 			}
 		}
-		if (hmrmClass != newHmrmCls) {
-			if (hmrmClass == null) {
-				//enroll student
-			} else {
-				try {
-					ClassFactory.moveStd(hmrmClass, newHmrmCls, std);
-					System.out.println("student moved from "+hmrmClass.getClsName()+" to "+newHmrmCls.getClsName());
-				} catch (StdClsCompatibleException e1) {
-				}
-			}
-		}
-		if (specClass != newLACls) {
-			if (specClass == null) {
-				//enroll student
-			} else {
-				try {
-					ClassFactory.moveStd(specClass, newSpecCls, std);
-					System.out.println("student moved from "+specClass.getClsName()+" to "+newSpecCls.getClsName());
-				} catch (StdClsCompatibleException e1) {
-				}
-			}
-		}
+//		if (hmrmClass != newHmrmCls) {
+//			if (hmrmClass == null) {
+//				//enroll student
+//			} else {
+//				try {
+//					ClassFactory.moveStd(hmrmClass, newHmrmCls, std);
+//					System.out.println("student moved from "+hmrmClass.getClsName()+" to "+newHmrmCls.getClsName());
+//				} catch (StdClsCompatibleException e1) {
+//				}
+//			}
+//		}
+//		if (specClass != newSpecCls) {
+//			if (specClass == null) {
+//				//enroll student
+//			} else {
+//				try {
+//					ClassFactory.moveStd(specClass, newSpecCls, std);
+//					System.out.println("student moved from "+specClass.getClsName()+" to "+newSpecCls.getClsName());
+//				} catch (StdClsCompatibleException e1) {
+//				}
+//			}
+//		}
 	}
 }

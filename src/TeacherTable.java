@@ -69,7 +69,7 @@ public class TeacherTable implements TableModelListener {
 				Iterator<Teachers> it = tList.iterator();
 				while (it.hasNext()) {
 					Teachers t = it.next();
-					data[i][0] = t.getName();
+					data[i][0] = t;
 					StringBuilder line = new StringBuilder();
 					ArrayList<Integer> mClasses = t
 							.getPreference(Teachers.Type.MATH);
