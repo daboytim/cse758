@@ -18,7 +18,7 @@ public class Menu extends JFrame {
 	JToolBar tb;
 	JFrame frame;
 	JMenu student, teacher, schedule, edit, file, pref;
-	static JMenuItem sOpen, sSave, tOpen, tSave, schedulize, assign, copy,paste,exit1,pref1, print;
+	static JMenuItem sOpen, sSave, sAdd, tOpen, tSave, schedulize, assign, copy,paste,exit1,pref1, print;
 	JTextArea textArea;
 	FileOutputStream fos;
 	BufferedWriter bwriter;
@@ -51,7 +51,10 @@ public class Menu extends JFrame {
 		sOpen.addActionListener(mf);
 		sSave = new JMenuItem(" Save... ");
 		sSave.addActionListener(sc);
+		sAdd = new JMenuItem(" Add Student to Existing Schedule");
+		sAdd.addActionListener(sc);
 		student.add(sOpen);
+		student.add(sAdd);
 		student.add(sSave);
 		bar.add(student);
 		

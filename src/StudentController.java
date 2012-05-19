@@ -21,11 +21,13 @@ public class StudentController implements ActionListener {
 
 	JFrame frame;
 	StudentDB students;
+	AddStudentFrame addStd;
 
 
-	public StudentController(JFrame f, StudentDB s) {
+	public StudentController(JFrame f, StudentDB s, AddStudentFrame a) {
 		frame = f;
 		students = s;
+		addStd = a;
 	}
 	
 	public void actionPerformed(ActionEvent event) {
@@ -36,6 +38,8 @@ public class StudentController implements ActionListener {
 		if (obj.equals(Menu.sSave)) {
 			if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION)
 				writeFile(chooser.getSelectedFile());
+		} else if (obj.equals(Menu.sAdd)) {
+			addStd.buildFrame();
 		}
 	}
 

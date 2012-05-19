@@ -10,11 +10,12 @@ import java.awt.event.MouseListener;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-public class MainFrame implements ActionListener, MouseListener{
+public class MainFrame implements ActionListener, MouseListener {
 	static JTabbedPane tabbedPane;
 	static JFrame frame;
 	StudentController sc;
@@ -28,26 +29,28 @@ public class MainFrame implements ActionListener, MouseListener{
 	Menu menu;
 	JPopupMenu rightClickMenu, rightClickMenu2;
 	JMenuItem editItem, editItem2;
+	AddStudentFrame addStd;
 
 	public MainFrame() {
 		students = new StudentDB();
 		teachers = new TeacherDB();
 		frame = new JFrame();
-		//create the right click menu
+		// create the right click menu
 		rightClickMenu = new JPopupMenu();
 		editItem = new JMenuItem("Edit");
 		editItem.addActionListener(this);
 		rightClickMenu.add(editItem);
-		//this one is for the teacher tab
+		// this one is for the teacher tab
 		rightClickMenu2 = new JPopupMenu();
 		editItem2 = new JMenuItem("Edit");
 		editItem2.addActionListener(this);
 		rightClickMenu2.add(editItem2);
 		update();
 	}
-	
+
 	public void update() {
-		frame.setVisible(false); // Hide the old frame, this is probably NOT efficient
+		frame.setVisible(false); // Hide the old frame, this is probably NOT
+									// efficient
 		frame = new JFrame();
 		frame.validate();
 		frame.setState(Frame.NORMAL);
@@ -55,7 +58,6 @@ public class MainFrame implements ActionListener, MouseListener{
 		Dimension dimension = toolkit.getScreenSize();
 		frame.setSize(dimension);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 
 		tabbedPane = new JTabbedPane();
 
@@ -70,7 +72,9 @@ public class MainFrame implements ActionListener, MouseListener{
 		tabbedPane.addTab("Teacher Entry", panel2);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
-		sc = new StudentController(frame, students);
+		addStd = new AddStudentFrame(this);
+
+		sc = new StudentController(frame, students, addStd);
 		tc = new TeacherController(frame, teachers);
 
 		menu = new Menu(this, students, frame, sc, teachers, tc);
@@ -90,7 +94,7 @@ public class MainFrame implements ActionListener, MouseListener{
 		frame.setVisible(true);
 	}
 
-	//All actions that update the table view need to happen here
+	// All actions that update the table view need to happen here
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		JFileChooser chooser = new JFileChooser();
@@ -102,7 +106,6 @@ public class MainFrame implements ActionListener, MouseListener{
 			sTab.update();
 			tabbedPane.setSelectedIndex(0);
 
-			
 		} else if (obj.equals(Menu.tOpen)) {
 			// use chooser.getSelectedFile() to get file
 			// Some code here to parse or call a parser
@@ -123,31 +126,64 @@ public class MainFrame implements ActionListener, MouseListener{
 			tabbedPane.setSelectedIndex(2);
 		} else if (obj.equals(editItem)) {
 			showManualMod();
-			//sched.update();
+			// sched.update();
 		} else if (obj.equals(editItem2)) {
 			showTeacherMod();
-			//sched.update();
+			// sched.update();
+		} else if (obj.equals(addStd.add)) {
+			String tmpID = addStd.txtFieldStudentID.getText();
+			int id = -1;
+			try {
+				tmpID.trim();
+				id = Integer.parseInt(tmpID);
+			} catch (NumberFormatException n) {
+				JOptionPane.showMessageDialog(frame,
+						"Student ID should be an integer value.");
+				addStd.dispose();
+			}
+			
+			if (students.hasStudent(id)) {
+				JOptionPane
+				.showMessageDialog(frame,
+						"A student with that ID already exists in the scheduling system.");
+			} else {
+				String fName = addStd.txtFieldFirstName.getText();
+				String lName = addStd.txtFieldLastName.getText();
+				if (Utilities.isBlank(fName)) {
+					JOptionPane
+					.showMessageDialog(frame,
+							"Please Enter Student's First Name.");
+				} else if (Utilities.isBlank(lName)) {
+					JOptionPane
+					.showMessageDialog(frame,
+							"Please Enter Student's Last Name.");
+				} else {
+					
+				}
+			}
+			
+			addStd.dispose();
 		}
 		tabbedPane.revalidate();
 		tabbedPane.setVisible(false);
 		tabbedPane.repaint();
 		tabbedPane.setVisible(true);
-		//update();
+		// update();
 	}
-	
+
 	private void showManualMod() {
 		int x, y;
 		x = sched.getScheduleTable().getSelectedColumn();
 		y = sched.getScheduleTable().getSelectedRow();
-		//make sure x and y correspond to a student
+		// make sure x and y correspond to a student
 		if (x > 0 && y >= 0) {
 			Object std = sched.getScheduleTable().getValueAt(y, x);
 			if (!std.equals("")) {
-				new ManualModFrame((Students)std, sched);
+				new ManualModFrame((Students) std, sched);
 			}
 		}
 	}
-	
+
 	private void showTeacherMod() {
 		int x, y;
 		x = tTab.getTeacherTable().getSelectedColumn();
@@ -155,7 +191,7 @@ public class MainFrame implements ActionListener, MouseListener{
 		if (x >= 0 && y >= 0) {
 			Object teach = tTab.getTeacherTable().getValueAt(y, 0);
 			if (!teach.equals("")) {
-				new TeacherModFrame((Teachers)teach);
+				new TeacherModFrame((Teachers) teach);
 			}
 		}
 	}
@@ -163,19 +199,19 @@ public class MainFrame implements ActionListener, MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -189,7 +225,7 @@ public class MainFrame implements ActionListener, MouseListener{
 				if (x > 0 && y >= 0) {
 					Object std = sched.getScheduleTable().getValueAt(y, x);
 					if (!std.equals("")) {
-						new StudentScheduleFrame((Students)std);
+						new StudentScheduleFrame((Students) std);
 					}
 				}
 			} else if (e.getSource() == tTab.getTeacherTable()) {
@@ -199,11 +235,11 @@ public class MainFrame implements ActionListener, MouseListener{
 				if (x == 0) {
 					Object teach = tTab.getTeacherTable().getValueAt(y, x);
 					if (!teach.equals("")) {
-						new TeacherScheduleFrame((Teachers)teach);
+						new TeacherScheduleFrame((Teachers) teach);
 					}
 				}
 			}
-			
+
 		}
 	}
 
