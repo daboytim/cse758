@@ -57,6 +57,60 @@ public class Teachers {
 		name = n;
 	}
 	
+	public Classes getCls(Type t)
+	{
+		switch (t) {
+		case MATH: {
+			for (Classes c : ClassFactory.mathClsLst) {
+				if (c.getClsID() == this.clsIDM) {
+					return c;
+				}
+			}
+			return null;
+		}
+		case READ:
+		{
+			for (Classes c : ClassFactory.readClsLst) {
+				if (c.getClsID() == this.clsIDR) {
+					return c;
+				}
+			}
+			return null;
+		}
+		case LA:
+		{
+			for (Classes c : ClassFactory.laClsLst) {
+				if (c.getClsID() == this.clsIDL) {
+					return c;
+				}
+			}
+			return null;
+		}
+	
+		case HR:
+		{
+			for (Classes c : ClassFactory.homeroomClsLst) {
+				if (c.getClsID() == this.clsIDH) {
+					return c;
+				}
+			}
+			return null;
+		}
+
+		case SP:
+		{
+			for (Classes c : ClassFactory.specialClsLst) {
+				if (c.getClsID() == this.clsIDS) {
+					return c;
+				}
+			}
+			return null;
+		}
+		default:
+			return null;
+		}
+	}
+	
 	public int getClsID(Type t){
 		switch(t) {
 		case MATH:
