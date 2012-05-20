@@ -1,31 +1,29 @@
 import java.awt.Color;
-import java.awt.Component;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.border.Border;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 public class ScheduleDisplay {
 
 	private JTable table;
 	DefaultTableModel tm;
-	int maxStudentsPerClass = ClassFactory.getMaxStdPerCls();
+	int maxStudentsPerClass = ClassFactory.getMaxStdPerCls() + 2;
 	Object[][] data;
 	String[] columnNames;
 	JButton button = new JButton("Schedule Teachers");
 	// numClasses = #subjects; numRooms = #divisions
 	private int numRooms = ClassFactory.getMaxCls();
 	private List<Students> unluckyStudents;
+	private int addStdBuf = 2;
 
 	public ScheduleDisplay() {
 
-		int tabRows = (5 * maxStudentsPerClass) + 15;
+		int tabRows = (7 * maxStudentsPerClass) + 1;
 		data = new Object[tabRows][numRooms + 2];
 		for (int i = 0; i < tabRows; i++) {
 			for (int j = 0; j < (numRooms + 2); j++)
@@ -38,8 +36,9 @@ public class ScheduleDisplay {
 		}
 		columnNames[numRooms + 1] = "Unable to Place";
 		tm = new DefaultTableModel(data, columnNames);
-		table = new JTable();
+		table = new RowColoredTable(data);
 		table.setModel(tm);
+		table.setEnabled(false);
 
 		update();
 	}
@@ -64,6 +63,16 @@ public class ScheduleDisplay {
 			cm.getColumn(i).setMinWidth(150);
 		}
 
+		// for (int i = 0; i < table.getRowCount(); i++) {
+		// for (int j = 0; j < table.getColumnCount(); j++) {
+		// if ((i % 9) == 0) {
+		// Component c = table.getComponentAt(i, j);
+		//
+		// // table.add(c, j);
+		// }
+		// }
+		// }
+
 	}
 
 	public void populateTable() {
@@ -79,11 +88,11 @@ public class ScheduleDisplay {
 		data[(4 * maxStudentsPerClass) + 12][0] = " Homeroom";
 
 		// rows for specials by day
-		String[] daysOfWeek = { " Monday", " Tuesday", " Wednesday",
-				" Thursday", " Friday" };
-		for (int i = 0; i < daysOfWeek.length; i++) {
-			data[(2 * maxStudentsPerClass) + (i + 6 + 2)][0] = daysOfWeek[i];
-		}
+		// String[] daysOfWeek = { " Monday", " Tuesday", " Wednesday",
+		// " Thursday", " Friday" };
+		// for (int i = 0; i < daysOfWeek.length; i++) {
+		// data[(2 * maxStudentsPerClass) + (i + 6 + 2)][0] = daysOfWeek[i];
+		// }
 
 		// TODO: add rows for specials and homeroom (same as math)
 		// TODO: add formatting- times of classes
@@ -111,7 +120,9 @@ public class ScheduleDisplay {
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 1, i + 1);
-				data[j + currRow + 1][currCol] = std; // changed from stdNameStr
+				data[j + currRow + 1][currCol] = std + " (" + std.getBL() + ")"; // changed
+																					// from
+																					// stdNameStr
 			}
 			currCol++;
 		}
@@ -138,7 +149,39 @@ public class ScheduleDisplay {
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 8, i + 1);
-				data[j + currRow + 1][currCol] = std; // changed from stdNameStr
+				data[j + currRow + 1][currCol] = std + " (" + std.getBL() + ")"; // changed
+																					// from
+																					// stdNameStr
+			}
+			currCol++;
+		}
+
+		// fill in students for Specials- currently using same class list as
+		// homeroom
+		currRow = (2 * maxStudentsPerClass) + 6;
+		currCol = 1;
+		for (int i = 0; i < ClassFactory.getTotalMath(); ++i) {
+			Classes cls = ClassFactory.specialClsLst.get(i);
+			String clsHeader = cls.getClsName();
+			clsHeader = formatName(clsHeader);
+			clsHeader += " " + cls.getLvl();
+
+			if (cls.hasTeacher())
+				clsHeader += ":  " + cls.getTeacher().getName();
+
+			data[currRow][currCol] = clsHeader;
+			data[currRow + 1][currCol] = "Ages: " + (int) cls.getLowestAge()
+					+ " - " + (int) cls.getHighestAge();
+
+			List<Students> students = cls.getStudents();
+			for (int j = 1; j <= students.size(); j++) {
+				Students std = students.get(j - 1);
+				String stdNameStr = std.getFirstName();
+				stdNameStr += " " + std.getLastName();
+				// table.setValueAt(stdNameStr, j + 15, i + 1);
+				data[j + currRow + 1][currCol] = std + " (" + std.getBL() + ")"; // changed
+																					// from
+																					// stdNameStr
 			}
 			currCol++;
 		}
@@ -165,7 +208,9 @@ public class ScheduleDisplay {
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
-				data[j + currRow + 1][currCol] = std; // changed from stdNameStr
+				data[j + currRow + 1][currCol] = std + " (" + std.getBL() + ")"; // changed
+																					// from
+																					// stdNameStr
 			}
 			currCol++;
 		}
@@ -192,7 +237,9 @@ public class ScheduleDisplay {
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
-				data[j + currRow + 1][currCol] = std; // changed from stdNameStr
+				data[j + currRow + 1][currCol] = std + " (" + std.getBL() + ")"; // changed
+																					// from
+																					// stdNameStr
 			}
 			currCol++;
 		}
@@ -208,7 +255,7 @@ public class ScheduleDisplay {
 				Students std = unluckyStudents.get(i);
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
-				data[i][numRooms + 1] = std;
+				data[i][numRooms + 1] = std + " (" + std.getBL() + ")";
 			}
 		} else {
 			data[0][numRooms + 1] = "all were sheduled";
@@ -221,6 +268,7 @@ public class ScheduleDisplay {
 
 	// used for re-writing class names only
 	private String formatName(String str) {
+		String newStr;
 		if (str.equals("read"))
 			return "Reading";
 
@@ -248,47 +296,4 @@ public class ScheduleDisplay {
 
 		return (3 * maxStudentsPerClass) + 3;
 	}
-
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// private class CustomCellRenderer extends DefaultTableCellRenderer {
-	//
-	// /* (non-Javadoc)
-	// * @see
-	// javax.swing.table.DefaultTableCellRenderer#getTableCellRendererComponent(javax.swing.JTable,
-	// java.lang.Object, boolean, boolean, int, int)
-	// */
-	// public Component getTableCellRendererComponent(JTable table, Object
-	// value,
-	// boolean isSelected, boolean hasFocus, int row, int column) {
-	//
-	// Component rendererComp = super.getTableCellRendererComponent(table,
-	// value, isSelected, hasFocus,
-	// row, column);
-	//
-	// //Set background color
-	// rendererComp .setBackground(Color.blue);
-	// return rendererComp ;
-	// }
-	// }
-	// private void shadeRow (int row){
-	//
-	// CustomCellRenderer.g
-	// }
-	//
-	// private Component prepareRenderer (TableCellRenderer renderer,int
-	// Index_row, int Index_col) {
-	//
-	// //even index, selected or not selected
-	// if (Index_row % 2 == 0 && !isCellSelected(Index_row, Index_col)) {
-	// comp.setBackground(Color.lightGray);
-	// }
-	// else {
-	// comp.setBackground(Color.white);
-	// }
-	// return comp;
-	// }
-	// }
-	//
-	// };
 }
