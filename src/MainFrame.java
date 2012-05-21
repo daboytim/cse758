@@ -6,6 +6,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -136,32 +142,64 @@ public class MainFrame implements ActionListener, MouseListener {
 			try {
 				tmpID.trim();
 				id = Integer.parseInt(tmpID);
+				if (students.hasStudent(id)) {
+					JOptionPane
+							.showMessageDialog(frame,
+									"A student with that ID already exists in the scheduling system.");
+				} else {
+					String fName = addStd.txtFieldFirstName.getText();
+					String lName = addStd.txtFieldLastName.getText();
+					String b = addStd.txtFieldBirthDate.getText();
+					if (Utilities.isBlank(fName)) {
+						JOptionPane.showMessageDialog(frame,
+								"Please Enter Student's First Name.");
+					} else if (Utilities.isBlank(lName)) {
+						JOptionPane.showMessageDialog(frame,
+								"Please Enter Student's Last Name.");
+					} else if (Utilities.isBlank(b)) {
+						JOptionPane.showMessageDialog(frame,
+								"Please Enter Student's Birth Date.");
+					} else {
+						// Everything has been populated
+						// Check birth date
+						DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						Date bDate = df.parse(b);
+						Calendar c = new GregorianCalendar();
+						c.setTime(bDate);
+						int year = c.get(Calendar.YEAR);
+						if (year < 1900) {
+							JOptionPane
+									.showMessageDialog(frame,
+											"Invalid Year. Expected Birth Date in the form yyyy-mm-dd");
+						} else {
+							// Everything valid, create student
+							String math = addStd.combBoxMathAsses.getSelectedItem().toString();
+							int m = (math.equals("K")) ? 0 : Integer.parseInt(math);
+							
+							String read = addStd.combBoxReadAsses.getSelectedItem().toString();
+							int r = (read.equals("K")) ? 0 : Integer.parseInt(read);
+							
+							String LA = addStd.combBoxLaAsses.getSelectedItem().toString();
+							int l = (LA.equals("K")) ? 0 : Integer.parseInt(LA);
+							
+							String bhlevel = addStd.combBoxBhLevel.getSelectedItem().toString();
+							int bh =  Integer.parseInt(bhlevel);
+							
+							Students s = new Students(id, fName, lName, bDate, m, l, r, bh);
+							students.addStudent(s);
+							//TODO: Call to Schedulizer to try to add an individual student
+							
+						}
+					}
+				}
 			} catch (NumberFormatException n) {
 				JOptionPane.showMessageDialog(frame,
 						"Student ID should be an integer value.");
-				addStd.dispose();
+			} catch (ParseException p) {
+				JOptionPane.showMessageDialog(frame,
+						"Expected Birth Date in the form yyyy-mm-dd");
 			}
-			
-			if (students.hasStudent(id)) {
-				JOptionPane
-				.showMessageDialog(frame,
-						"A student with that ID already exists in the scheduling system.");
-			} else {
-				String fName = addStd.txtFieldFirstName.getText();
-				String lName = addStd.txtFieldLastName.getText();
-				if (Utilities.isBlank(fName)) {
-					JOptionPane
-					.showMessageDialog(frame,
-							"Please Enter Student's First Name.");
-				} else if (Utilities.isBlank(lName)) {
-					JOptionPane
-					.showMessageDialog(frame,
-							"Please Enter Student's Last Name.");
-				} else {
-					
-				}
-			}
-			
+
 			addStd.dispose();
 		}
 		tabbedPane.revalidate();

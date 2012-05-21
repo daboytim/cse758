@@ -3,7 +3,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -259,7 +261,17 @@ public class StudentTable implements TableModelListener {
 					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 					Date bDate = df.parse(d.toString());
 					System.out.println(bDate);
-					s.setBirthDate(bDate);
+					Calendar c = new GregorianCalendar();
+					c.setTime(bDate);
+					int year = c.get(Calendar.YEAR);
+					if (year < 1900) {
+						JOptionPane
+								.showMessageDialog(frame,
+										"Invalid Year. Expected Birth Date in the form yyyy-mm-dd");
+						table.setValueAt("", row, column);
+					} else {
+						s.setBirthDate(bDate);
+					}
 				}
 			} catch (ParseException n) {
 				if (!isBlank) {
