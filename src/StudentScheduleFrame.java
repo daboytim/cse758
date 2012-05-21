@@ -89,11 +89,11 @@ public class StudentScheduleFrame extends JFrame implements ActionListener {
 		data[0][0] = "ID";		data[0][1] = std.getId();
 		data[1][0] = "Name";	data[1][1] = std.getFirstName()+" "+std.getLastName();
 		data[2][0] = "";		data[2][1] = "";
-		data[3][0] = "Homeroom";data[3][1] = std.getHomeroomCls();
-		data[4][0] = "Reading";	data[4][1] = std.getReadCls().getClsName();
-		data[5][0] = "Lang Arts";data[5][1] = std.getLACls().getClsName();
-		data[6][0] = "Math";	data[6][1] = std.getMathCls().getClsName();
-		data[7][0] = "Specials";data[7][1] = std.getSpecialCls().getClsName();
+		data[3][0] = "Homeroom";data[3][1] = std.getHomeroomCls().getFormalClassName();
+		data[4][0] = "Reading";	data[4][1] = std.getReadCls().getFormalClassName();
+		data[5][0] = "Lang Arts";data[5][1] = std.getLACls().getFormalClassName();
+		data[6][0] = "Math";	data[6][1] = std.getMathCls().getFormalClassName();
+		data[7][0] = "Specials";data[7][1] = std.getSpecialCls().getFormalClassName();
 	}
 
 }

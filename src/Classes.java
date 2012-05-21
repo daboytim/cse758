@@ -3,6 +3,7 @@ import java.util.List;
 
 public class Classes {
 	private String classname;
+	private String formalClassName;
 	private int lvl;
 	private List<Students> students;
 	private double lowestAge = 999;
@@ -15,6 +16,7 @@ public class Classes {
 	public Classes(String name, int lvl, int ID) {
 		students = new ArrayList<Students>();
 		this.classname = name;
+		this.formalClassName = name + "-" + lvl + "_" + ID;
 		this.lvl = lvl;
 		this.id = ID;
 	}
@@ -104,6 +106,10 @@ public class Classes {
 
 	public String getClsName() {
 		return this.classname;
+	}
+	
+	public String getFormalClassName() {
+		return this.formalClassName;
 	}
 
 	public int getLvl() {

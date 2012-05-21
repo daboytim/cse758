@@ -103,7 +103,7 @@ public class ScheduleDisplay {
 		int currCol = 1;
 		for (int i = 0; i < ClassFactory.readClsLst.size(); ++i) {
 			Classes cls = ClassFactory.readClsLst.get(i);
-			String clsHeader = cls.getClsName();
+			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
 
@@ -133,7 +133,7 @@ public class ScheduleDisplay {
 		currCol = 1;
 		for (int i = 0; i < ClassFactory.getTotalLA(); ++i) {
 			Classes cls = ClassFactory.laClsLst.get(i);
-			String clsHeader = cls.getClsName();
+			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
 
@@ -163,7 +163,7 @@ public class ScheduleDisplay {
 		currCol = 1;
 		for (int i = 0; i < ClassFactory.getTotalMath(); ++i) {
 			Classes cls = ClassFactory.specialClsLst.get(i);
-			String clsHeader = cls.getClsName();
+			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
 
@@ -192,7 +192,7 @@ public class ScheduleDisplay {
 		currCol = 1;
 		for (int i = 0; i < ClassFactory.getTotalMath(); ++i) {
 			Classes cls = ClassFactory.mathClsLst.get(i);
-			String clsHeader = cls.getClsName();
+			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
 
@@ -221,7 +221,7 @@ public class ScheduleDisplay {
 		currCol = 1;
 		for (int i = 0; i < ClassFactory.getTotalMath(); ++i) {
 			Classes cls = ClassFactory.homeroomClsLst.get(i);
-			String clsHeader = cls.getClsName();
+			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
 

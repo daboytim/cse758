@@ -128,12 +128,12 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		//add list of current math classes
 		Vector<String> mathClassNames = new Vector<String>();
 		for (int i=0; i<ClassFactory.mathClsLst.size(); i++) {
-			mathClassNames.add(ClassFactory.mathClsLst.get(i).getClsName());
+			mathClassNames.add(ClassFactory.mathClsLst.get(i).getFormalClassName());
 		}
 		mathClassNames.add("No Class");
 		combBoxMath = new JComboBox(mathClassNames);
 		if (mathClass != null) {
-			combBoxMath.setSelectedItem(mathClass.getClsName());
+			combBoxMath.setSelectedItem(mathClass.getFormalClassName());
 		} else {
 			combBoxMath.setSelectedItem("No Class");
 		}
@@ -141,12 +141,12 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		//add list of current la classes
 		Vector<String> laClassNames = new Vector<String>();
 		for (int i=0; i<ClassFactory.laClsLst.size(); i++) {
-			laClassNames.add(ClassFactory.laClsLst.get(i).getClsName());
+			laClassNames.add(ClassFactory.laClsLst.get(i).getFormalClassName());
 		}
 		laClassNames.add("No Class");
 		combBoxLA = new JComboBox(laClassNames);
 		if (laClass != null) {
-			combBoxLA.setSelectedItem(laClass.getClsName());
+			combBoxLA.setSelectedItem(laClass.getFormalClassName());
 		} else {
 			combBoxLA.setSelectedItem("No Class");
 		}
@@ -154,12 +154,12 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		//add list of current reading classes
 		Vector<String> readClassNames = new Vector<String>();
 		for (int i=0; i<ClassFactory.readClsLst.size(); i++) {
-			readClassNames.add(ClassFactory.readClsLst.get(i).getClsName());
+			readClassNames.add(ClassFactory.readClsLst.get(i).getFormalClassName());
 		}
 		readClassNames.add("No Class");
 		combBoxRead = new JComboBox(readClassNames);
 		if (readClass != null) {
-			combBoxRead.setSelectedItem(readClass.getClsName());
+			combBoxRead.setSelectedItem(readClass.getFormalClassName());
 		} else {
 			combBoxRead.setSelectedItem("No Class");
 		}
@@ -167,12 +167,12 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		//add list of current homeroom classes
 		Vector<String> hmrmClassNames = new Vector<String>();
 		for (int i=0; i<ClassFactory.homeroomClsLst.size(); i++) {
-			hmrmClassNames.add(ClassFactory.homeroomClsLst.get(i).getClsName());
+			hmrmClassNames.add(ClassFactory.homeroomClsLst.get(i).getFormalClassName());
 		}
 		hmrmClassNames.add("No Class");
 		combBoxHomeroom = new JComboBox();
 		if (hmrmClass != null) {
-			combBoxHomeroom.setSelectedItem(hmrmClass.getClsName());
+			combBoxHomeroom.setSelectedItem(hmrmClass.getFormalClassName());
 		} else {
 			combBoxHomeroom.setSelectedItem("No Class");
 		}
@@ -180,12 +180,12 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		//add list of current special classes
 		Vector<String> specClassNames = new Vector<String>();
 		for (int i=0; i<ClassFactory.specialClsLst.size(); i++) {
-			specClassNames.add(ClassFactory.specialClsLst.get(i).getClsName());
+			specClassNames.add(ClassFactory.specialClsLst.get(i).getFormalClassName());
 		}
 		specClassNames.add("No Class");
 		combBoxSpecials = new JComboBox();
 		if (specClass != null) {
-			combBoxSpecials.setSelectedItem(specClass.getClsName());
+			combBoxSpecials.setSelectedItem(specClass.getFormalClassName());
 		} else {
 			combBoxSpecials.setSelectedItem("No Class");
 		}
@@ -305,31 +305,31 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		Classes newMathCls=null, newReadCls=null, newLACls=null, newHmrmCls=null, newSpecCls=null;
 		//get class that corresponds to the newClass name
 		for(int i=0; i<ClassFactory.mathClsLst.size(); i++) {
-			if (newMath == ClassFactory.mathClsLst.get(i).getClsName()) {
+			if (newMath == ClassFactory.mathClsLst.get(i).getFormalClassName()) {
 				newMathCls = ClassFactory.mathClsLst.get(i);
 				break;
 			}
 		}
 		for(int i=0; i<ClassFactory.readClsLst.size(); i++) {
-			if (newRead == ClassFactory.readClsLst.get(i).getClsName()) {
+			if (newRead == ClassFactory.readClsLst.get(i).getFormalClassName()) {
 				newReadCls = ClassFactory.readClsLst.get(i);
 				break;
 			}
 		}
 		for(int i=0; i<ClassFactory.laClsLst.size(); i++) {
-			if (newLA == ClassFactory.laClsLst.get(i).getClsName()) {
+			if (newLA == ClassFactory.laClsLst.get(i).getFormalClassName()) {
 				newLACls = ClassFactory.laClsLst.get(i);
 				break;
 			}
 		}
 		for(int i=0; i<ClassFactory.homeroomClsLst.size(); i++) {
-			if (newHmrm == ClassFactory.homeroomClsLst.get(i).getClsName()) {
+			if (newHmrm == ClassFactory.homeroomClsLst.get(i).getFormalClassName()) {
 				newHmrmCls = ClassFactory.homeroomClsLst.get(i);
 				break;
 			}
 		}
 		for(int i=0; i<ClassFactory.specialClsLst.size(); i++) {
-			if (newSpec == ClassFactory.specialClsLst.get(i).getClsName()) {
+			if (newSpec == ClassFactory.specialClsLst.get(i).getFormalClassName()) {
 				newSpecCls = ClassFactory.specialClsLst.get(i);
 				break;
 			}
@@ -346,7 +346,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 			} else {
 				try {
 					ClassFactory.moveStd(mathClass, newMathCls, std);
-					System.out.println("student moved from "+mathClass.getClsName()+" to "+newMathCls.getClsName());
+					System.out.println("student moved from "+mathClass.getFormalClassName()+" to "+newMathCls.getFormalClassName());
 				} catch (StdClsCompatibleException e1) {
 				}
 			}
@@ -357,7 +357,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 			} else {
 				try {
 					ClassFactory.moveStd(readClass, newReadCls, std);
-					System.out.println("student moved from "+readClass.getClsName()+" to "+newReadCls.getClsName());
+					System.out.println("student moved from "+readClass.getFormalClassName()+" to "+newReadCls.getFormalClassName());
 				} catch (StdClsCompatibleException e1) {
 				}
 			}
@@ -368,7 +368,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 			} else {
 				try {
 					ClassFactory.moveStd(laClass, newLACls, std);
-					System.out.println("student moved from "+laClass.getClsName()+" to "+newLACls.getClsName());
+					System.out.println("student moved from "+laClass.getFormalClassName()+" to "+newLACls.getFormalClassName());
 				} catch (StdClsCompatibleException e1) {
 				}
 			}
@@ -379,7 +379,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 //			} else {
 //				try {
 //					ClassFactory.moveStd(hmrmClass, newHmrmCls, std);
-//					System.out.println("student moved from "+hmrmClass.getClsName()+" to "+newHmrmCls.getClsName());
+//					System.out.println("student moved from "+hmrmClass.getFormalClassName()+" to "+newHmrmCls.getFormalClassName());
 //				} catch (StdClsCompatibleException e1) {
 //				}
 //			}
@@ -390,7 +390,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 //			} else {
 //				try {
 //					ClassFactory.moveStd(specClass, newSpecCls, std);
-//					System.out.println("student moved from "+specClass.getClsName()+" to "+newSpecCls.getClsName());
+//					System.out.println("student moved from "+specClass.getFormalClassName()+" to "+newSpecCls.getFormalClassName());
 //				} catch (StdClsCompatibleException e1) {
 //				}
 //			}

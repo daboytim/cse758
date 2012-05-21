@@ -124,27 +124,27 @@ public class TeacherScheduleFrame extends JFrame implements ActionListener {
 		data[0][0] = "Name";	data[0][1] = teach.getName();
 		data[0][3] = "Room";	//data[0][4] = teach.getRoom();
 		
-		data[2][0] = read.getClsName();
+		data[2][0] = read.getFormalClassName();
 		roster = read.getStudents();
 		for (int i=0; i<roster.size(); i++)
 			data[3+i][0] = roster.get(i);
 			
-		data[2][1] = la.getClsName();
+		data[2][1] = la.getFormalClassName();
 		roster = la.getStudents();
 		for (int i=0; i<roster.size(); i++)
 			data[3+i][1] = roster.get(i);
 		
-		data[2][2] = math.getClsName();
+		data[2][2] = math.getFormalClassName();
 		roster = math.getStudents();
 		for (int i=0; i<roster.size(); i++)
 			data[3+i][2] = roster.get(i);
 		
-		data[2][3] = homeroom.getClsName();
+		data[2][3] = homeroom.getFormalClassName();
 		roster = homeroom.getStudents();
 		for (int i=0; i<roster.size(); i++)
 			data[3+i][3] = roster.get(i);
 		
-		data[2][4] = specials.getClsName();
+		data[2][4] = specials.getFormalClassName();
 		roster = specials.getStudents();
 		for (int i=0; i<roster.size(); i++)
 			data[3+i][4] = roster.get(i);
