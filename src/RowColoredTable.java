@@ -19,7 +19,7 @@ public class RowColoredTable extends JTable {
 	public Component prepareRenderer(TableCellRenderer renderer, int rowIndex,
 			int vColIndex) {
 		Color color = new Color(234, 234, 234);
-		Font bold = new Font("bold", Font.BOLD, 12);
+		Font bold = new Font("bold", Font.BOLD, 10);
 
 		Component c = super.prepareRenderer(renderer, rowIndex, vColIndex);
 		if (vColIndex == (numCols - 1)) {

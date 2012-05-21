@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Toolkit;
@@ -23,6 +24,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTable.PrintMode;
+import javax.swing.SwingUtilities;
+import javax.swing.table.JTableHeader;
 
 public class MainFrame implements ActionListener, MouseListener {
 	static JTabbedPane tabbedPane;
@@ -213,7 +218,17 @@ public class MainFrame implements ActionListener, MouseListener {
 			menu.unlock();
 		} else if (obj.equals(Menu.print)) {
 			try {
-			    boolean complete = sched.getScheduleTable().print();
+				JTable p = sched.getScheduleTable();
+				int h = p.getRowHeight();
+				Font f = p.getFont();
+				JTableHeader hh = p.getTableHeader();
+				p.setTableHeader(null);
+				p.setRowHeight(9);
+				p.setFont(new Font("Arial", Font.PLAIN, 8));
+			    boolean complete = p.print(PrintMode.NORMAL);
+				p.setTableHeader(hh);
+			    p.setFont(f);
+			    p.setRowHeight(h);
 			    if (complete) {
 			        /* show a success message  */
 			        
@@ -311,7 +326,7 @@ public class MainFrame implements ActionListener, MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (e.isPopupTrigger()) {
+		if (SwingUtilities.isRightMouseButton(e)) {
 			if (e.getSource() == sched.getScheduleTable()) {
 				rightClickMenu.show(e.getComponent(), e.getX(), e.getY());
 			} else if (e.getSource() == tTab.getTeacherTable()) {

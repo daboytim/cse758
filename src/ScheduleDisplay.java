@@ -36,6 +36,7 @@ public class ScheduleDisplay {
 		}
 		columnNames[numRooms + 1] = "Unable to Place";
 		tm = new DefaultTableModel(data, columnNames);
+		
 		table = new RowColoredTable(data);
 		table.setModel(tm);
 		table.setEnabled(false);
@@ -296,4 +297,5 @@ public class ScheduleDisplay {
 
 		return (3 * maxStudentsPerClass) + 3;
 	}
+	
 }
