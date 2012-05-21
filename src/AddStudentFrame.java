@@ -44,7 +44,7 @@ public class AddStudentFrame extends JFrame implements ActionListener{
 		setAlwaysOnTop(true);
 		setResizable(false);
 		setTitle("Add Student");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 230, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
