@@ -204,6 +204,10 @@ public class MainFrame implements ActionListener, MouseListener {
 			}
 
 			addStd.dispose();
+		} else if (obj.equals(Menu.lock)) {
+			menu.lock();
+		} else if (obj.equals(Menu.unlock)) {
+			menu.unlock();
 		}
 		tabbedPane.revalidate();
 		tabbedPane.setVisible(false);
