@@ -35,11 +35,11 @@ public class ScheduleDisplay {
 			columnNames[i] = " ";
 		}
 		columnNames[numRooms + 1] = "Unable to Place";
-		tm = new DefaultTableModel(data, columnNames);
+		tm = new DefaultTableModel(data, columnNames);  
 		
-		table = new RowColoredTable(data);
+		table = new RowColoredTable(data);  
 		table.setModel(tm);
-		table.setEnabled(false);
+		
 
 		update();
 	}
@@ -121,7 +121,7 @@ public class ScheduleDisplay {
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 1, i + 1);
-				data[j + currRow + 1][currCol] = std + " (" + std.getBL() + ")"; // changed
+				data[j + currRow + 1][currCol] = std; // changed
 																					// from
 																					// stdNameStr
 			}
@@ -150,7 +150,7 @@ public class ScheduleDisplay {
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 8, i + 1);
-				data[j + currRow + 1][currCol] = std + " (" + std.getBL() + ")"; // changed
+				data[j + currRow + 1][currCol] = std; // changed
 																					// from
 																					// stdNameStr
 			}
@@ -180,7 +180,7 @@ public class ScheduleDisplay {
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
-				data[j + currRow + 1][currCol] = std + " (" + std.getBL() + ")"; // changed
+				data[j + currRow + 1][currCol] = std; // changed
 																					// from
 																					// stdNameStr
 			}
@@ -209,7 +209,7 @@ public class ScheduleDisplay {
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
-				data[j + currRow + 1][currCol] = std + " (" + std.getBL() + ")"; // changed
+				data[j + currRow + 1][currCol] = std; // changed
 																					// from
 																					// stdNameStr
 			}
@@ -238,7 +238,7 @@ public class ScheduleDisplay {
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
-				data[j + currRow + 1][currCol] = std + " (" + std.getBL() + ")"; // changed
+				data[j + currRow + 1][currCol] = std; // changed
 																					// from
 																					// stdNameStr
 			}
@@ -256,7 +256,7 @@ public class ScheduleDisplay {
 				Students std = unluckyStudents.get(i);
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
-				data[i][numRooms + 1] = std + " (" + std.getBL() + ")";
+				data[i][numRooms + 1] = std;
 			}
 		} else {
 			data[0][numRooms + 1] = "all were sheduled";

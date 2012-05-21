@@ -137,7 +137,7 @@ public class Students implements Comparable<Students> {
 	 */
 	@Override
 	public String toString(){
-		return fName + " " + lName;
+		return fName + " " + lName + " (" + bl + ")";
 		//return "Student name:"+fName+" "+lName+"; age: "+Math.floor(getAge())+"; Math level: "+math+"; LA level: "+la+"; Reading level: "+read+"; Behavior level: "+this.getBL()+".";
 		
 	}

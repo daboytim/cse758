@@ -41,4 +41,9 @@ public class RowColoredTable extends JTable {
 
 		return c;
 	}
+	
+	public boolean isCellEditable(int row, int column) {
+		return false;
+	}
+
 }
