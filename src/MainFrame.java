@@ -72,6 +72,8 @@ public class MainFrame implements ActionListener, MouseListener {
 		Dimension dimension = toolkit.getScreenSize();
 		frame.setSize(dimension);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);  
+
 
 		tabbedPane = new JTabbedPane();
 
