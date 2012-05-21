@@ -189,6 +189,9 @@ public class MainFrame implements ActionListener, MouseListener {
 							students.addStudent(s);
 							//TODO: Call to Schedulizer to try to add an individual student
 							
+							sTab.update();
+							
+							
 						}
 					}
 				}
