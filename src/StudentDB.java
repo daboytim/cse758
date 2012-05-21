@@ -59,4 +59,8 @@ public class StudentDB {
 	public ArrayList<Students> getStudents() {
 		return students;
 	}
+	
+	public void removeAll() {
+		students.removeAll(students);
+	}
 }

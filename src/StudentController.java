@@ -47,6 +47,10 @@ public class StudentController implements ActionListener {
 		try {
 			FileInputStream fis = new FileInputStream(filename);
 			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+			
+			//Clean StudentDB so that it doesnt stack data
+			students.removeAll();
+			
 			while (br.ready()) {
 				String line = br.readLine();
 				String[] params = line.split(",");
