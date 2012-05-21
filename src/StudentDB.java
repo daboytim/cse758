@@ -3,11 +3,14 @@ import java.util.ArrayList;
 
 public class StudentDB {
 	ArrayList<Students> students;
+	private int waitlist = 0;
 	public StudentDB (){
 		students = new ArrayList<Students>();
 	}
 	
 	public void addStudent (Students s) {
+		s.setWLPosition(waitlist);
+		waitlist ++;
 		students.add(s);
 		//new NewFrame(frame,this);
 		

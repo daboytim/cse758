@@ -250,7 +250,6 @@ public class MainFrame implements ActionListener, MouseListener {
 		tabbedPane.setVisible(false);
 		tabbedPane.repaint();
 		tabbedPane.setVisible(true);
-		// update();
 	}
 
 	private void showManualMod() {
