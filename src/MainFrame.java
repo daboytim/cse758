@@ -1,11 +1,14 @@
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -208,6 +211,23 @@ public class MainFrame implements ActionListener, MouseListener {
 			menu.lock();
 		} else if (obj.equals(Menu.unlock)) {
 			menu.unlock();
+		} else if (obj.equals(Menu.print)) {
+			try {
+			    boolean complete = sched.getScheduleTable().print();
+			    if (complete) {
+			        /* show a success message  */
+			        
+			    } else {
+			        /*show a message indicating that printing was cancelled */
+			    	JOptionPane.showMessageDialog(frame,
+							"Print Job was Cancelled");
+			    }
+			} catch (PrinterException pe) {
+			    /* Printing failed, report to the user */
+				JOptionPane.showMessageDialog(frame,
+						"Print Job Failed");
+			    
+			}
 		}
 		tabbedPane.revalidate();
 		tabbedPane.setVisible(false);

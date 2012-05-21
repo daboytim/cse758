@@ -43,7 +43,7 @@ public class Menu extends JFrame {
 		print = new JMenuItem("Print Schedule");
 
 		exit1.addActionListener(mc);
-		print.addActionListener(mc);
+		print.addActionListener(mf);
 		file.add(print);
 		file.add(exit1);
 		bar.add(file);
