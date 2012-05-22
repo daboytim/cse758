@@ -10,7 +10,7 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-public class DataEntry {
+public class SchedulingTool {
 	static MainFrame mf;
 
 	/*

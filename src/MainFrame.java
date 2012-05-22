@@ -61,7 +61,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 		if (teachers == null)
 			teachers = new TeacherDB();
 		clsFac = new ClassFactory();
-		frame = new JFrame();
+		frame = new JFrame("Scheduling Tool");
 
 		update();
 	}
@@ -74,7 +74,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 		editItem = new JMenuItem("Edit");
 		editItem.addActionListener(this);
 		rightClickMenu.add(editItem);
-		frame = new JFrame();
+		frame = new JFrame("Scheduling Tool");
 		frame.validate();
 		frame.setState(Frame.NORMAL);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -268,7 +268,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 
 		} else if (obj.equals(Menu.load)) {
 			if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
-				DataEntry.loadObject(chooser.getSelectedFile().toString());
+				SchedulingTool.loadObject(chooser.getSelectedFile().toString());
 
 		}
 		tabbedPane.revalidate();
