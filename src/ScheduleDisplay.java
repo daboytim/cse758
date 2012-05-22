@@ -117,11 +117,11 @@ public class ScheduleDisplay {
 					+ " - " + (int) cls.getHighestAge();
 
 			List<Students> students = cls.getStudents();
-			for (int j = 1; j < students.size(); j++) {
-				Students std = students.get(j);
+			for (int j = 1; j <= students.size(); j++) {
+				Students std = students.get(j - 1);
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
-				// table.setValueAt(stdNameStr, j + 1, i + 1);
+				// table.setValueAt(stdNameStr, j + 15, i + 1);
 				data[j + currRow + 1][currCol] = std; // changed
 																					// from
 																					// stdNameStr
@@ -147,11 +147,11 @@ public class ScheduleDisplay {
 					+ " - " + (int) cls.getHighestAge();
 
 			List<Students> students = cls.getStudents();
-			for (int j = 1; j < students.size(); j++) {
+			for (int j = 1; j <= students.size(); j++) {
 				Students std = students.get(j - 1);
 				String stdNameStr = std.getFirstName();
 				stdNameStr += " " + std.getLastName();
-				// table.setValueAt(stdNameStr, j + 8, i + 1);
+				// table.setValueAt(stdNameStr, j + 15, i + 1);
 				data[j + currRow + 1][currCol] = std; // changed
 																					// from
 																					// stdNameStr
