@@ -190,9 +190,21 @@ public class ClassFactory implements Serializable {
 				fromCls.addStd(stdt);
 				unlucky.remove(stdt);
 				stdt.setWlReason("");
+				System.out.println("From waitlist,student:" + stdt.toString()
+						+ " has been added to class "
+						+ fromCls.getFormalClassName());
 				break;
 			}
 		}
+
+		// console output
+		System.out.println(toCls.getFormalClassName() + " added student:"
+				+ std.toString() + ":");
+		System.out.println(toCls.toString());
+		System.out.println(fromCls.getFormalClassName() + " deleted student:"
+				+ std.toString() + ":");
+		System.out.println(fromCls.toString());
+
 		// }
 	}
 
