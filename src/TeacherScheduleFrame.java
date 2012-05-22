@@ -122,7 +122,7 @@ public class TeacherScheduleFrame extends JFrame implements ActionListener {
 		//I hope they like the format because i'm 
 		//gonna hardcode all these values
 		data[0][0] = "Name";	data[0][1] = teach.getName();
-		data[0][3] = "Room";	//data[0][4] = teach.getRoom();
+		data[0][3] = "Room";	data[0][4] = teach.getRoom();
 		
 		data[2][0] = read.getFormalClassName();
 		roster = read.getStudents();
