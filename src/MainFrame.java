@@ -80,8 +80,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 		Dimension dimension = toolkit.getScreenSize();
 		frame.setSize(dimension);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setExtendedState(Frame.MAXIMIZED_BOTH);  
-
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
 		tabbedPane = new JTabbedPane();
 
@@ -188,23 +187,31 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 											"Invalid Year. Expected Birth Date in the form yyyy-mm-dd");
 						} else {
 							// Everything valid, create student
-							String math = addStd.combBoxMathAsses.getSelectedItem().toString();
-							int m = (math.equals("K")) ? 0 : Integer.parseInt(math);
-							
-							String read = addStd.combBoxReadAsses.getSelectedItem().toString();
-							int r = (read.equals("K")) ? 0 : Integer.parseInt(read);
-							
-							String LA = addStd.combBoxLaAsses.getSelectedItem().toString();
+							String math = addStd.combBoxMathAsses
+									.getSelectedItem().toString();
+							int m = (math.equals("K")) ? 0 : Integer
+									.parseInt(math);
+
+							String read = addStd.combBoxReadAsses
+									.getSelectedItem().toString();
+							int r = (read.equals("K")) ? 0 : Integer
+									.parseInt(read);
+
+							String LA = addStd.combBoxLaAsses.getSelectedItem()
+									.toString();
 							int l = (LA.equals("K")) ? 0 : Integer.parseInt(LA);
-							
-							String bhlevel = addStd.combBoxBhLevel.getSelectedItem().toString();
-							int bh =  Integer.parseInt(bhlevel);
-							
-							Students s = new Students(id, fName, lName, bDate, m, l, r, bh, clsFac);
+
+							String bhlevel = addStd.combBoxBhLevel
+									.getSelectedItem().toString();
+							int bh = Integer.parseInt(bhlevel);
+
+							Students s = new Students(id, fName, lName, bDate,
+									m, l, r, bh, clsFac);
 							students.addStudent(s);
-							//TODO: Call to Schedulizer to try to add an individual student
+							// TODO: Call to Schedulizer to try to add an
+							// individual student
 							Schedulizer.addNewStd(s, clsFac);
-							sched.update();	
+							sched.update();
 						}
 					}
 				}
@@ -236,33 +243,32 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 				p.setTableHeader(null);
 				p.setRowHeight(9);
 				p.setFont(new Font("Arial", Font.PLAIN, 8));
-			    boolean complete = p.print(PrintMode.NORMAL);
+				boolean complete = p.print(PrintMode.NORMAL);
 				p.setTableHeader(hh);
-			    p.setFont(f);
-			    p.setRowHeight(h);
-			    if (complete) {
-			        /* show a success message  */
-			        
-			    } else {
-			        /*show a message indicating that printing was cancelled */
-			    	JOptionPane.showMessageDialog(frame,
+				p.setFont(f);
+				p.setRowHeight(h);
+				if (complete) {
+					/* show a success message */
+
+				} else {
+					/* show a message indicating that printing was cancelled */
+					JOptionPane.showMessageDialog(frame,
 							"Print Job was Cancelled");
-			    }
+				}
 			} catch (PrinterException pe) {
-			    /* Printing failed, report to the user */
-				JOptionPane.showMessageDialog(frame,
-						"Print Job Failed");
-			    
+				/* Printing failed, report to the user */
+				JOptionPane.showMessageDialog(frame, "Print Job Failed");
+
 			}
 		} else if (obj.equals(Menu.save)) {
 			if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
 				saveObject(this, chooser.getSelectedFile().toString());
 			}
-			
+
 		} else if (obj.equals(Menu.load)) {
 			if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
 				DataEntry.loadObject(chooser.getSelectedFile().toString());
-			
+
 		}
 		tabbedPane.revalidate();
 		tabbedPane.setVisible(false);
@@ -271,74 +277,77 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 	}
 
 	private void showManualMod() {
-		int x, y;
-		x = sched.getScheduleTable().getSelectedColumn();
-		y = sched.getScheduleTable().getSelectedRow();
-		Object cell = sched.getScheduleTable().getValueAt(y, x);
-		// make sure x and y correspond to a student or class
-		if (cell.toString().equals("")) {
-			//do nothing
-		} else if (cell.toString().startsWith("Ages")) {
-			//do nothing
-		} else if (cell.toString().startsWith("Class")) {
-			//figure out what class this is
-			Classes cls = findClass(cell);
-			Teachers t = null;
-			if (cls != null) {
-				t = cls.getTeacher();
-				if (t != null) {
-					new TeacherModFrame(t, clsFac);
-				} else  {
-					JOptionPane.showMessageDialog(frame,
-							"This class does not have a teacher.",
-							"Error",
-							JOptionPane.ERROR_MESSAGE);
+		try {
+			int x, y;
+			x = sched.getScheduleTable().getSelectedColumn();
+			y = sched.getScheduleTable().getSelectedRow();
+			Object cell = sched.getScheduleTable().getValueAt(y, x);
+			// make sure x and y correspond to a student or class
+			if (cell.toString().equals("")) {
+				// do nothing
+			} else if (cell.toString().startsWith("Ages")) {
+				// do nothing
+			} else if (cell.toString().startsWith("Class")) {
+				// figure out what class this is
+				Classes cls = findClass(cell);
+				Teachers t = null;
+				if (cls != null) {
+					t = cls.getTeacher();
+					if (t != null) {
+						new TeacherModFrame(t, clsFac);
+					} else {
+						JOptionPane.showMessageDialog(frame,
+								"This class does not have a teacher.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				} else {
+					JOptionPane.showMessageDialog(frame, "Class not found.",
+							"Error", JOptionPane.ERROR_MESSAGE);
 				}
-			} else {
-				JOptionPane.showMessageDialog(frame,
-						"Class not found.",
-						"Error",
-						JOptionPane.ERROR_MESSAGE);
+			} else if (x > 0 && y >= 0) {
+				new ManualModFrame((Students) cell, sched, clsFac);
 			}
-		} else if (x > 0 && y >= 0) {
-			new ManualModFrame((Students) cell, sched, clsFac);
+		} catch (NullPointerException np) {
+			// Do Nothing
+		} catch (ArrayIndexOutOfBoundsException a) {
+			//Do Nothing
 		}
 	}
-	
+
 	private Classes findClass(Object cell) {
 		String str = cell.toString();
-		int index = str.indexOf(' '); //space before level
-		index ++;
-		index = str.indexOf(' ', index); //space before id
-		index ++;
+		int index = str.indexOf(' '); // space before level
+		index++;
+		index = str.indexOf(' ', index); // space before id
+		index++;
 		int end = str.indexOf(':');
 		if (end < 0)
 			str = str.substring(index);
-		else 
+		else
 			str = str.substring(index, end);
 		int id = Integer.parseInt(str);
-		//str should now contain the class id, i think
-		for (Classes c:clsFac.readClsLst) {
+		// str should now contain the class id, i think
+		for (Classes c : clsFac.readClsLst) {
 			if (id == c.getClsID()) {
 				return c;
 			}
 		}
-		for (Classes c:clsFac.laClsLst) {
+		for (Classes c : clsFac.laClsLst) {
 			if (id == c.getClsID()) {
 				return c;
 			}
 		}
-		for (Classes c:clsFac.mathClsLst) {
+		for (Classes c : clsFac.mathClsLst) {
 			if (id == c.getClsID()) {
 				return c;
 			}
 		}
-		for (Classes c:clsFac.homeroomClsLst) {
+		for (Classes c : clsFac.homeroomClsLst) {
 			if (id == c.getClsID()) {
 				return c;
 			}
 		}
-		for (Classes c:clsFac.specialClsLst) {
+		for (Classes c : clsFac.specialClsLst) {
 			if (id == c.getClsID()) {
 				return c;
 			}
@@ -374,27 +383,25 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 				y = sched.getScheduleTable().getSelectedRow();
 				Object cell = sched.getScheduleTable().getValueAt(y, x);
 				if (cell.toString().equals("")) {
-					//do nothing
+					// do nothing
 				} else if (cell.toString().startsWith("Ages")) {
-					//do nothing
+					// do nothing
 				} else if (cell.toString().startsWith("Class")) {
-					//figure out what class this is
+					// figure out what class this is
 					Classes cls = findClass(cell);
 					Teachers t = null;
 					if (cls != null) {
 						t = cls.getTeacher();
 						if (t != null) {
 							new TeacherScheduleFrame(t);
-						} else  {
+						} else {
 							JOptionPane.showMessageDialog(frame,
 									"This class does not have a teacher.",
-									"Error",
-									JOptionPane.ERROR_MESSAGE);
+									"Error", JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
 						JOptionPane.showMessageDialog(frame,
-								"Class not found.",
-								"Error",
+								"Class not found.", "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				} else if (x > 0 && y > 0) {
@@ -407,13 +414,17 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (SwingUtilities.isRightMouseButton(e)) {
-			if (e.getSource() == sched.getScheduleTable()) {
-				rightClickMenu.show(e.getComponent(), e.getX(), e.getY());
+		try {
+			if (SwingUtilities.isRightMouseButton(e)) {
+				if (e.getSource() == sched.getScheduleTable()) {
+					rightClickMenu.show(e.getComponent(), e.getX(), e.getY());
+				}
 			}
+		} catch (NullPointerException np) {
+			// Do nothing
 		}
 	}
-	
+
 	/**
 	 * Save object on disk.
 	 * 
