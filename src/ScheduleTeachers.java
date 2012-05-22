@@ -330,6 +330,20 @@ public class ScheduleTeachers implements Serializable{
 			}
 			
 		}
+		for(int i = 0; i < clsFac.homeroomClsLst.size(); i++)
+		{
+			if(clsFac.homeroomClsLst.get(i).getClsID() == t.getClsID(Teachers.Type.HR))
+			{
+				clsFac.homeroomClsLst.get(i).setTeacher(t);
+			}
+		}
+		for(int i = 0; i < clsFac.specialClsLst.size(); i++)
+		{
+			if(clsFac.specialClsLst.get(i).getClsID() == t.getClsID(Teachers.Type.SP))
+			{
+				clsFac.specialClsLst.get(i).setTeacher(t);
+			}
+		}
 	}
 	
 	// check if the unassigned classes contains teacher's preferred class
