@@ -1,14 +1,12 @@
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -41,8 +39,8 @@ public class MainFrame implements ActionListener, MouseListener {
 	StudentDB students;
 	TeacherDB teachers;
 	Menu menu;
-	JPopupMenu rightClickMenu, rightClickMenu2;
-	JMenuItem editItem, editItem2;
+	JPopupMenu rightClickMenu;
+	JMenuItem editItem;
 	AddStudentFrame addStd;
 
 	public MainFrame() {
@@ -54,11 +52,6 @@ public class MainFrame implements ActionListener, MouseListener {
 		editItem = new JMenuItem("Edit");
 		editItem.addActionListener(this);
 		rightClickMenu.add(editItem);
-		// this one is for the teacher tab
-		rightClickMenu2 = new JPopupMenu();
-		editItem2 = new JMenuItem("Edit");
-		editItem2.addActionListener(this);
-		rightClickMenu2.add(editItem2);
 		update();
 	}
 
@@ -142,9 +135,6 @@ public class MainFrame implements ActionListener, MouseListener {
 			tabbedPane.setSelectedIndex(2);
 		} else if (obj.equals(editItem)) {
 			showManualMod();
-			// sched.update();
-		} else if (obj.equals(editItem2)) {
-			showTeacherMod();
 			// sched.update();
 		} else if (obj.equals(addStd.add)) {
 			String tmpID = addStd.txtFieldStudentID.getText();
@@ -256,25 +246,76 @@ public class MainFrame implements ActionListener, MouseListener {
 		int x, y;
 		x = sched.getScheduleTable().getSelectedColumn();
 		y = sched.getScheduleTable().getSelectedRow();
-		// make sure x and y correspond to a student
-		if (x > 0 && y >= 0) {
-			Object std = sched.getScheduleTable().getValueAt(y, x);
-			if (!std.equals("")) {
-				new ManualModFrame((Students) std, sched);
+		Object cell = sched.getScheduleTable().getValueAt(y, x);
+		// make sure x and y correspond to a student or class
+		if (cell.toString().equals("")) {
+			//do nothing
+		} else if (cell.toString().startsWith("Ages")) {
+			//do nothing
+		} else if (cell.toString().startsWith("Class")) {
+			//figure out what class this is
+			Classes cls = findClass(cell);
+			Teachers t = null;
+			if (cls != null) {
+				t = cls.getTeacher();
+				if (t != null) {
+					new TeacherModFrame(t);
+				} else  {
+					JOptionPane.showMessageDialog(frame,
+							"This class does not have a teacher.",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			} else {
+				JOptionPane.showMessageDialog(frame,
+						"Class not found.",
+						"Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
+		} else if (x > 0 && y >= 0) {
+			new ManualModFrame((Students) cell, sched);
 		}
 	}
-
-	private void showTeacherMod() {
-		int x, y;
-		x = tTab.getTeacherTable().getSelectedColumn();
-		y = tTab.getTeacherTable().getSelectedRow();
-		if (x >= 0 && y >= 0) {
-			Object teach = tTab.getTeacherTable().getValueAt(y, 0);
-			if (!teach.equals("")) {
-				new TeacherModFrame((Teachers) teach);
+	
+	private Classes findClass(Object cell) {
+		String str = cell.toString();
+		int index = str.indexOf(' '); //space before level
+		index ++;
+		index = str.indexOf(' ', index); //space before id
+		index ++;
+		int end = str.indexOf(':');
+		if (end < 0)
+			str = str.substring(index);
+		else 
+			str = str.substring(index, end);
+		int id = Integer.parseInt(str);
+		//str should now contain the class id, i think
+		for (Classes c:ClassFactory.readClsLst) {
+			if (id == c.getClsID()) {
+				return c;
 			}
 		}
+		for (Classes c:ClassFactory.laClsLst) {
+			if (id == c.getClsID()) {
+				return c;
+			}
+		}
+		for (Classes c:ClassFactory.mathClsLst) {
+			if (id == c.getClsID()) {
+				return c;
+			}
+		}
+		for (Classes c:ClassFactory.homeroomClsLst) {
+			if (id == c.getClsID()) {
+				return c;
+			}
+		}
+		for (Classes c:ClassFactory.specialClsLst) {
+			if (id == c.getClsID()) {
+				return c;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -303,24 +344,35 @@ public class MainFrame implements ActionListener, MouseListener {
 				int x, y;
 				x = sched.getScheduleTable().getSelectedColumn();
 				y = sched.getScheduleTable().getSelectedRow();
-				if (x > 0 && y >= 0) {
-					Object std = sched.getScheduleTable().getValueAt(y, x);
-					if (!std.equals("")) {
-						new StudentScheduleFrame((Students) std);
+				Object cell = sched.getScheduleTable().getValueAt(y, x);
+				if (cell.toString().equals("")) {
+					//do nothing
+				} else if (cell.toString().startsWith("Ages")) {
+					//do nothing
+				} else if (cell.toString().startsWith("Class")) {
+					//figure out what class this is
+					Classes cls = findClass(cell);
+					Teachers t = null;
+					if (cls != null) {
+						t = cls.getTeacher();
+						if (t != null) {
+							new TeacherScheduleFrame(t);
+						} else  {
+							JOptionPane.showMessageDialog(frame,
+									"This class does not have a teacher.",
+									"Error",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					} else {
+						JOptionPane.showMessageDialog(frame,
+								"Class not found.",
+								"Error",
+								JOptionPane.ERROR_MESSAGE);
 					}
-				}
-			} else if (e.getSource() == tTab.getTeacherTable()) {
-				int x, y;
-				x = tTab.getTeacherTable().getSelectedColumn();
-				y = tTab.getTeacherTable().getSelectedRow();
-				if (x == 0) {
-					Object teach = tTab.getTeacherTable().getValueAt(y, x);
-					if (!teach.equals("")) {
-						new TeacherScheduleFrame((Teachers) teach);
-					}
+				} else if (x > 0 && y > 0) {
+					new StudentScheduleFrame((Students) cell);
 				}
 			}
-
 		}
 	}
 
@@ -330,8 +382,6 @@ public class MainFrame implements ActionListener, MouseListener {
 		if (SwingUtilities.isRightMouseButton(e)) {
 			if (e.getSource() == sched.getScheduleTable()) {
 				rightClickMenu.show(e.getComponent(), e.getX(), e.getY());
-			} else if (e.getSource() == tTab.getTeacherTable()) {
-				rightClickMenu2.show(e.getComponent(), e.getX(), e.getY());
 			}
 		}
 	}

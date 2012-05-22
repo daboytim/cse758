@@ -8,8 +8,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
-import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -25,6 +26,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 	private JTextField txtFieldFirstName;
 	private JTextField txtFieldLastName;
 	private JTextField txtFieldStudentID;
+	private JTextField txtFieldAge;
 	private JComboBox combBoxBhLevel;
 	private JComboBox combBoxMathAsses;
 	private JComboBox combBoxReadAsses;
@@ -62,7 +64,8 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		setResizable(false);
 		setTitle("Move Student");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 230, 400);
+		setExtendedState(NORMAL);
+		setMaximizedBounds(new Rectangle(100,100,300,450));
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -71,7 +74,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		//create the student panel
 		JPanel stdPanel = new JPanel();
 		stdPanel.setBorder(new TitledBorder(null, "Student", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		stdPanel.setLayout(new GridLayout(3,2));
+		stdPanel.setLayout(new GridLayout(4,2));
 		contentPane.add(stdPanel);
 		
 		txtFieldStudentID = new JTextField(std.getId()+"");
@@ -83,12 +86,17 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		txtFieldLastName = new JTextField(std.getLastName());
 		txtFieldLastName.setEditable(false);
 		
+		txtFieldAge = new JTextField(""+(int)std.getAge());
+		txtFieldAge.setEditable(false);
+		
 		stdPanel.add(new JLabel("Student ID"));
 		stdPanel.add(txtFieldStudentID);
 		stdPanel.add(new JLabel("First Name"));
 		stdPanel.add(txtFieldFirstName);
 		stdPanel.add(new JLabel("Last Name"));
 		stdPanel.add(txtFieldLastName);
+		stdPanel.add(new JLabel("Age"));
+		stdPanel.add(txtFieldAge);
 		
 		//create the assessment panel
 		JPanel assesPanel = new JPanel();
@@ -170,7 +178,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 			hmrmClassNames.add(ClassFactory.homeroomClsLst.get(i).getFormalClassName());
 		}
 		hmrmClassNames.add("No Class");
-		combBoxHomeroom = new JComboBox();
+		combBoxHomeroom = new JComboBox(hmrmClassNames);
 		if (hmrmClass != null) {
 			combBoxHomeroom.setSelectedItem(hmrmClass.getFormalClassName());
 		} else {
@@ -183,7 +191,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 			specClassNames.add(ClassFactory.specialClsLst.get(i).getFormalClassName());
 		}
 		specClassNames.add("No Class");
-		combBoxSpecials = new JComboBox();
+		combBoxSpecials = new JComboBox(specClassNames);
 		if (specClass != null) {
 			combBoxSpecials.setSelectedItem(specClass.getFormalClassName());
 		} else {
@@ -203,7 +211,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		
 		//create button panel
 		JPanel btnPanel = new JPanel();
-		btnPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		btnPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		contentPane.add(btnPanel);
 		
 		disenroll = new JButton("Disenroll");
@@ -227,7 +235,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == disenroll) {
 			int rtn = JOptionPane.showConfirmDialog(this,
-					"You are about to remove the student from the database.\n" +
+					"You are about to remove this student from the database.\n" +
 					"Are you sure you want to continue?", "Warning!",
 					JOptionPane.YES_NO_OPTION,
 					JOptionPane.WARNING_MESSAGE);
@@ -235,6 +243,12 @@ public class ManualModFrame extends JFrame implements ActionListener{
 				System.out.println("removing the student " + std.getId());
 				//remove the student from all classes and the database
 				removeStudent();
+				//update the schedule table
+				sched.update();
+				MainFrame.tabbedPane.revalidate();
+				MainFrame.tabbedPane.setVisible(false);
+				MainFrame.tabbedPane.repaint();
+				MainFrame.tabbedPane.setVisible(true);
 				this.dispose();
 			}
 		} else if (e.getSource() == btnOk) {
@@ -341,59 +355,112 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		}
 		//put the student in the new class
 		if (mathClass != newMathCls) {
-			if (mathClass == null) {
-				//enroll student
-			} else {
-				try {
-					ClassFactory.moveStd(mathClass, newMathCls, std);
-					System.out.println("student moved from "+mathClass.getFormalClassName()+" to "+newMathCls.getFormalClassName());
-				} catch (StdClsCompatibleException e1) {
-				}
+			if (newMath.equals("No Class")) {
+				//TODO: remove the student
+			} else if (check(mathClass, newMathCls)) {
+				ClassFactory.moveStd(mathClass, newMathCls, std);
+				System.out.println("student moved from "+mathClass.getFormalClassName()+" to "+newMathCls.getFormalClassName());
 			}
 		}
 		if (readClass != newReadCls) {
-			if (readClass == null) {
-				//enroll student
-			} else {
-				try {
-					ClassFactory.moveStd(readClass, newReadCls, std);
-					System.out.println("student moved from "+readClass.getFormalClassName()+" to "+newReadCls.getFormalClassName());
-				} catch (StdClsCompatibleException e1) {
-				}
+			if (newRead.equals("No Class")) {
+				//TODO: remove the student
+			} else if (check(readClass, newReadCls)) {
+				ClassFactory.moveStd(readClass, newReadCls, std);
+				System.out.println("student moved from "+readClass.getFormalClassName()+" to "+newReadCls.getFormalClassName());
 			}
 		}
 		if (laClass != newLACls) {
-			if (laClass == null) {
-				//enroll student
-			} else {
-				try {
-					ClassFactory.moveStd(laClass, newLACls, std);
-					System.out.println("student moved from "+laClass.getFormalClassName()+" to "+newLACls.getFormalClassName());
-				} catch (StdClsCompatibleException e1) {
-				}
+			if (newLA.equals("No Class")) {
+				//TODO: remove the student
+			} else if (check(laClass, newLACls)) {
+				ClassFactory.moveStd(laClass, newLACls, std);
+				System.out.println("student moved from "+laClass.getFormalClassName()+" to "+newLACls.getFormalClassName());
 			}
 		}
-//		if (hmrmClass != newHmrmCls) {
-//			if (hmrmClass == null) {
-//				//enroll student
-//			} else {
-//				try {
-//					ClassFactory.moveStd(hmrmClass, newHmrmCls, std);
-//					System.out.println("student moved from "+hmrmClass.getFormalClassName()+" to "+newHmrmCls.getFormalClassName());
-//				} catch (StdClsCompatibleException e1) {
-//				}
-//			}
-//		}
-//		if (specClass != newSpecCls) {
-//			if (specClass == null) {
-//				//enroll student
-//			} else {
-//				try {
-//					ClassFactory.moveStd(specClass, newSpecCls, std);
-//					System.out.println("student moved from "+specClass.getFormalClassName()+" to "+newSpecCls.getFormalClassName());
-//				} catch (StdClsCompatibleException e1) {
-//				}
-//			}
-//		}
+		if (hmrmClass != newHmrmCls) {
+			if (newHmrm.equals("No Class")) {
+				//TODO: remove the student
+			} else if (check(hmrmClass, newHmrmCls)) {
+				ClassFactory.moveStd(hmrmClass, newHmrmCls, std);
+				System.out.println("student moved from "+hmrmClass.getFormalClassName()+" to "+newHmrmCls.getFormalClassName());
+			}
+		}
+		if (specClass != newSpecCls) {
+			if (newSpec.equals("No Class")) {
+				//TODO: remove the student
+			} else if (check(specClass, newSpecCls)) {
+				ClassFactory.moveStd(specClass, newSpecCls, std);
+				System.out.println("student moved from "+specClass.getFormalClassName()+" to "+newSpecCls.getFormalClassName());
+			}
+		}
+	}
+	
+	private boolean check(Classes fromCls, Classes toCls) {
+		int rtn;
+		if (toCls.getTotal() == 5) {
+			rtn = JOptionPane.showConfirmDialog(this,
+					"Class "+toCls.getFormalClassName()+" already has "+toCls.getTotal()+" students.\n"+
+					"Do you want to continue?",
+					"Warning",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (rtn == JOptionPane.NO_OPTION)
+				return false;
+		} else if (Math.abs(fromCls.getLowestAge() - toCls.getLowestAge()) > 3.92) {
+			rtn = JOptionPane.showConfirmDialog(this,
+					std.getFirstName()+" "+std.getLastName()+" is outside of the age range for this class.\n"+
+					"Do you want to continue?",
+					"Warning",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (rtn == JOptionPane.NO_OPTION)
+				return false;
+		} else if (!ClassFactory.BLfit(std, toCls)) {
+			rtn = JOptionPane.showConfirmDialog(this,
+					"There are already "+toCls.getBL3()+" behavior level 3 students and "+toCls.getBL2()+
+					"\nbehavior level 2 students in this class.\n"+
+					"Do you want to continue?",
+					"Warning",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (rtn == JOptionPane.NO_OPTION)
+				return false;
+		}
+		if (toCls.getClsName().equals("math")) {
+			if (std.getMath() != toCls.getLvl()) {
+				rtn = JOptionPane.showConfirmDialog(this,
+						std.getFirstName()+" "+std.getLastName()+" is math level "+std.getMath()+" and class "+toCls.getFormalClassName()+" is level "+toCls.getLvl()+".\n"+
+						"Do you want to continue?",
+						"Warning",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE);
+				if (rtn == JOptionPane.NO_OPTION)
+					return false;
+			}
+		} else if (toCls.getClsName().equals("la")) {
+			if (std.getLA() != toCls.getLvl()) {
+				rtn = JOptionPane.showConfirmDialog(this,
+						std.getFirstName()+" "+std.getLastName()+" is lang arts level "+std.getLA()+" and class "+toCls.getFormalClassName()+" is level "+toCls.getLvl()+".\n"+
+						"Do you want to continue?",
+						"Warning",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE);
+				if (rtn == JOptionPane.NO_OPTION)
+					return false;
+			}
+		} else if (toCls.getClsName().equals("read")) {
+			if (std.getRead() != toCls.getLvl()) {
+				rtn = JOptionPane.showConfirmDialog(this,
+						std.getFirstName()+" "+std.getLastName()+" is reading level "+std.getRead()+" and class "+toCls.getFormalClassName()+" is level "+toCls.getLvl()+".\n"+
+						"Do you want to continue?",
+						"Warning",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE);
+				if (rtn == JOptionPane.NO_OPTION)
+					return false;
+			}
+		}
+		return true;
 	}
 }

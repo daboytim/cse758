@@ -106,7 +106,8 @@ public class ScheduleDisplay {
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
-
+			clsHeader += " " + cls.getClsID();
+			
 			if (cls.hasTeacher())
 				clsHeader += ":  " + cls.getTeacher().getName();
 
@@ -136,6 +137,7 @@ public class ScheduleDisplay {
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
+			clsHeader += " " + cls.getClsID();
 
 			if (cls.hasTeacher())
 				clsHeader += ":  " + cls.getTeacher().getName();
@@ -166,6 +168,7 @@ public class ScheduleDisplay {
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
+			clsHeader += " " + cls.getClsID();
 
 			if (cls.hasTeacher())
 				clsHeader += ":  " + cls.getTeacher().getName();
@@ -195,6 +198,7 @@ public class ScheduleDisplay {
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
+			clsHeader += " " + cls.getClsID();
 
 			if (cls.hasTeacher())
 				clsHeader += ":  " + cls.getTeacher().getName();
@@ -224,6 +228,7 @@ public class ScheduleDisplay {
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
+			clsHeader += " " + cls.getClsID();
 
 			if (cls.hasTeacher())
 				clsHeader += ":  " + cls.getTeacher().getName();

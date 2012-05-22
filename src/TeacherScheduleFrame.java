@@ -1,15 +1,17 @@
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterException;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTable.PrintMode;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
-import javax.swing.SwingConstants;
 
 
 public class TeacherScheduleFrame extends JFrame implements ActionListener {
@@ -32,18 +34,23 @@ public class TeacherScheduleFrame extends JFrame implements ActionListener {
 	public TeacherScheduleFrame(Teachers teacher) {
 		teach = teacher;
 		Object[] columnNames = new Object[numColumns];
+		for (int i=0; i<numColumns; i++) {
+			columnNames[i] = "";
+		}
 		Object[][] data = new Object[numRows][numColumns];
 		initData(data);
 		
+		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setExtendedState(NORMAL);
+		setMaximizedBounds(new Rectangle(100,100,600,280));
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		setTitle(teach.getName() + "'s Schedule");
 		
-		table = new JTable();
+		table = new JTable(data, columnNames);
 		table.setRowSelectionAllowed(false);
 		contentPane.add(table, BorderLayout.CENTER);
 		
@@ -66,7 +73,6 @@ public class TeacherScheduleFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnPrint) {
 			print();
-			this.dispose();
 		} else if(e.getSource() == btnClose) {
 			this.dispose();
 		}
@@ -74,48 +80,45 @@ public class TeacherScheduleFrame extends JFrame implements ActionListener {
 	
 	public void print() {
 		//print the schedule
+		try {
+//			JTable p = sched.getScheduleTable();
+//			int h = p.getRowHeight();
+//			Font f = p.getFont();
+//			JTableHeader hh = p.getTableHeader();
+//			p.setTableHeader(null);
+//			p.setRowHeight(9);
+//			p.setFont(new Font("Arial", Font.PLAIN, 8));
+		    boolean complete = table.print(PrintMode.NORMAL);
+//			p.setTableHeader(hh);
+//		    p.setFont(f);
+//		    p.setRowHeight(h);
+		    if (complete) {
+		        /* show a success message  */
+		        
+		    } else {
+		        /*show a message indicating that printing was cancelled */
+		    	JOptionPane.showMessageDialog(this,
+						"Print Job was Cancelled");
+		    }
+		} catch (PrinterException pe) {
+		    /* Printing failed, report to the user */
+			JOptionPane.showMessageDialog(this,
+					"Print Job Failed");
+		    
+		}
 	}
 	
 
 	private void initData(Object[][] data) {
-		int readId, laId, mathId, hrId, specId;
-		Classes read=null, la=null, math=null, homeroom=null, specials=null;
+		Classes read, la, math, homeroom, specials;
 		
 		//figure out which classes this teacher teaches
-		//there has got to be a better way to do this...
-		//keep class objs in teacher obj? No, thats too easy.
-		//well, here goes 5 for loops to determine which 
-		//clsID corresponds to which class...efficient!
-		for (Classes c:ClassFactory.readClsLst) {
-			if (c.getClsID() == teach.getClsID(Teachers.Type.READ)) {
-				read = c;
-				break;
-			}
-		}
-		for (Classes c:ClassFactory.laClsLst) {
-			if (c.getClsID() == teach.getClsID(Teachers.Type.LA)) {
-				la = c;
-				break;
-			}
-		}
-		for (Classes c:ClassFactory.mathClsLst) {
-			if (c.getClsID() == teach.getClsID(Teachers.Type.MATH)) {
-				math = c;
-				break;
-			}
-		}
-		for (Classes c:ClassFactory.homeroomClsLst) {
-			if (c.getClsID() == teach.getClsID(Teachers.Type.HR)) {
-				homeroom = c;
-				break;
-			}
-		}
-		for (Classes c:ClassFactory.specialClsLst) {
-			if (c.getClsID() == teach.getClsID(Teachers.Type.SP)) {
-				specials = c;
-				break;
-			}
-		}
+		read = teach.getCls(Teachers.Type.READ);
+		la = teach.getCls(Teachers.Type.LA);
+		math = teach.getCls(Teachers.Type.MATH);
+		homeroom = teach.getCls(Teachers.Type.HR);
+		specials = teach.getCls(Teachers.Type.SP);
+		
 		
 		List<Students> roster;
 		//now put all the data we want into a table
@@ -124,29 +127,45 @@ public class TeacherScheduleFrame extends JFrame implements ActionListener {
 		data[0][0] = "Name";	data[0][1] = teach.getName();
 		data[0][3] = "Room";	data[0][4] = teach.getRoom();
 		
-		data[2][0] = read.getFormalClassName();
-		roster = read.getStudents();
-		for (int i=0; i<roster.size(); i++)
-			data[3+i][0] = roster.get(i);
-			
-		data[2][1] = la.getFormalClassName();
-		roster = la.getStudents();
-		for (int i=0; i<roster.size(); i++)
-			data[3+i][1] = roster.get(i);
-		
-		data[2][2] = math.getFormalClassName();
-		roster = math.getStudents();
-		for (int i=0; i<roster.size(); i++)
-			data[3+i][2] = roster.get(i);
-		
-		data[2][3] = homeroom.getFormalClassName();
-		roster = homeroom.getStudents();
-		for (int i=0; i<roster.size(); i++)
-			data[3+i][3] = roster.get(i);
-		
-		data[2][4] = specials.getFormalClassName();
-		roster = specials.getStudents();
-		for (int i=0; i<roster.size(); i++)
-			data[3+i][4] = roster.get(i);
+		if (read != null) {
+			data[2][0] = read.getFormalClassName();
+			roster = read.getStudents();
+			for (int i=0; i<roster.size(); i++)
+				data[3+i][0] = roster.get(i);
+		} else {
+			data[2][0] = "No Reading Class";
+		}
+		if (la != null) {
+			data[2][1] = la.getFormalClassName();
+			roster = la.getStudents();
+			for (int i=0; i<roster.size(); i++)
+				data[3+i][1] = roster.get(i);
+		} else {
+			data[2][1] = "No Lang Arts Class";
+		}
+		if (math != null) {
+			data[2][2] = math.getFormalClassName();
+			roster = math.getStudents();
+			for (int i=0; i<roster.size(); i++)
+				data[3+i][2] = roster.get(i);
+		} else {
+			data[2][2] = "No Math Class";
+		}
+		if (homeroom != null) {
+			data[2][3] = homeroom.getFormalClassName();
+			roster = homeroom.getStudents();
+			for (int i=0; i<roster.size(); i++)
+				data[3+i][3] = roster.get(i);
+		} else {
+			data[2][3] = "No Homeroom Class";
+		}
+		if (specials != null) {
+			data[2][4] = specials.getFormalClassName();
+			roster = specials.getStudents();
+			for (int i=0; i<roster.size(); i++)
+				data[3+i][4] = roster.get(i);
+		} else {
+			data[2][4] = "No Specials Class";
+		}
 	}
 }
