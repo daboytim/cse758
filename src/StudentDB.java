@@ -1,10 +1,17 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class StudentDB {
+public class StudentDB implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ArrayList<Students> students;
 	private int waitlist = 0;
-	public StudentDB (){
+	private ClassFactory clsFac;
+	public StudentDB (ClassFactory cf){
+		clsFac = cf;
 		students = new ArrayList<Students>();
 	}
 	
@@ -51,7 +58,7 @@ public class StudentDB {
 			Students std = students.get(i);
 			if (std.getId() == id) {
 				students.remove(i);
-				ClassFactory.kickout(std);
+				clsFac.kickout(std);
 			}
 			
 		}

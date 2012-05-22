@@ -1,11 +1,12 @@
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.io.Serializable;
 
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
-public class RowColoredTable extends JTable {
+public class RowColoredTable extends JTable implements Serializable{
 	private Object data;
 	private int numCols;
 

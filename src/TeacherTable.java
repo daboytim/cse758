@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,8 +13,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 
-public class TeacherTable implements TableModelListener {
+public class TeacherTable implements TableModelListener, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	TeacherDB teachers;
 	JTable table;
 	DefaultTableModel tm;

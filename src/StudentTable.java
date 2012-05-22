@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,12 +22,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-public class StudentTable implements TableModelListener {
+public class StudentTable implements TableModelListener, Serializable {
 	
-	JTable table;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	transient JTable table;
 	DefaultTableModel tm;
 	StudentDB students;
-	JFrame frame;
+	transient JFrame frame;
 	
 	Object[][] data;
 	String[] columnNames = { "Student ID", "First Name", "Last Name",
@@ -34,8 +39,10 @@ public class StudentTable implements TableModelListener {
 			"Behavioral Level" };
 	String[] validStates = { "", "K", "1", "2", "3", "4", "5", "6", "7", "8" };
 	String[] behaviorLevels = { "1", "2", "3" };
+	private ClassFactory clsFac;
 
-	public StudentTable(JFrame f, StudentDB s) {
+	public StudentTable(JFrame f, StudentDB s, ClassFactory cf) {
+		clsFac = cf;
 		frame = f;
 		students = s;
 		data = new Object[300][8];
@@ -195,7 +202,7 @@ public class StudentTable implements TableModelListener {
 		if (students.hasStudent(oldId)) {
 			s = students.getStudent(oldId);
 		} else {
-			s = new Students();
+			s = new Students(clsFac);
 			newStudent = true;
 		}
 

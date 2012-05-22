@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -8,21 +9,31 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class ScheduleDisplay {
+public class ScheduleDisplay implements Serializable{
 
-	private JTable table;
-	DefaultTableModel tm;
-	int maxStudentsPerClass = ClassFactory.getMaxStdPerCls() + 2;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	transient private JTable table;
+	transient DefaultTableModel tm;
+	int maxStudentsPerClass;
 	Object[][] data;
 	String[] columnNames;
 	JButton button = new JButton("Schedule Teachers");
 	// numClasses = #subjects; numRooms = #divisions
-	private int numRooms = ClassFactory.getMaxCls();
+	private int numRooms;
 	private List<Students> unluckyStudents;
 	private int addStdBuf = 2;
+	ClassFactory clsFac;
 
-	public ScheduleDisplay() {
+	public ScheduleDisplay(ClassFactory cf) {
 
+		clsFac = cf;
+		numRooms = clsFac.getMaxCls();
+		maxStudentsPerClass = clsFac.getMaxStdPerCls() + 2;
+
+		
 		int tabRows = (7 * maxStudentsPerClass) + 1;
 		data = new Object[tabRows][numRooms + 2];
 		for (int i = 0; i < tabRows; i++) {
@@ -103,8 +114,8 @@ public class ScheduleDisplay {
 		// fill in students for Reading
 		int currRow = 0;
 		int currCol = 1;
-		for (int i = 0; i < ClassFactory.readClsLst.size(); ++i) {
-			Classes cls = ClassFactory.readClsLst.get(i);
+		for (int i = 0; i < clsFac.readClsLst.size(); ++i) {
+			Classes cls = clsFac.readClsLst.get(i);
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
@@ -134,8 +145,8 @@ public class ScheduleDisplay {
 		// fill in students for LA
 		currRow = maxStudentsPerClass + 3;
 		currCol = 1;
-		for (int i = 0; i < ClassFactory.getTotalLA(); ++i) {
-			Classes cls = ClassFactory.laClsLst.get(i);
+		for (int i = 0; i < clsFac.getTotalLA(); ++i) {
+			Classes cls = clsFac.laClsLst.get(i);
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
@@ -165,8 +176,8 @@ public class ScheduleDisplay {
 		// homeroom
 		currRow = (2 * maxStudentsPerClass) + 6;
 		currCol = 1;
-		for (int i = 0; i < ClassFactory.getTotalSpecial(); ++i) {
-			Classes cls = ClassFactory.specialClsLst.get(i);
+		for (int i = 0; i < clsFac.getTotalSpecial(); ++i) {
+			Classes cls = clsFac.specialClsLst.get(i);
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
@@ -195,8 +206,8 @@ public class ScheduleDisplay {
 		// fill in students for Math
 		currRow = (3 * maxStudentsPerClass) + 9;
 		currCol = 1;
-		for (int i = 0; i < ClassFactory.getTotalMath(); ++i) {
-			Classes cls = ClassFactory.mathClsLst.get(i);
+		for (int i = 0; i < clsFac.getTotalMath(); ++i) {
+			Classes cls = clsFac.mathClsLst.get(i);
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
@@ -225,8 +236,8 @@ public class ScheduleDisplay {
 		// fill in students for homeroom
 		currRow = (4 * maxStudentsPerClass) + 12;
 		currCol = 1;
-		for (int i = 0; i < ClassFactory.getTotalHomeroom(); ++i) {
-			Classes cls = ClassFactory.homeroomClsLst.get(i);
+		for (int i = 0; i < clsFac.getTotalHomeroom(); ++i) {
+			Classes cls = clsFac.homeroomClsLst.get(i);
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
@@ -253,7 +264,7 @@ public class ScheduleDisplay {
 		}
 
 		// fill in unlucky students
-		unluckyStudents = ClassFactory.unlucky;
+		unluckyStudents = clsFac.unlucky;
 		System.out.println("unlucky students size: " + unluckyStudents);
 		if (unluckyStudents != null) {
 			System.out.println("there are unlucky students!");

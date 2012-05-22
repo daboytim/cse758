@@ -1,7 +1,13 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Teachers {
+public class Teachers implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public enum Type {MATH, READ, LA, HR, SP}
 	private String name;
@@ -23,8 +29,10 @@ public class Teachers {
 	private int clsLvlR=-1;
 	private int clsLvlL=-1;
 	private int room=-1;
+	private ClassFactory clsFac;
 	
-	public Teachers(String name, ArrayList<Integer> math, ArrayList<Integer> read, ArrayList<Integer> la){
+	public Teachers(String name, ArrayList<Integer> math, ArrayList<Integer> read, ArrayList<Integer> la, ClassFactory cf){
+		clsFac = cf;
 		this.name = name;
 		this.mathPreference = math;
 		this.capableM = new ArrayList<Integer>(math);
@@ -61,7 +69,7 @@ public class Teachers {
 	{
 		switch (t) {
 		case MATH: {
-			for (Classes c : ClassFactory.mathClsLst) {
+			for (Classes c : clsFac.mathClsLst) {
 				if (c.getClsID() == this.clsIDM) {
 					return c;
 				}
@@ -70,7 +78,7 @@ public class Teachers {
 		}
 		case READ:
 		{
-			for (Classes c : ClassFactory.readClsLst) {
+			for (Classes c : clsFac.readClsLst) {
 				if (c.getClsID() == this.clsIDR) {
 					return c;
 				}
@@ -79,7 +87,7 @@ public class Teachers {
 		}
 		case LA:
 		{
-			for (Classes c : ClassFactory.laClsLst) {
+			for (Classes c : clsFac.laClsLst) {
 				if (c.getClsID() == this.clsIDL) {
 					return c;
 				}
@@ -89,7 +97,7 @@ public class Teachers {
 	
 		case HR:
 		{
-			for (Classes c : ClassFactory.homeroomClsLst) {
+			for (Classes c : clsFac.homeroomClsLst) {
 				if (c.getClsID() == this.clsIDH) {
 					return c;
 				}
@@ -99,7 +107,7 @@ public class Teachers {
 
 		case SP:
 		{
-			for (Classes c : ClassFactory.specialClsLst) {
+			for (Classes c : clsFac.specialClsLst) {
 				if (c.getClsID() == this.clsIDS) {
 					return c;
 				}

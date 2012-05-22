@@ -9,7 +9,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 
-public class Menu extends JFrame {
+public class Menu extends JFrame  {
 	/**
 	 * 
 	 */
@@ -27,8 +27,8 @@ public class Menu extends JFrame {
 	TeacherDB teachers;
 
 	public Menu(MainFrame mf, StudentDB s, JFrame f, StudentController sc,
-			TeacherDB t, TeacherController tc) {
-		MenuController mc = new MenuController();
+			TeacherDB t, TeacherController tc, ClassFactory cf) {
+		MenuController mc = new MenuController(cf);
 
 		frame = f;
 		students = s;

@@ -47,6 +47,10 @@ public class DataEntry {
 			try {
 				// deserialize
 				mf = (MainFrame) input.readObject();
+				for (int i = 0; i < mf.students.getSize(); i ++) {
+					System.out.println(mf.students.getStudents().get(i));
+				}
+				mf.update();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} finally {
@@ -54,6 +58,7 @@ public class DataEntry {
 			}
 		} catch (IOException ex) {
 			System.err.println("Cannot load file from disk.");
+			ex.printStackTrace();
 		}
 	}
 }

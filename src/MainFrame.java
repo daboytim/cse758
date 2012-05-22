@@ -8,18 +8,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.print.PrinterException;
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,25 +34,33 @@ import javax.swing.JTable.PrintMode;
 import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 
-public class MainFrame implements ActionListener, MouseListener {
-	static JTabbedPane tabbedPane;
-	static JFrame frame;
-	StudentController sc;
-	TeacherController tc;
-	StudentTable sTab;
-	TeacherTable tTab;
-	JScrollPane panel1, panel2, panel3;
-	ScheduleDisplay sched;
+public class MainFrame implements ActionListener, MouseListener, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	transient static JTabbedPane tabbedPane;
+	transient static JFrame frame;
+	transient StudentController sc;
+	transient TeacherController tc;
+	transient StudentTable sTab;
+	transient TeacherTable tTab;
+	transient JScrollPane panel1, panel2, panel3;
+	transient ScheduleDisplay sched;
 	StudentDB students;
 	TeacherDB teachers;
-	Menu menu;
-	JPopupMenu rightClickMenu;
-	JMenuItem editItem;
-	AddStudentFrame addStd;
+	ClassFactory clsFac;
+	transient Menu menu;
+	transient JPopupMenu rightClickMenu;
+	transient JMenuItem editItem;
+	transient AddStudentFrame addStd;
 
 	public MainFrame() {
-		students = new StudentDB();
-		teachers = new TeacherDB();
+		if (students == null)
+			students = new StudentDB(clsFac);
+		if (teachers == null)
+			teachers = new TeacherDB();
+		clsFac = new ClassFactory();
 		frame = new JFrame();
 		// create the right click menu
 		rightClickMenu = new JPopupMenu();
@@ -82,7 +85,7 @@ public class MainFrame implements ActionListener, MouseListener {
 
 		tabbedPane = new JTabbedPane();
 
-		sTab = new StudentTable(frame, students);
+		sTab = new StudentTable(frame, students, clsFac);
 		panel1 = new JScrollPane(sTab.getStudentTable());
 		tabbedPane.addTab("Student Entry", panel1);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
@@ -98,10 +101,10 @@ public class MainFrame implements ActionListener, MouseListener {
 		sc = new StudentController(frame, students, addStd);
 		tc = new TeacherController(frame, teachers);
 
-		menu = new Menu(this, students, frame, sc, teachers, tc);
+		menu = new Menu(this, students, frame, sc, teachers, tc, clsFac);
 		frame.setJMenuBar(menu.getMenu());
 
-		sched = new ScheduleDisplay();
+		sched = new ScheduleDisplay(clsFac);
 		sched.getScheduleTable().addMouseListener(this);
 		panel3 = new JScrollPane(sched.getScheduleTable());
 		tabbedPane.addTab("Schedule", panel3);
@@ -137,12 +140,12 @@ public class MainFrame implements ActionListener, MouseListener {
 
 		} else if (obj.equals(Menu.schedulize)) {
 			// Code here to call schedule algorithm and display schedules
-			Schedulizer.genSchedule(students);
+			Schedulizer.genSchedule(students, clsFac);
 			sched.update();
 			tabbedPane.setSelectedIndex(2);
 		} else if (obj.equals(Menu.assign)) {
 			// TODO: Code here to call schedule algorithm and display schedules
-			ScheduleTeachers.assign(teachers);
+			ScheduleTeachers.assign(teachers, clsFac);
 			sched.update();
 			tabbedPane.setSelectedIndex(2);
 		} else if (obj.equals(editItem)) {
@@ -200,7 +203,7 @@ public class MainFrame implements ActionListener, MouseListener {
 							Students s = new Students(id, fName, lName, bDate, m, l, r, bh);
 							students.addStudent(s);
 							//TODO: Call to Schedulizer to try to add an individual student
-							Schedulizer.addNewStd(s);
+							Schedulizer.addNewStd(s, clsFac);
 							sched.update();	
 						}
 					}
@@ -284,7 +287,7 @@ public class MainFrame implements ActionListener, MouseListener {
 			if (cls != null) {
 				t = cls.getTeacher();
 				if (t != null) {
-					new TeacherModFrame(t);
+					new TeacherModFrame(t, clsFac);
 				} else  {
 					JOptionPane.showMessageDialog(frame,
 							"This class does not have a teacher.",
@@ -298,7 +301,7 @@ public class MainFrame implements ActionListener, MouseListener {
 						JOptionPane.ERROR_MESSAGE);
 			}
 		} else if (x > 0 && y >= 0) {
-			new ManualModFrame((Students) cell, sched);
+			new ManualModFrame((Students) cell, sched, clsFac);
 		}
 	}
 	
@@ -315,27 +318,27 @@ public class MainFrame implements ActionListener, MouseListener {
 			str = str.substring(index, end);
 		int id = Integer.parseInt(str);
 		//str should now contain the class id, i think
-		for (Classes c:ClassFactory.readClsLst) {
+		for (Classes c:clsFac.readClsLst) {
 			if (id == c.getClsID()) {
 				return c;
 			}
 		}
-		for (Classes c:ClassFactory.laClsLst) {
+		for (Classes c:clsFac.laClsLst) {
 			if (id == c.getClsID()) {
 				return c;
 			}
 		}
-		for (Classes c:ClassFactory.mathClsLst) {
+		for (Classes c:clsFac.mathClsLst) {
 			if (id == c.getClsID()) {
 				return c;
 			}
 		}
-		for (Classes c:ClassFactory.homeroomClsLst) {
+		for (Classes c:clsFac.homeroomClsLst) {
 			if (id == c.getClsID()) {
 				return c;
 			}
 		}
-		for (Classes c:ClassFactory.specialClsLst) {
+		for (Classes c:clsFac.specialClsLst) {
 			if (id == c.getClsID()) {
 				return c;
 			}
@@ -430,6 +433,7 @@ public class MainFrame implements ActionListener, MouseListener {
 			}
 		} catch (IOException ex) {
 			System.err.println("Unable to write file to disk");
+			ex.printStackTrace();
 		}
 	}
 

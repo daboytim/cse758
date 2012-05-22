@@ -1,22 +1,23 @@
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.util.Vector;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
-public class TeacherModFrame extends JFrame implements ActionListener{
+
+public class TeacherModFrame extends JFrame implements ActionListener, Serializable{
 
 	/**
 	 * 
@@ -35,11 +36,13 @@ public class TeacherModFrame extends JFrame implements ActionListener{
 	private JButton btnOk;
 	private JButton btnCancel;
 	private Classes mathCls, readCls, laCls, hmrmCls, specCls;
+	private ClassFactory clsFac;
 
 	/**
 	 * Create the frame.
 	 */
-	public TeacherModFrame(Teachers teacher) {
+	public TeacherModFrame(Teachers teacher, ClassFactory cf) {
+		clsFac = cf;
 		setAlwaysOnTop(true);
 		setResizable(false);
 		setTitle("Move Teacher");
@@ -92,8 +95,8 @@ public class TeacherModFrame extends JFrame implements ActionListener{
 		
 		//add list of current math classes
 		Vector<String> mathClassNames = new Vector<String>();
-		for (int i=0; i<ClassFactory.mathClsLst.size(); i++) {
-			mathClassNames.add(ClassFactory.mathClsLst.get(i).getFormalClassName());
+		for (int i=0; i<clsFac.mathClsLst.size(); i++) {
+			mathClassNames.add(clsFac.mathClsLst.get(i).getFormalClassName());
 		}
 		mathClassNames.add("No Class");
 		comboBoxMath = new JComboBox(mathClassNames);
@@ -105,8 +108,8 @@ public class TeacherModFrame extends JFrame implements ActionListener{
 		
 		//add list of current la classes
 		Vector<String> laClassNames = new Vector<String>();
-		for (int i=0; i<ClassFactory.laClsLst.size(); i++) {
-			laClassNames.add(ClassFactory.laClsLst.get(i).getFormalClassName());
+		for (int i=0; i<clsFac.laClsLst.size(); i++) {
+			laClassNames.add(clsFac.laClsLst.get(i).getFormalClassName());
 		}
 		laClassNames.add("No Class");
 		comboBoxLa = new JComboBox(laClassNames);
@@ -118,8 +121,8 @@ public class TeacherModFrame extends JFrame implements ActionListener{
 		
 		//add list of current reading classes
 		Vector<String> readClassNames = new Vector<String>();
-		for (int i=0; i<ClassFactory.readClsLst.size(); i++) {
-			readClassNames.add(ClassFactory.readClsLst.get(i).getFormalClassName());
+		for (int i=0; i<clsFac.readClsLst.size(); i++) {
+			readClassNames.add(clsFac.readClsLst.get(i).getFormalClassName());
 		}
 		readClassNames.add("No Class");
 		comboBoxRead = new JComboBox(readClassNames);
@@ -131,8 +134,8 @@ public class TeacherModFrame extends JFrame implements ActionListener{
 		
 		//add list of current homeroom classes
 		Vector<String> hmrmClassNames = new Vector<String>();
-		for (int i=0; i<ClassFactory.homeroomClsLst.size(); i++) {
-			hmrmClassNames.add(ClassFactory.homeroomClsLst.get(i).getFormalClassName());
+		for (int i=0; i<clsFac.homeroomClsLst.size(); i++) {
+			hmrmClassNames.add(clsFac.homeroomClsLst.get(i).getFormalClassName());
 		}
 		hmrmClassNames.add("No Class");
 		comboBoxHomeroom = new JComboBox(hmrmClassNames);
@@ -144,8 +147,8 @@ public class TeacherModFrame extends JFrame implements ActionListener{
 		
 		//add list of current special classes
 		Vector<String> specClassNames = new Vector<String>();
-		for (int i=0; i<ClassFactory.specialClsLst.size(); i++) {
-			specClassNames.add(ClassFactory.specialClsLst.get(i).getFormalClassName());
+		for (int i=0; i<clsFac.specialClsLst.size(); i++) {
+			specClassNames.add(clsFac.specialClsLst.get(i).getFormalClassName());
 		}
 		specClassNames.add("No Class");
 		comboBoxSpecials = new JComboBox(specClassNames);
