@@ -90,6 +90,8 @@ public class ScheduleDisplay implements Serializable{
 	}
 
 	public void populateTable() {
+		int tabRows = (7 * maxStudentsPerClass) + 1;
+		data = new Object[tabRows][numRooms + 2];
 
 		data[0][0] = " Reading";
 		data[1][0] = " 9 - 10:35";
