@@ -15,6 +15,12 @@ public class Schedulizer implements Serializable{
 	public static void genSchedule(StudentDB stds, ClassFactory clsFac) {
 
 		List<Students> std = stds.getStudents();
+		clsFac.mathClsLst.clear();
+		clsFac.laClsLst.clear();
+		clsFac.readClsLst.clear();
+		clsFac.homeroomClsLst.clear();
+		clsFac.specialClsLst.clear();
+		clsFac.unlucky.clear();
 
 		/*
 		 * Scanner in = new Scanner(System.in);
