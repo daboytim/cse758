@@ -133,8 +133,8 @@ public class ClassFactory {
 	 * @param std
 	 * @throws StdClsCompatibleException
 	 */
-	public static void moveStd(Classes fromCls, Classes toCls, Students std)
-			throws StdClsCompatibleException {
+	public static void moveStd(Classes fromCls, Classes toCls, Students std) {
+		//	throws StdClsCompatibleException {
 		// throwing these exceptions defeats the purpose of manual modification
 		// if (!fromCls.getClsName().equals(toCls.getClsName())) {
 		// throw new StdClsCompatibleException(0);
