@@ -163,7 +163,7 @@ public class ScheduleDisplay {
 		// homeroom
 		currRow = (2 * maxStudentsPerClass) + 6;
 		currCol = 1;
-		for (int i = 0; i < ClassFactory.getTotalMath(); ++i) {
+		for (int i = 0; i < ClassFactory.getTotalSpecial(); ++i) {
 			Classes cls = ClassFactory.specialClsLst.get(i);
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
@@ -223,7 +223,7 @@ public class ScheduleDisplay {
 		// fill in students for homeroom
 		currRow = (4 * maxStudentsPerClass) + 12;
 		currCol = 1;
-		for (int i = 0; i < ClassFactory.getTotalMath(); ++i) {
+		for (int i = 0; i < ClassFactory.getTotalHomeroom(); ++i) {
 			Classes cls = ClassFactory.homeroomClsLst.get(i);
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);

@@ -43,7 +43,7 @@ public class ClassFactory {
 	}
 
 	public static int getTotalClasses() {
-		return mathClsLst.size() + laClsLst.size() + readClsLst.size();
+		return mathClsLst.size() + laClsLst.size() + readClsLst.size() + homeroomClsLst.size() + specialClsLst.size();
 	}
 
 	public static int getTotalMath() {
@@ -56,6 +56,14 @@ public class ClassFactory {
 
 	public static int getTotalRead() {
 		return readClsLst.size();
+	}
+	
+	public static int getTotalHomeroom () {
+		return homeroomClsLst.size();
+	}
+	
+	public static int getTotalSpecial () {
+		return specialClsLst.size();
 	}
 
 	/**
