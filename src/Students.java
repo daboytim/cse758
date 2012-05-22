@@ -36,7 +36,7 @@ public class Students implements Comparable<Students>, Serializable {
 		clsFac = cf;
 		totalStudents++;
 	}
-	public Students(Integer id, String fName, String lName, Date bDate,int math,int la, int read, int bl){
+	public Students(Integer id, String fName, String lName, Date bDate,int math,int la, int read, int bl, ClassFactory cf){
 		totalStudents+=1;
 		this.id = id;
 		this.fName=fName;
@@ -52,6 +52,7 @@ public class Students implements Comparable<Students>, Serializable {
 		this.la=la;
 		this.read=read;
 		this.bl = bl;		
+		clsFac = cf;
 	}
 	
 	public int getId() {

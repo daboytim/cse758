@@ -27,12 +27,14 @@ public class StudentController implements ActionListener, Serializable {
 	JFrame frame;
 	StudentDB students;
 	AddStudentFrame addStd;
+	private ClassFactory clsFac;
 
 
-	public StudentController(JFrame f, StudentDB s, AddStudentFrame a) {
+	public StudentController(JFrame f, StudentDB s, AddStudentFrame a, ClassFactory cf) {
 		frame = f;
 		students = s;
 		addStd = a;
+		clsFac = cf;
 	}
 	
 	public void actionPerformed(ActionEvent event) {
@@ -73,7 +75,8 @@ public class StudentController implements ActionListener, Serializable {
 						Integer.parseInt(params[4]),
 						Integer.parseInt(params[5]),
 						Integer.parseInt(params[6]),
-						Integer.parseInt(params[7]));
+						Integer.parseInt(params[7]),
+						clsFac);
 				students.addStudent(s);
 			}
 		} catch (FileNotFoundException e) {

@@ -98,7 +98,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 
 		addStd = new AddStudentFrame(this);
 
-		sc = new StudentController(frame, students, addStd);
+		sc = new StudentController(frame, students, addStd, clsFac);
 		tc = new TeacherController(frame, teachers);
 
 		menu = new Menu(this, students, frame, sc, teachers, tc, clsFac);
@@ -200,7 +200,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 							String bhlevel = addStd.combBoxBhLevel.getSelectedItem().toString();
 							int bh =  Integer.parseInt(bhlevel);
 							
-							Students s = new Students(id, fName, lName, bDate, m, l, r, bh);
+							Students s = new Students(id, fName, lName, bDate, m, l, r, bh, clsFac);
 							students.addStudent(s);
 							//TODO: Call to Schedulizer to try to add an individual student
 							Schedulizer.addNewStd(s, clsFac);
