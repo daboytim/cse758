@@ -185,18 +185,6 @@ public class ClassFactory implements Serializable {
 		toCls.addStd(std);
 		fromCls.removeStd(std.getId());
 
-		for (Students stdt : unlucky) {
-			if (compatible(stdt, fromCls)) {
-				fromCls.addStd(stdt);
-				unlucky.remove(stdt);
-				stdt.setWlReason("");
-				System.out.println("From waitlist,student:" + stdt.toString()
-						+ " has been added to class "
-						+ fromCls.getFormalClassName());
-				break;
-			}
-		}
-
 		// console output
 		System.out.println(toCls.getFormalClassName() + " added student:"
 				+ std.toString() + ":");
@@ -205,7 +193,65 @@ public class ClassFactory implements Serializable {
 				+ std.toString() + ":");
 		System.out.println(fromCls.toString());
 
-		// }
+		//find a fit std from waitlist
+		for (Students stdt : unlucky) {
+			Classes math = null, la = null, read = null, hr = null, sp = null;
+			for (Classes cls : this.mathClsLst) {
+				if (this.compatible(stdt, cls)) {
+					math = cls;
+				}
+			}
+			for (Classes cls : this.laClsLst) {
+				if (this.compatible(stdt, cls)) {
+					la = cls;
+				}
+			}
+			for (Classes cls : this.readClsLst) {
+				if (this.compatible(stdt, cls)) {
+					read = cls;
+				}
+			}
+			for (Classes cls : this.homeroomClsLst) {
+				if (this.compatible(stdt, cls)) {
+					hr = cls;
+				}
+			}
+			for (Classes cls : this.specialClsLst) {
+				if (this.compatible(stdt, cls)) {
+					sp = cls;
+				}
+			}
+			if (math != null && la != null && read != null && sp != null
+					&& hr != null) {
+				unlucky.remove(stdt);
+				stdt.setWlReason("");
+				math.addStd(stdt);
+				la.addStd(stdt);
+				read.addStd(stdt);
+				hr.addStd(stdt);
+				sp.addStd(stdt);
+
+				System.out.println("From waitlist,student:" + stdt.toString()
+						+ " has been added to following classes: ");
+				System.out.println(math.toString());
+				System.out.println(la.toString());
+				System.out.println(read.toString());
+				System.out.println(hr.toString());
+				System.out.println(sp.toString());
+
+			}
+
+			// if (compatible(stdt, fromCls)) { //TODO fixit: I forget to check
+			// other 4 classes compatibility
+			// fromCls.addStd(stdt);
+			// unlucky.remove(stdt);
+			//
+			// System.out.println("From waitlist,student:" + stdt.toString()
+			// + " has been added to class "
+			// + fromCls.getFormalClassName());
+			// break;
+			// }
+		}
 	}
 
 	public int getMostClasses() {

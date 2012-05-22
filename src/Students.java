@@ -205,7 +205,7 @@ public class Students implements Comparable<Students>, Serializable {
 		for(Classes cls:clsFac.mathClsLst){
 			if(cls.getClsID()==this.mathClsID)	return cls;
 		}
-		System.err.println("This should not happen.");
+		System.err.println("This should not happen.(Students::getMathCls)");
 		return null;
 	}
 	/**
@@ -216,7 +216,7 @@ public class Students implements Comparable<Students>, Serializable {
 		for(Classes cls:clsFac.laClsLst){
 			if(cls.getClsID()==this.laClsID)	return cls;
 		}
-		System.err.println("This should not happen.");
+		System.err.println("This should not happen.(Students::getLACls)");
 		return null;
 	}
 	/**
@@ -227,7 +227,7 @@ public class Students implements Comparable<Students>, Serializable {
 		for(Classes cls:clsFac.readClsLst){
 			if(cls.getClsID()==this.readClsID)	return cls;
 		}
-		System.err.println("This should not happen.");
+		System.err.println("This should not happen.(Students::getReadCls)");
 		return null;
 	}
 	/**
@@ -238,7 +238,7 @@ public class Students implements Comparable<Students>, Serializable {
 		for(Classes cls:clsFac.homeroomClsLst){
 			if(cls.getClsID()==this.homeroomClsID)	return cls;
 		}
-		System.err.println("This should not happen.");
+		System.err.println("This should not happen.(Students::getHomeroomCls)");
 		return null;
 	}
 	/**
@@ -249,7 +249,7 @@ public class Students implements Comparable<Students>, Serializable {
 		for(Classes cls:clsFac.specialClsLst){
 			if(cls.getClsID()==this.specialClsID)	return cls;
 		}
-		System.err.println("This should not happen.");
+		System.err.println("This should not happen.(Students::getSpecialCls)");
 		return null;
 	}
 	
