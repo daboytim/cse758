@@ -90,7 +90,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 		tabbedPane.addTab("Student Entry", panel1);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
-		tTab = new TeacherTable(frame, teachers);
+		tTab = new TeacherTable(frame, teachers, clsFac);
 		tTab.getTeacherTable().addMouseListener(this);
 		panel2 = new JScrollPane(tTab.getTeacherTable());
 		tabbedPane.addTab("Teacher Entry", panel2);

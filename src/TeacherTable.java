@@ -27,8 +27,10 @@ public class TeacherTable implements TableModelListener, Serializable {
 	String[] columnNames = { "Name", "Math Class Levels",
 			"Reading Class Levels", "Language Arts Class Levels" };
 	TeacherController controller;
+	ClassFactory clsFac;
 
-	public TeacherTable(JFrame f, TeacherDB t) {
+	public TeacherTable(JFrame f, TeacherDB t, ClassFactory cf) {
+		clsFac = cf;
 		teachers = t;
 		frame = f;	
 		data = new Object[300][4];
@@ -140,7 +142,7 @@ public class TeacherTable implements TableModelListener, Serializable {
 			if (teachers.hasTeacher(currName)) {
 				t = teachers.getTeacher(currName);
 			} else {
-				t = new Teachers(currName);
+				t = new Teachers(currName, clsFac);
 				newTeacher = true;
 			}
 
