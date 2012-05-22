@@ -28,7 +28,7 @@ public class ClassFactory {
 	 * @param cls
 	 * @return
 	 */
-	private static boolean BLfit(Students std, Classes cls) {
+	public static boolean BLfit(Students std, Classes cls) {
 		if (cls.getBL3() == 1 && std.getBL() == 3) {
 			return false;
 		}

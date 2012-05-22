@@ -268,7 +268,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 	}
 	
 	private void removeStudent() {
-		
+		ClassFactory.kickout(std);
 	}
 	
 	private void updateStdInfo() {
