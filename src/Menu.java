@@ -19,7 +19,7 @@ public class Menu extends JFrame {
 	JFrame frame;
 	JMenu student, teacher, schedule, edit, file, pref;
 	static JMenuItem sOpen, sSave, sAdd, tOpen, tSave, schedulize, assign,
-			copy, paste, exit1, pref1, print, lock, unlock;
+			copy, paste, exit1, pref1, print, lock, unlock, save, load;
 	JTextArea textArea;
 	FileOutputStream fos;
 	BufferedWriter bwriter;
@@ -38,13 +38,17 @@ public class Menu extends JFrame {
 
 		file = new JMenu("File");
 		exit1 = new JMenuItem("Exit Application");
-
-		// TODO: Implement/test printing
 		print = new JMenuItem("Print Schedule");
+		save = new JMenuItem("Save Schedule");
+		load = new JMenuItem("Load Schedule");
 
 		exit1.addActionListener(mc);
 		print.addActionListener(mf);
+		save.addActionListener(mf);
+		load.addActionListener(mf);
 		file.add(print);
+		file.add(save);
+		file.add(load);
 		file.add(exit1);
 		bar.add(file);
 

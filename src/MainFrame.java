@@ -8,6 +8,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.print.PrinterException;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -239,6 +251,15 @@ public class MainFrame implements ActionListener, MouseListener {
 						"Print Job Failed");
 			    
 			}
+		} else if (obj.equals(Menu.save)) {
+			if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+				saveObject(this, chooser.getSelectedFile().toString());
+			}
+			
+		} else if (obj.equals(Menu.load)) {
+			if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
+				DataEntry.loadObject(chooser.getSelectedFile().toString());
+			
 		}
 		tabbedPane.revalidate();
 		tabbedPane.setVisible(false);
@@ -389,4 +410,27 @@ public class MainFrame implements ActionListener, MouseListener {
 			}
 		}
 	}
+	
+	/**
+	 * Save object on disk.
+	 * 
+	 * @param mf
+	 * @param fileName
+	 */
+	public void saveObject(MainFrame mf, String fileName) {
+		try {
+			// use buffering
+			OutputStream file = new FileOutputStream(fileName);
+			OutputStream buffer = new BufferedOutputStream(file);
+			ObjectOutput output = new ObjectOutputStream(buffer);
+			try {
+				output.writeObject(mf);
+			} finally {
+				output.close();
+			}
+		} catch (IOException ex) {
+			System.err.println("Unable to write file to disk");
+		}
+	}
+
 }
