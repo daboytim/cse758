@@ -62,17 +62,18 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 			teachers = new TeacherDB();
 		clsFac = new ClassFactory();
 		frame = new JFrame();
-		// create the right click menu
-		rightClickMenu = new JPopupMenu();
-		editItem = new JMenuItem("Edit");
-		editItem.addActionListener(this);
-		rightClickMenu.add(editItem);
+
 		update();
 	}
 
 	public void update() {
 		frame.setVisible(false); // Hide the old frame, this is probably NOT
 									// efficient
+		// create the right click menu
+		rightClickMenu = new JPopupMenu();
+		editItem = new JMenuItem("Edit");
+		editItem.addActionListener(this);
+		rightClickMenu.add(editItem);
 		frame = new JFrame();
 		frame.validate();
 		frame.setState(Frame.NORMAL);
@@ -310,7 +311,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 		} catch (NullPointerException np) {
 			// Do Nothing
 		} catch (ArrayIndexOutOfBoundsException a) {
-			//Do Nothing
+			// Do Nothing
 		}
 	}
 
