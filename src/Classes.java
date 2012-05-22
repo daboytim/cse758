@@ -49,6 +49,7 @@ public class Classes implements Serializable{
 	public Students removeStd(int id) {
 		for (Students std : this.students) {
 			if (std.getId() == id) {
+				std.resignCls(this.classname);
 				this.students.remove(std);
 				
 				//update # of bl3 and bl2 std
