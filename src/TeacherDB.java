@@ -1,6 +1,11 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TeacherDB {
+public class TeacherDB implements Serializable {
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 		ArrayList<Teachers> teachers;
 		
 		public TeacherDB (){

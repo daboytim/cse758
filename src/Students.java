@@ -1,10 +1,15 @@
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 
-public class Students implements Comparable<Students> {
+public class Students implements Comparable<Students>, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String fName;
 	private String lName;
@@ -21,12 +26,14 @@ public class Students implements Comparable<Students> {
 	private int homeroomClsID;
 	private int specialClsID;
 	private int waitlistID;
-	private String wlReason;
+	private String wlReason = "";
+	private ClassFactory clsFac;
 	
 	//TODO: Replace Age with BDate and calculate Age.
 	//Largest age gap 3yrs 11 months
 	
-	public Students() {
+	public Students(ClassFactory cf) {
+		clsFac = cf;
 		totalStudents++;
 	}
 	public Students(Integer id, String fName, String lName, Date bDate,int math,int la, int read, int bl){
@@ -139,7 +146,11 @@ public class Students implements Comparable<Students> {
 	 */
 	@Override
 	public String toString(){
-		return fName + " " + lName + " (" + bl + ")";
+		String s = fName + " " + lName + " (" + bl + ")";
+		if (!wlReason.isEmpty())
+			s += " " + wlReason;
+		
+		return s;
 		//return "Student name:"+fName+" "+lName+"; age: "+Math.floor(getAge())+"; Math level: "+math+"; LA level: "+la+"; Reading level: "+read+"; Behavior level: "+this.getBL()+".";
 		
 	}
@@ -190,7 +201,7 @@ public class Students implements Comparable<Students> {
 	 * @return 
 	 */
 	public Classes getMathCls(){
-		for(Classes cls:ClassFactory.mathClsLst){
+		for(Classes cls:clsFac.mathClsLst){
 			if(cls.getClsID()==this.mathClsID)	return cls;
 		}
 		System.err.println("This should not happen.");
@@ -201,7 +212,7 @@ public class Students implements Comparable<Students> {
 	 * @return
 	 */
 	public Classes getLACls(){
-		for(Classes cls:ClassFactory.laClsLst){
+		for(Classes cls:clsFac.laClsLst){
 			if(cls.getClsID()==this.laClsID)	return cls;
 		}
 		System.err.println("This should not happen.");
@@ -212,7 +223,7 @@ public class Students implements Comparable<Students> {
 	 * @return
 	 */
 	public Classes getReadCls(){
-		for(Classes cls:ClassFactory.readClsLst){
+		for(Classes cls:clsFac.readClsLst){
 			if(cls.getClsID()==this.readClsID)	return cls;
 		}
 		System.err.println("This should not happen.");
@@ -223,7 +234,7 @@ public class Students implements Comparable<Students> {
 	 * @return
 	 */
 	public Classes getHomeroomCls(){
-		for(Classes cls:ClassFactory.homeroomClsLst){
+		for(Classes cls:clsFac.homeroomClsLst){
 			if(cls.getClsID()==this.homeroomClsID)	return cls;
 		}
 		System.err.println("This should not happen.");
@@ -234,7 +245,7 @@ public class Students implements Comparable<Students> {
 	 * @return
 	 */
 	public Classes getSpecialCls(){
-		for(Classes cls:ClassFactory.specialClsLst){
+		for(Classes cls:clsFac.specialClsLst){
 			if(cls.getClsID()==this.specialClsID)	return cls;
 		}
 		System.err.println("This should not happen.");

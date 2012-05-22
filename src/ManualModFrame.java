@@ -1,21 +1,24 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.BoxLayout;
-import javax.swing.border.TitledBorder;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.util.Vector;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
-public class ManualModFrame extends JFrame implements ActionListener{
+
+public class ManualModFrame extends JFrame implements ActionListener, Serializable{
 
 	/**
 	 * 
@@ -25,6 +28,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 	private JTextField txtFieldFirstName;
 	private JTextField txtFieldLastName;
 	private JTextField txtFieldStudentID;
+	private JTextField txtFieldAge;
 	private JComboBox combBoxBhLevel;
 	private JComboBox combBoxMathAsses;
 	private JComboBox combBoxReadAsses;
@@ -40,13 +44,15 @@ public class ManualModFrame extends JFrame implements ActionListener{
 	private ScheduleDisplay sched;
 	private Students std;
 	private Classes mathClass, laClass, readClass, hmrmClass, specClass;
+	private ClassFactory clsFac;
 
 	/**
 	 * Create the frame.
 	 */
-	public ManualModFrame(Students student, ScheduleDisplay sched) {
+	public ManualModFrame(Students student, ScheduleDisplay sched, ClassFactory cf) {
 		std = student;
 		this.sched = sched;
+		clsFac = cf;
 		buildFrame();
 	}
 	
@@ -62,7 +68,8 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		setResizable(false);
 		setTitle("Move Student");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 230, 400);
+		setExtendedState(NORMAL);
+		setMaximizedBounds(new Rectangle(100,100,300,450));
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -71,7 +78,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		//create the student panel
 		JPanel stdPanel = new JPanel();
 		stdPanel.setBorder(new TitledBorder(null, "Student", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		stdPanel.setLayout(new GridLayout(3,2));
+		stdPanel.setLayout(new GridLayout(4,2));
 		contentPane.add(stdPanel);
 		
 		txtFieldStudentID = new JTextField(std.getId()+"");
@@ -83,12 +90,17 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		txtFieldLastName = new JTextField(std.getLastName());
 		txtFieldLastName.setEditable(false);
 		
+		txtFieldAge = new JTextField(""+(int)std.getAge());
+		txtFieldAge.setEditable(false);
+		
 		stdPanel.add(new JLabel("Student ID"));
 		stdPanel.add(txtFieldStudentID);
 		stdPanel.add(new JLabel("First Name"));
 		stdPanel.add(txtFieldFirstName);
 		stdPanel.add(new JLabel("Last Name"));
 		stdPanel.add(txtFieldLastName);
+		stdPanel.add(new JLabel("Age"));
+		stdPanel.add(txtFieldAge);
 		
 		//create the assessment panel
 		JPanel assesPanel = new JPanel();
@@ -127,8 +139,8 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		
 		//add list of current math classes
 		Vector<String> mathClassNames = new Vector<String>();
-		for (int i=0; i<ClassFactory.mathClsLst.size(); i++) {
-			mathClassNames.add(ClassFactory.mathClsLst.get(i).getFormalClassName());
+		for (int i=0; i<clsFac.mathClsLst.size(); i++) {
+			mathClassNames.add(clsFac.mathClsLst.get(i).getFormalClassName());
 		}
 		mathClassNames.add("No Class");
 		combBoxMath = new JComboBox(mathClassNames);
@@ -140,8 +152,8 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		
 		//add list of current la classes
 		Vector<String> laClassNames = new Vector<String>();
-		for (int i=0; i<ClassFactory.laClsLst.size(); i++) {
-			laClassNames.add(ClassFactory.laClsLst.get(i).getFormalClassName());
+		for (int i=0; i<clsFac.laClsLst.size(); i++) {
+			laClassNames.add(clsFac.laClsLst.get(i).getFormalClassName());
 		}
 		laClassNames.add("No Class");
 		combBoxLA = new JComboBox(laClassNames);
@@ -153,8 +165,8 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		
 		//add list of current reading classes
 		Vector<String> readClassNames = new Vector<String>();
-		for (int i=0; i<ClassFactory.readClsLst.size(); i++) {
-			readClassNames.add(ClassFactory.readClsLst.get(i).getFormalClassName());
+		for (int i=0; i<clsFac.readClsLst.size(); i++) {
+			readClassNames.add(clsFac.readClsLst.get(i).getFormalClassName());
 		}
 		readClassNames.add("No Class");
 		combBoxRead = new JComboBox(readClassNames);
@@ -166,11 +178,11 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		
 		//add list of current homeroom classes
 		Vector<String> hmrmClassNames = new Vector<String>();
-		for (int i=0; i<ClassFactory.homeroomClsLst.size(); i++) {
-			hmrmClassNames.add(ClassFactory.homeroomClsLst.get(i).getFormalClassName());
+		for (int i=0; i<clsFac.homeroomClsLst.size(); i++) {
+			hmrmClassNames.add(clsFac.homeroomClsLst.get(i).getFormalClassName());
 		}
 		hmrmClassNames.add("No Class");
-		combBoxHomeroom = new JComboBox();
+		combBoxHomeroom = new JComboBox(hmrmClassNames);
 		if (hmrmClass != null) {
 			combBoxHomeroom.setSelectedItem(hmrmClass.getFormalClassName());
 		} else {
@@ -179,11 +191,11 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		
 		//add list of current special classes
 		Vector<String> specClassNames = new Vector<String>();
-		for (int i=0; i<ClassFactory.specialClsLst.size(); i++) {
-			specClassNames.add(ClassFactory.specialClsLst.get(i).getFormalClassName());
+		for (int i=0; i<clsFac.specialClsLst.size(); i++) {
+			specClassNames.add(clsFac.specialClsLst.get(i).getFormalClassName());
 		}
 		specClassNames.add("No Class");
-		combBoxSpecials = new JComboBox();
+		combBoxSpecials = new JComboBox(specClassNames);
 		if (specClass != null) {
 			combBoxSpecials.setSelectedItem(specClass.getFormalClassName());
 		} else {
@@ -203,7 +215,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		
 		//create button panel
 		JPanel btnPanel = new JPanel();
-		btnPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		btnPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		contentPane.add(btnPanel);
 		
 		disenroll = new JButton("Disenroll");
@@ -227,7 +239,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == disenroll) {
 			int rtn = JOptionPane.showConfirmDialog(this,
-					"You are about to remove the student from the database.\n" +
+					"You are about to remove this student from the database.\n" +
 					"Are you sure you want to continue?", "Warning!",
 					JOptionPane.YES_NO_OPTION,
 					JOptionPane.WARNING_MESSAGE);
@@ -235,6 +247,12 @@ public class ManualModFrame extends JFrame implements ActionListener{
 				System.out.println("removing the student " + std.getId());
 				//remove the student from all classes and the database
 				removeStudent();
+				//update the schedule table
+				sched.update();
+				MainFrame.tabbedPane.revalidate();
+				MainFrame.tabbedPane.setVisible(false);
+				MainFrame.tabbedPane.repaint();
+				MainFrame.tabbedPane.setVisible(true);
 				this.dispose();
 			}
 		} else if (e.getSource() == btnOk) {
@@ -254,7 +272,7 @@ public class ManualModFrame extends JFrame implements ActionListener{
 	}
 	
 	private void removeStudent() {
-		
+		clsFac.kickout(std);
 	}
 	
 	private void updateStdInfo() {
@@ -304,33 +322,33 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		
 		Classes newMathCls=null, newReadCls=null, newLACls=null, newHmrmCls=null, newSpecCls=null;
 		//get class that corresponds to the newClass name
-		for(int i=0; i<ClassFactory.mathClsLst.size(); i++) {
-			if (newMath == ClassFactory.mathClsLst.get(i).getFormalClassName()) {
-				newMathCls = ClassFactory.mathClsLst.get(i);
+		for(int i=0; i<clsFac.mathClsLst.size(); i++) {
+			if (newMath == clsFac.mathClsLst.get(i).getFormalClassName()) {
+				newMathCls = clsFac.mathClsLst.get(i);
 				break;
 			}
 		}
-		for(int i=0; i<ClassFactory.readClsLst.size(); i++) {
-			if (newRead == ClassFactory.readClsLst.get(i).getFormalClassName()) {
-				newReadCls = ClassFactory.readClsLst.get(i);
+		for(int i=0; i<clsFac.readClsLst.size(); i++) {
+			if (newRead == clsFac.readClsLst.get(i).getFormalClassName()) {
+				newReadCls = clsFac.readClsLst.get(i);
 				break;
 			}
 		}
-		for(int i=0; i<ClassFactory.laClsLst.size(); i++) {
-			if (newLA == ClassFactory.laClsLst.get(i).getFormalClassName()) {
-				newLACls = ClassFactory.laClsLst.get(i);
+		for(int i=0; i<clsFac.laClsLst.size(); i++) {
+			if (newLA == clsFac.laClsLst.get(i).getFormalClassName()) {
+				newLACls = clsFac.laClsLst.get(i);
 				break;
 			}
 		}
-		for(int i=0; i<ClassFactory.homeroomClsLst.size(); i++) {
-			if (newHmrm == ClassFactory.homeroomClsLst.get(i).getFormalClassName()) {
-				newHmrmCls = ClassFactory.homeroomClsLst.get(i);
+		for(int i=0; i<clsFac.homeroomClsLst.size(); i++) {
+			if (newHmrm == clsFac.homeroomClsLst.get(i).getFormalClassName()) {
+				newHmrmCls = clsFac.homeroomClsLst.get(i);
 				break;
 			}
 		}
-		for(int i=0; i<ClassFactory.specialClsLst.size(); i++) {
-			if (newSpec == ClassFactory.specialClsLst.get(i).getFormalClassName()) {
-				newSpecCls = ClassFactory.specialClsLst.get(i);
+		for(int i=0; i<clsFac.specialClsLst.size(); i++) {
+			if (newSpec == clsFac.specialClsLst.get(i).getFormalClassName()) {
+				newSpecCls = clsFac.specialClsLst.get(i);
 				break;
 			}
 		}
@@ -341,59 +359,112 @@ public class ManualModFrame extends JFrame implements ActionListener{
 		}
 		//put the student in the new class
 		if (mathClass != newMathCls) {
-			if (mathClass == null) {
-				//enroll student
-			} else {
-				try {
-					ClassFactory.moveStd(mathClass, newMathCls, std);
-					System.out.println("student moved from "+mathClass.getFormalClassName()+" to "+newMathCls.getFormalClassName());
-				} catch (StdClsCompatibleException e1) {
-				}
+			if (newMath.equals("No Class")) {
+				//TODO: remove the student
+			} else if (check(mathClass, newMathCls)) {
+				clsFac.moveStd(mathClass, newMathCls, std);
+				System.out.println("student moved from "+mathClass.getFormalClassName()+" to "+newMathCls.getFormalClassName());
 			}
 		}
 		if (readClass != newReadCls) {
-			if (readClass == null) {
-				//enroll student
-			} else {
-				try {
-					ClassFactory.moveStd(readClass, newReadCls, std);
-					System.out.println("student moved from "+readClass.getFormalClassName()+" to "+newReadCls.getFormalClassName());
-				} catch (StdClsCompatibleException e1) {
-				}
+			if (newRead.equals("No Class")) {
+				//TODO: remove the student
+			} else if (check(readClass, newReadCls)) {
+				clsFac.moveStd(readClass, newReadCls, std);
+				System.out.println("student moved from "+readClass.getFormalClassName()+" to "+newReadCls.getFormalClassName());
 			}
 		}
 		if (laClass != newLACls) {
-			if (laClass == null) {
-				//enroll student
-			} else {
-				try {
-					ClassFactory.moveStd(laClass, newLACls, std);
-					System.out.println("student moved from "+laClass.getFormalClassName()+" to "+newLACls.getFormalClassName());
-				} catch (StdClsCompatibleException e1) {
-				}
+			if (newLA.equals("No Class")) {
+				//TODO: remove the student
+			} else if (check(laClass, newLACls)) {
+				clsFac.moveStd(laClass, newLACls, std);
+				System.out.println("student moved from "+laClass.getFormalClassName()+" to "+newLACls.getFormalClassName());
 			}
 		}
-//		if (hmrmClass != newHmrmCls) {
-//			if (hmrmClass == null) {
-//				//enroll student
-//			} else {
-//				try {
-//					ClassFactory.moveStd(hmrmClass, newHmrmCls, std);
-//					System.out.println("student moved from "+hmrmClass.getFormalClassName()+" to "+newHmrmCls.getFormalClassName());
-//				} catch (StdClsCompatibleException e1) {
-//				}
-//			}
-//		}
-//		if (specClass != newSpecCls) {
-//			if (specClass == null) {
-//				//enroll student
-//			} else {
-//				try {
-//					ClassFactory.moveStd(specClass, newSpecCls, std);
-//					System.out.println("student moved from "+specClass.getFormalClassName()+" to "+newSpecCls.getFormalClassName());
-//				} catch (StdClsCompatibleException e1) {
-//				}
-//			}
-//		}
+		if (hmrmClass != newHmrmCls) {
+			if (newHmrm.equals("No Class")) {
+				//TODO: remove the student
+			} else if (check(hmrmClass, newHmrmCls)) {
+				clsFac.moveStd(hmrmClass, newHmrmCls, std);
+				System.out.println("student moved from "+hmrmClass.getFormalClassName()+" to "+newHmrmCls.getFormalClassName());
+			}
+		}
+		if (specClass != newSpecCls) {
+			if (newSpec.equals("No Class")) {
+				//TODO: remove the student
+			} else if (check(specClass, newSpecCls)) {
+				clsFac.moveStd(specClass, newSpecCls, std);
+				System.out.println("student moved from "+specClass.getFormalClassName()+" to "+newSpecCls.getFormalClassName());
+			}
+		}
+	}
+	
+	private boolean check(Classes fromCls, Classes toCls) {
+		int rtn;
+		if (toCls.getTotal() == 5) {
+			rtn = JOptionPane.showConfirmDialog(this,
+					"Class "+toCls.getFormalClassName()+" already has "+toCls.getTotal()+" students.\n"+
+					"Do you want to continue?",
+					"Warning",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (rtn == JOptionPane.NO_OPTION)
+				return false;
+		} else if (Math.abs(fromCls.getLowestAge() - toCls.getLowestAge()) > 3.92) {
+			rtn = JOptionPane.showConfirmDialog(this,
+					std.getFirstName()+" "+std.getLastName()+" is outside of the age range for this class.\n"+
+					"Do you want to continue?",
+					"Warning",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (rtn == JOptionPane.NO_OPTION)
+				return false;
+		} else if (!clsFac.BLfit(std, toCls)) {
+			rtn = JOptionPane.showConfirmDialog(this,
+					"There are already "+toCls.getBL3()+" behavior level 3 students and "+toCls.getBL2()+
+					"\nbehavior level 2 students in this class.\n"+
+					"Do you want to continue?",
+					"Warning",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (rtn == JOptionPane.NO_OPTION)
+				return false;
+		}
+		if (toCls.getClsName().equals("math")) {
+			if (std.getMath() != toCls.getLvl()) {
+				rtn = JOptionPane.showConfirmDialog(this,
+						std.getFirstName()+" "+std.getLastName()+" is math level "+std.getMath()+" and class "+toCls.getFormalClassName()+" is level "+toCls.getLvl()+".\n"+
+						"Do you want to continue?",
+						"Warning",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE);
+				if (rtn == JOptionPane.NO_OPTION)
+					return false;
+			}
+		} else if (toCls.getClsName().equals("la")) {
+			if (std.getLA() != toCls.getLvl()) {
+				rtn = JOptionPane.showConfirmDialog(this,
+						std.getFirstName()+" "+std.getLastName()+" is lang arts level "+std.getLA()+" and class "+toCls.getFormalClassName()+" is level "+toCls.getLvl()+".\n"+
+						"Do you want to continue?",
+						"Warning",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE);
+				if (rtn == JOptionPane.NO_OPTION)
+					return false;
+			}
+		} else if (toCls.getClsName().equals("read")) {
+			if (std.getRead() != toCls.getLvl()) {
+				rtn = JOptionPane.showConfirmDialog(this,
+						std.getFirstName()+" "+std.getLastName()+" is reading level "+std.getRead()+" and class "+toCls.getFormalClassName()+" is level "+toCls.getLvl()+".\n"+
+						"Do you want to continue?",
+						"Warning",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE);
+				if (rtn == JOptionPane.NO_OPTION)
+					return false;
+			}
+		}
+		return true;
 	}
 }

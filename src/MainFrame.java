@@ -1,15 +1,20 @@
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,36 +34,39 @@ import javax.swing.JTable.PrintMode;
 import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 
-public class MainFrame implements ActionListener, MouseListener {
-	static JTabbedPane tabbedPane;
-	static JFrame frame;
-	StudentController sc;
-	TeacherController tc;
-	StudentTable sTab;
-	TeacherTable tTab;
-	JScrollPane panel1, panel2, panel3;
-	ScheduleDisplay sched;
+public class MainFrame implements ActionListener, MouseListener, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	transient static JTabbedPane tabbedPane;
+	transient static JFrame frame;
+	transient StudentController sc;
+	transient TeacherController tc;
+	transient StudentTable sTab;
+	transient TeacherTable tTab;
+	transient JScrollPane panel1, panel2, panel3;
+	transient ScheduleDisplay sched;
 	StudentDB students;
 	TeacherDB teachers;
-	Menu menu;
-	JPopupMenu rightClickMenu, rightClickMenu2;
-	JMenuItem editItem, editItem2;
-	AddStudentFrame addStd;
+	ClassFactory clsFac;
+	transient Menu menu;
+	transient JPopupMenu rightClickMenu;
+	transient JMenuItem editItem;
+	transient AddStudentFrame addStd;
 
 	public MainFrame() {
-		students = new StudentDB();
-		teachers = new TeacherDB();
+		if (students == null)
+			students = new StudentDB(clsFac);
+		if (teachers == null)
+			teachers = new TeacherDB();
+		clsFac = new ClassFactory();
 		frame = new JFrame();
 		// create the right click menu
 		rightClickMenu = new JPopupMenu();
 		editItem = new JMenuItem("Edit");
 		editItem.addActionListener(this);
 		rightClickMenu.add(editItem);
-		// this one is for the teacher tab
-		rightClickMenu2 = new JPopupMenu();
-		editItem2 = new JMenuItem("Edit");
-		editItem2.addActionListener(this);
-		rightClickMenu2.add(editItem2);
 		update();
 	}
 
@@ -77,7 +85,7 @@ public class MainFrame implements ActionListener, MouseListener {
 
 		tabbedPane = new JTabbedPane();
 
-		sTab = new StudentTable(frame, students);
+		sTab = new StudentTable(frame, students, clsFac);
 		panel1 = new JScrollPane(sTab.getStudentTable());
 		tabbedPane.addTab("Student Entry", panel1);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
@@ -93,10 +101,10 @@ public class MainFrame implements ActionListener, MouseListener {
 		sc = new StudentController(frame, students, addStd);
 		tc = new TeacherController(frame, teachers);
 
-		menu = new Menu(this, students, frame, sc, teachers, tc);
+		menu = new Menu(this, students, frame, sc, teachers, tc, clsFac);
 		frame.setJMenuBar(menu.getMenu());
 
-		sched = new ScheduleDisplay();
+		sched = new ScheduleDisplay(clsFac);
 		sched.getScheduleTable().addMouseListener(this);
 		panel3 = new JScrollPane(sched.getScheduleTable());
 		tabbedPane.addTab("Schedule", panel3);
@@ -132,19 +140,16 @@ public class MainFrame implements ActionListener, MouseListener {
 
 		} else if (obj.equals(Menu.schedulize)) {
 			// Code here to call schedule algorithm and display schedules
-			Schedulizer.genSchedule(students);
+			Schedulizer.genSchedule(students, clsFac);
 			sched.update();
 			tabbedPane.setSelectedIndex(2);
 		} else if (obj.equals(Menu.assign)) {
 			// TODO: Code here to call schedule algorithm and display schedules
-			ScheduleTeachers.assign(teachers);
+			ScheduleTeachers.assign(teachers, clsFac);
 			sched.update();
 			tabbedPane.setSelectedIndex(2);
 		} else if (obj.equals(editItem)) {
 			showManualMod();
-			// sched.update();
-		} else if (obj.equals(editItem2)) {
-			showTeacherMod();
 			// sched.update();
 		} else if (obj.equals(addStd.add)) {
 			String tmpID = addStd.txtFieldStudentID.getText();
@@ -198,8 +203,8 @@ public class MainFrame implements ActionListener, MouseListener {
 							Students s = new Students(id, fName, lName, bDate, m, l, r, bh);
 							students.addStudent(s);
 							//TODO: Call to Schedulizer to try to add an individual student
-							Schedulizer.addNewStd(s);
-							sTab.update();	
+							Schedulizer.addNewStd(s, clsFac);
+							sched.update();	
 						}
 					}
 				}
@@ -211,7 +216,10 @@ public class MainFrame implements ActionListener, MouseListener {
 						"Expected Birth Date in the form yyyy-mm-dd");
 			} catch (StdClsCompatibleException se) {
 				// TODO Auto-generated catch block
-				//We're probably not going to need this
+				addStd.dispose();
+				JOptionPane.showMessageDialog(frame,
+						"Unable to place student in current schedule.");
+				sched.update();
 			}
 
 			addStd.dispose();
@@ -246,6 +254,15 @@ public class MainFrame implements ActionListener, MouseListener {
 						"Print Job Failed");
 			    
 			}
+		} else if (obj.equals(Menu.save)) {
+			if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+				saveObject(this, chooser.getSelectedFile().toString());
+			}
+			
+		} else if (obj.equals(Menu.load)) {
+			if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
+				DataEntry.loadObject(chooser.getSelectedFile().toString());
+			
 		}
 		tabbedPane.revalidate();
 		tabbedPane.setVisible(false);
@@ -257,25 +274,76 @@ public class MainFrame implements ActionListener, MouseListener {
 		int x, y;
 		x = sched.getScheduleTable().getSelectedColumn();
 		y = sched.getScheduleTable().getSelectedRow();
-		// make sure x and y correspond to a student
-		if (x > 0 && y >= 0) {
-			Object std = sched.getScheduleTable().getValueAt(y, x);
-			if (!std.equals("")) {
-				new ManualModFrame((Students) std, sched);
+		Object cell = sched.getScheduleTable().getValueAt(y, x);
+		// make sure x and y correspond to a student or class
+		if (cell.toString().equals("")) {
+			//do nothing
+		} else if (cell.toString().startsWith("Ages")) {
+			//do nothing
+		} else if (cell.toString().startsWith("Class")) {
+			//figure out what class this is
+			Classes cls = findClass(cell);
+			Teachers t = null;
+			if (cls != null) {
+				t = cls.getTeacher();
+				if (t != null) {
+					new TeacherModFrame(t, clsFac);
+				} else  {
+					JOptionPane.showMessageDialog(frame,
+							"This class does not have a teacher.",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			} else {
+				JOptionPane.showMessageDialog(frame,
+						"Class not found.",
+						"Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
+		} else if (x > 0 && y >= 0) {
+			new ManualModFrame((Students) cell, sched, clsFac);
 		}
 	}
-
-	private void showTeacherMod() {
-		int x, y;
-		x = tTab.getTeacherTable().getSelectedColumn();
-		y = tTab.getTeacherTable().getSelectedRow();
-		if (x >= 0 && y >= 0) {
-			Object teach = tTab.getTeacherTable().getValueAt(y, 0);
-			if (!teach.equals("")) {
-				new TeacherModFrame((Teachers) teach);
+	
+	private Classes findClass(Object cell) {
+		String str = cell.toString();
+		int index = str.indexOf(' '); //space before level
+		index ++;
+		index = str.indexOf(' ', index); //space before id
+		index ++;
+		int end = str.indexOf(':');
+		if (end < 0)
+			str = str.substring(index);
+		else 
+			str = str.substring(index, end);
+		int id = Integer.parseInt(str);
+		//str should now contain the class id, i think
+		for (Classes c:clsFac.readClsLst) {
+			if (id == c.getClsID()) {
+				return c;
 			}
 		}
+		for (Classes c:clsFac.laClsLst) {
+			if (id == c.getClsID()) {
+				return c;
+			}
+		}
+		for (Classes c:clsFac.mathClsLst) {
+			if (id == c.getClsID()) {
+				return c;
+			}
+		}
+		for (Classes c:clsFac.homeroomClsLst) {
+			if (id == c.getClsID()) {
+				return c;
+			}
+		}
+		for (Classes c:clsFac.specialClsLst) {
+			if (id == c.getClsID()) {
+				return c;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -304,24 +372,35 @@ public class MainFrame implements ActionListener, MouseListener {
 				int x, y;
 				x = sched.getScheduleTable().getSelectedColumn();
 				y = sched.getScheduleTable().getSelectedRow();
-				if (x > 0 && y >= 0) {
-					Object std = sched.getScheduleTable().getValueAt(y, x);
-					if (!std.equals("")) {
-						new StudentScheduleFrame((Students) std);
+				Object cell = sched.getScheduleTable().getValueAt(y, x);
+				if (cell.toString().equals("")) {
+					//do nothing
+				} else if (cell.toString().startsWith("Ages")) {
+					//do nothing
+				} else if (cell.toString().startsWith("Class")) {
+					//figure out what class this is
+					Classes cls = findClass(cell);
+					Teachers t = null;
+					if (cls != null) {
+						t = cls.getTeacher();
+						if (t != null) {
+							new TeacherScheduleFrame(t);
+						} else  {
+							JOptionPane.showMessageDialog(frame,
+									"This class does not have a teacher.",
+									"Error",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					} else {
+						JOptionPane.showMessageDialog(frame,
+								"Class not found.",
+								"Error",
+								JOptionPane.ERROR_MESSAGE);
 					}
-				}
-			} else if (e.getSource() == tTab.getTeacherTable()) {
-				int x, y;
-				x = tTab.getTeacherTable().getSelectedColumn();
-				y = tTab.getTeacherTable().getSelectedRow();
-				if (x == 0) {
-					Object teach = tTab.getTeacherTable().getValueAt(y, x);
-					if (!teach.equals("")) {
-						new TeacherScheduleFrame((Teachers) teach);
-					}
+				} else if (x > 0 && y > 0) {
+					new StudentScheduleFrame((Students) cell);
 				}
 			}
-
 		}
 	}
 
@@ -331,9 +410,31 @@ public class MainFrame implements ActionListener, MouseListener {
 		if (SwingUtilities.isRightMouseButton(e)) {
 			if (e.getSource() == sched.getScheduleTable()) {
 				rightClickMenu.show(e.getComponent(), e.getX(), e.getY());
-			} else if (e.getSource() == tTab.getTeacherTable()) {
-				rightClickMenu2.show(e.getComponent(), e.getX(), e.getY());
 			}
 		}
 	}
+	
+	/**
+	 * Save object on disk.
+	 * 
+	 * @param mf
+	 * @param fileName
+	 */
+	public void saveObject(MainFrame mf, String fileName) {
+		try {
+			// use buffering
+			OutputStream file = new FileOutputStream(fileName);
+			OutputStream buffer = new BufferedOutputStream(file);
+			ObjectOutput output = new ObjectOutputStream(buffer);
+			try {
+				output.writeObject(mf);
+			} finally {
+				output.close();
+			}
+		} catch (IOException ex) {
+			System.err.println("Unable to write file to disk");
+			ex.printStackTrace();
+		}
+	}
+
 }

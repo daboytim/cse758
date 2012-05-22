@@ -1,10 +1,11 @@
 import java.awt.Component;
+import java.io.Serializable;
 
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
-class ComboRenderer extends JComboBox implements TableCellRenderer {
+class ComboRenderer extends JComboBox implements TableCellRenderer, Serializable {
 
 	/**
 	 * 
