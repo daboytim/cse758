@@ -214,7 +214,7 @@ public class Schedulizer {
 
 	}
 
-	public void addNewStd(Students std) throws StdClsCompatibleException {
+	public static void addNewStd(Students std) throws StdClsCompatibleException {
 		boolean foundCls = false;
 		// try to add to math class
 		for (Classes cls : ClassFactory.mathClsLst) {
