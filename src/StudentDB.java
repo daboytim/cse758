@@ -51,7 +51,9 @@ public class StudentDB {
 			Students std = students.get(i);
 			if (std.getId() == id) {
 				students.remove(i);
+				ClassFactory.kickout(std);
 			}
+			
 		}
 	}
 
