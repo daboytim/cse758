@@ -85,6 +85,10 @@ public class ClassFactory implements Serializable {
 	 * @return True if yes, false otherwise.
 	 */
 	public boolean compatible(Students std, Classes cls) {
+		if(cls.getTotal()==0) {
+			
+			return true;
+		}
 		if (!BLfit(std, cls)) {
 			return false;
 		}
@@ -233,11 +237,11 @@ public class ClassFactory implements Serializable {
 
 				System.out.println("From waitlist,student:" + stdt.toString()
 						+ " has been added to following classes: ");
-				System.out.println(math.toString());
-				System.out.println(la.toString());
-				System.out.println(read.toString());
-				System.out.println(hr.toString());
-				System.out.println(sp.toString());
+				System.out.println(math.getFormalClassName());
+				System.out.println(la.getFormalClassName());
+				System.out.println(read.getFormalClassName());
+				System.out.println(hr.getFormalClassName());
+				System.out.println(sp.getFormalClassName());
 
 			}
 
