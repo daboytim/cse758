@@ -155,6 +155,7 @@ public class ClassFactory {
 			if (compatible(stdt, fromCls)) {
 				fromCls.addStd(stdt);
 				unlucky.remove(stdt);
+				stdt.setWlReason("");
 				break;
 			}
 		}
@@ -204,6 +205,7 @@ public class ClassFactory {
 					std.getSpecialCls().addStd(stdt);
 
 					unlucky.remove(stdt);
+					stdt.setWlReason("");
 
 				}
 
