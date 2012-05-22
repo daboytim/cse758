@@ -102,9 +102,24 @@ public class ClassFactory {
 			} else {
 				return false;
 			}
+		} else if (cls.getClsName().equals("homeroom")) {
+			if (Math.abs(cls.getLowestAge() - std.getAge()) < 4.0
+					&& cls.getTotal() < maxStdPerCls) {
+				return true;
+			} else {
+				return false;
+			}
+		} else if (cls.getClsName().equals("special")) {
+			if (Math.abs(cls.getLowestAge() - std.getAge()) < 4.0
+					&& cls.getTotal() < maxStdPerCls) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			System.err
 					.println("A Classes object passed into ClassFactory.compatible method is labeled wrong class name");
+			System.err.println("Class passed was named " + cls.getClsName());
 			return false;
 		}
 	}

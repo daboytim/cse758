@@ -316,6 +316,52 @@ public class Schedulizer {
 			throw new StdClsCompatibleException(5);
 		}
 
+		System.out.println("*********Results************");
+		System.out.println("There are " + ClassFactory.mathClsLst.size()
+				+ " classes for math:");
+		for (Classes cls : ClassFactory.mathClsLst) {
+			System.out.println("=============" + cls.getClsName() + " "
+					+ cls.getClsID());
+			System.out.println(cls.toString());
+		}
+
+		System.out.println("\nThere are " + ClassFactory.laClsLst.size()
+				+ " classes for LA:");
+		for (Classes cls : ClassFactory.laClsLst) {
+			System.out.println("=============" + cls.getClsName() + " "
+					+ cls.getClsID());
+			System.out.println(cls.toString());
+		}
+
+		System.out.println("\nThere are " + ClassFactory.readClsLst.size()
+				+ " classes for reading:");
+		for (Classes cls : ClassFactory.readClsLst) {
+			System.out.println("=============" + cls.getClsName() + " "
+					+ cls.getClsID());
+			System.out.println(cls.toString());
+		}
+
+		System.out.println("\nThere are " + ClassFactory.homeroomClsLst.size()
+				+ " classes for homeroom:");
+		for (Classes cls : ClassFactory.homeroomClsLst) {
+			System.out.println("=============" + cls.getClsName() + " "
+					+ cls.getClsID());
+			System.out.println(cls.toString());
+		}
+
+		System.out.println("\nThere are " + ClassFactory.specialClsLst.size()
+				+ " classes for special:");
+		for (Classes cls : ClassFactory.specialClsLst) {
+			System.out.println("=============" + cls.getClsName() + " "
+					+ cls.getClsID());
+			System.out.println(cls.toString());
+		}
+
+		System.out.println("*******Unlucky Students********");
+		for (Students stdss : ClassFactory.unlucky) {
+			System.out.println(stdss.toString() + "WL ID:" + stdss.getWL()+" Reason:"+stdss.getWlReason());
+		}
+
 	}
 
 	public void runTest() {
