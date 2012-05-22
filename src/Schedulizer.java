@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Schedulizer {
 
-	public static List<Students> unluckyStd;
+	// public static List<Students> unluckyStd;
 
 	public static void genSchedule(StudentDB stds) {
 
@@ -40,7 +41,6 @@ public class Schedulizer {
 		}
 
 		Classes mathClass = null, laClass = null, readClass = null;
-		unluckyStd = new ArrayList<Students>();
 		boolean foundCls;
 
 		for (int i = 0; i < std.size(); i++) {
@@ -68,7 +68,7 @@ public class Schedulizer {
 					mathClass.addStd(std.get(i));
 					foundCls = true;
 				} else {
-					unluckyStd.add(std.get(i));
+					ClassFactory.unlucky.add(std.get(i));
 					continue;// those unlucky students...
 				}
 			}
@@ -92,7 +92,7 @@ public class Schedulizer {
 					laClass.addStd(std.get(i));
 					foundCls = true;
 				} else {
-					unluckyStd.add(std.get(i));
+					ClassFactory.unlucky.add(std.get(i));
 					// roll back...
 
 					mathClass.removeStd(std.get(i).getId());
@@ -122,7 +122,7 @@ public class Schedulizer {
 					readClass.addStd(std.get(i));
 					foundCls = true;
 				} else {
-					unluckyStd.add(std.get(i));
+					ClassFactory.unlucky.add(std.get(i));
 					// roll back...
 
 					mathClass.removeStd(std.get(i).getId());
@@ -143,6 +143,13 @@ public class Schedulizer {
 
 		// distribute class size evenly
 		ClassFactory.evenDistribute();
+
+		// sort unlucky list by incoming order.
+		Collections.sort(ClassFactory.unlucky, new Comparator<Students>() {
+			public int compare(Students std1, Students std2) {
+				return std1.getWL() - std2.getWL();
+			}
+		});
 
 		// make clone from math class list to homeroom and special classes.
 		for (Classes cls : ClassFactory.mathClsLst) {
@@ -201,8 +208,8 @@ public class Schedulizer {
 		}
 
 		System.out.println("*******Unlucky Students********");
-		for (Students stdss : unluckyStd) {
-			System.out.println(stdss.toString());
+		for (Students stdss : ClassFactory.unlucky) {
+			System.out.println(stdss.toString() + "WL ID:" + stdss.getWL());
 		}
 
 	}
@@ -218,6 +225,12 @@ public class Schedulizer {
 			}
 		}
 		if (!foundCls) {
+			ClassFactory.unlucky.add(std);
+			Collections.sort(ClassFactory.unlucky, new Comparator<Students>() {
+				public int compare(Students std1, Students std2) {
+					return std1.getWL() - std2.getWL();
+				}
+			});
 			throw new StdClsCompatibleException(5);
 		}
 
@@ -231,6 +244,12 @@ public class Schedulizer {
 			}
 		}
 		if (!foundCls) {
+			ClassFactory.unlucky.add(std);
+			Collections.sort(ClassFactory.unlucky, new Comparator<Students>() {
+				public int compare(Students std1, Students std2) {
+					return std1.getWL() - std2.getWL();
+				}
+			});
 			throw new StdClsCompatibleException(5);
 		}
 
@@ -244,6 +263,12 @@ public class Schedulizer {
 			}
 		}
 		if (!foundCls) {
+			ClassFactory.unlucky.add(std);
+			Collections.sort(ClassFactory.unlucky, new Comparator<Students>() {
+				public int compare(Students std1, Students std2) {
+					return std1.getWL() - std2.getWL();
+				}
+			});
 			throw new StdClsCompatibleException(5);
 		}
 
@@ -257,6 +282,12 @@ public class Schedulizer {
 			}
 		}
 		if (!foundCls) {
+			ClassFactory.unlucky.add(std);
+			Collections.sort(ClassFactory.unlucky, new Comparator<Students>() {
+				public int compare(Students std1, Students std2) {
+					return std1.getWL() - std2.getWL();
+				}
+			});
 			throw new StdClsCompatibleException(5);
 		}
 
@@ -270,6 +301,12 @@ public class Schedulizer {
 			}
 		}
 		if (!foundCls) {
+			ClassFactory.unlucky.add(std);
+			Collections.sort(ClassFactory.unlucky, new Comparator<Students>() {
+				public int compare(Students std1, Students std2) {
+					return std1.getWL() - std2.getWL();
+				}
+			});
 			throw new StdClsCompatibleException(5);
 		}
 

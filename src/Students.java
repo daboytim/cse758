@@ -243,4 +243,8 @@ public class Students implements Comparable<Students> {
 	public void setWLPosition(int i) {
 		waitlistID = i;
 	}
+	
+	public int getWL() {
+		return this.waitlistID;
+	}
 }

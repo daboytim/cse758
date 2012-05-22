@@ -17,6 +17,7 @@ public class ClassFactory {
 	static List<Classes> readClsLst = new ArrayList<Classes>();
 	static List<Classes> homeroomClsLst = new ArrayList<Classes>();
 	static List<Classes> specialClsLst = new ArrayList<Classes>();
+	static List<Students> unlucky = new ArrayList<Students>();
 
 	/**
 	 * Check if std's behavior level fit with class.

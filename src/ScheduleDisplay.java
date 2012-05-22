@@ -246,7 +246,7 @@ public class ScheduleDisplay {
 		}
 
 		// fill in unlucky students
-		unluckyStudents = Schedulizer.unluckyStd;
+		unluckyStudents = ClassFactory.unlucky;
 		System.out.println("unlucky students size: " + unluckyStudents);
 		if (unluckyStudents != null) {
 			System.out.println("there are unlucky students!");
