@@ -34,7 +34,7 @@ public class ScheduleDisplay {
 		for (int i = 1; i < numRooms + 1; i++) {
 			columnNames[i] = " ";
 		}
-		columnNames[numRooms + 1] = "Unable to Place";
+		columnNames[numRooms + 1] = "Waitlist";
 		tm = new DefaultTableModel(data, columnNames);  
 		
 		table = new RowColoredTable(data);  
@@ -60,9 +60,11 @@ public class ScheduleDisplay {
 		// Fix Sizing
 		TableColumnModel cm = table.getColumnModel();
 		cm.getColumn(0).setMinWidth(100);
-		for (int i = 1; i < cm.getColumnCount(); i++) {
+		for (int i = 1; i < cm.getColumnCount()-1; i++) {
 			cm.getColumn(i).setMinWidth(150);
 		}
+		cm.getColumn(cm.getColumnCount() - 1).setMinWidth(500);
+		
 
 		// for (int i = 0; i < table.getRowCount(); i++) {
 		// for (int j = 0; j < table.getColumnCount(); j++) {

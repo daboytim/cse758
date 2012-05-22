@@ -201,7 +201,8 @@ public class MainFrame implements ActionListener, MouseListener {
 						"Expected Birth Date in the form yyyy-mm-dd");
 			} catch (StdClsCompatibleException se) {
 				// TODO Auto-generated catch block
-				//We're probably not going to need this
+				JOptionPane.showMessageDialog(frame,
+						"Unable to place student in current schedule.");
 			}
 
 			addStd.dispose();
