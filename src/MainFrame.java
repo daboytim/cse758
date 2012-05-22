@@ -188,10 +188,8 @@ public class MainFrame implements ActionListener, MouseListener {
 							Students s = new Students(id, fName, lName, bDate, m, l, r, bh);
 							students.addStudent(s);
 							//TODO: Call to Schedulizer to try to add an individual student
-							
-							sTab.update();
-							
-							
+							Schedulizer.addNewStd(s);
+							sTab.update();	
 						}
 					}
 				}
@@ -201,6 +199,9 @@ public class MainFrame implements ActionListener, MouseListener {
 			} catch (ParseException p) {
 				JOptionPane.showMessageDialog(frame,
 						"Expected Birth Date in the form yyyy-mm-dd");
+			} catch (StdClsCompatibleException se) {
+				// TODO Auto-generated catch block
+				//We're probably not going to need this
 			}
 
 			addStd.dispose();

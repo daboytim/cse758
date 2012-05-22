@@ -21,6 +21,7 @@ public class Students implements Comparable<Students> {
 	private int homeroomClsID;
 	private int specialClsID;
 	private int waitlistID;
+	private String wlReason;
 	
 	//TODO: Replace Age with BDate and calculate Age.
 	//Largest age gap 3yrs 11 months
@@ -242,5 +243,15 @@ public class Students implements Comparable<Students> {
 	
 	public void setWLPosition(int i) {
 		waitlistID = i;
+	}
+	
+	public int getWL() {
+		return this.waitlistID;
+	}
+	public String getWlReason() {
+		return wlReason;
+	}
+	public void setWlReason(String wlReason) {
+		this.wlReason = wlReason;
 	}
 }

@@ -3,10 +3,12 @@ import java.util.List;
 
 public class ClassFactory {
 
-
 	private static int maxCls = 20;
 	private static int clsID = 1;
 	private static int maxStdPerCls = 5;
+	public final static String noFitMath = "There are no suitable math classes for this student.";
+	public final static String noFitLA = "There are no suitable language art classes for this student.";
+	public final static String noFitRead = "There are no suitable reading classes for this student.";
 
 	private ClassFactory() {
 		// empty
@@ -17,6 +19,7 @@ public class ClassFactory {
 	static List<Classes> readClsLst = new ArrayList<Classes>();
 	static List<Classes> homeroomClsLst = new ArrayList<Classes>();
 	static List<Classes> specialClsLst = new ArrayList<Classes>();
+	static List<Students> unlucky = new ArrayList<Students>();
 
 	/**
 	 * Check if std's behavior level fit with class.
@@ -40,7 +43,7 @@ public class ClassFactory {
 	}
 
 	public static int getTotalClasses() {
-		return mathClsLst.size()+laClsLst.size()+readClsLst.size();
+		return mathClsLst.size() + laClsLst.size() + readClsLst.size();
 	}
 
 	public static int getTotalMath() {
@@ -117,8 +120,8 @@ public class ClassFactory {
 	public static int getMaxCls() {
 		return maxCls;
 	}
-	
-	public static int getMaxStdPerCls(){
+
+	public static int getMaxStdPerCls() {
 		return maxStdPerCls;
 	}
 
@@ -132,55 +135,101 @@ public class ClassFactory {
 	 */
 	public static void moveStd(Classes fromCls, Classes toCls, Students std)
 			throws StdClsCompatibleException {
-//throwing these exceptions defeats the purpose of manual modification
-//		if (!fromCls.getClsName().equals(toCls.getClsName())) {
-//			throw new StdClsCompatibleException(0);
-//		} else if (toCls.getTotal() == 5) {
-//			throw new StdClsCompatibleException(1);
-//		} else if (Math.abs(fromCls.getLowestAge() - toCls.getLowestAge()) > 3.92) {
-//			throw new StdClsCompatibleException(2);
-//		} else if (!BLfit(std, toCls)) {
-//			throw new StdClsCompatibleException(3);
-//		} else if (!compatible(std, toCls)) {
-//			throw new StdClsCompatibleException(4);
-//		} else {
-			toCls.addStd(std);
-			fromCls.removeStd(std.getId());
-//		}
+		// throwing these exceptions defeats the purpose of manual modification
+		// if (!fromCls.getClsName().equals(toCls.getClsName())) {
+		// throw new StdClsCompatibleException(0);
+		// } else if (toCls.getTotal() == 5) {
+		// throw new StdClsCompatibleException(1);
+		// } else if (Math.abs(fromCls.getLowestAge() - toCls.getLowestAge()) >
+		// 3.92) {
+		// throw new StdClsCompatibleException(2);
+		// } else if (!BLfit(std, toCls)) {
+		// throw new StdClsCompatibleException(3);
+		// } else if (!compatible(std, toCls)) {
+		// throw new StdClsCompatibleException(4);
+		// } else {
+		toCls.addStd(std);
+		fromCls.removeStd(std.getId());
+
+		for (Students stdt : unlucky) {
+			if (compatible(stdt, fromCls)) {
+				fromCls.addStd(stdt);
+				unlucky.remove(stdt);
+				break;
+			}
+		}
+		// }
 	}
-	
-	
+
 	public static int getMostClasses() {
 		return Math.max(getTotalRead(), Math.max(getTotalMath(), getTotalLA()));
 	}
-	
+
 	/**
-	 * Even distribute any 2 classes with movable students so that we won't have one class of 5 std while one in another.
+	 * Even distribute any 2 classes with movable students so that we won't have
+	 * one class of 5 std while one in another.
 	 */
-	public static void evenDistribute(){
-		//TODO
+	public static void evenDistribute() {
+		// TODO
 	}
-	
-//	public static Classes[] getStdClasses(Students std) {
-//		Classes[] classes = new Classes[3];
-//		//classes[0] - math / classes[1] - la / classes[2] - read
-//		for (Classes cls:mathClsLst) {
-//			if (cls.hasStudent(std)) {
-//				classes[0] = cls;
-//			}
-//		}
-//		for (Classes cls:laClsLst) {
-//			if (cls.hasStudent(std)) {
-//				classes[1] = cls;
-//			}
-//		}
-//		for (Classes cls:readClsLst) {
-//			if (cls.hasStudent(std)) {
-//				classes[2] = cls;
-//			}
-//		}
-//		return classes;
-//	}
-	
+
+	/**
+	 * Totally remove a student from system.
+	 * 
+	 * @param id
+	 *            student ID
+	 */
+	public static void kickout(Students std) {
+		if (unlucky.contains(std)) {
+			unlucky.remove(std);
+		} else {
+			//kick out
+			std.getMathCls().removeStd(std.getId());
+			std.getLACls().removeStd(std.getId());
+			std.getReadCls().removeStd(std.getId());
+			std.getHomeroomCls().removeStd(std.getId());
+			std.getSpecialCls().removeStd(std.getId());
+
+			//find fit from waitlist
+			for (Students stdt : unlucky) {
+				if (compatible(stdt, std.getMathCls())
+						&& compatible(stdt, std.getLACls())
+						&& compatible(stdt, std.getReadCls())
+						&& compatible(stdt, std.getHomeroomCls())
+						&& compatible(stdt, std.getSpecialCls())) {
+					std.getMathCls().addStd(stdt);
+					std.getLACls().addStd(stdt);
+					std.getReadCls().addStd(stdt);
+					std.getHomeroomCls().addStd(stdt);
+					std.getSpecialCls().addStd(stdt);
+
+					unlucky.remove(stdt);
+
+				}
+
+			}
+		}
+	}
+
+	// public static Classes[] getStdClasses(Students std) {
+	// Classes[] classes = new Classes[3];
+	// //classes[0] - math / classes[1] - la / classes[2] - read
+	// for (Classes cls:mathClsLst) {
+	// if (cls.hasStudent(std)) {
+	// classes[0] = cls;
+	// }
+	// }
+	// for (Classes cls:laClsLst) {
+	// if (cls.hasStudent(std)) {
+	// classes[1] = cls;
+	// }
+	// }
+	// for (Classes cls:readClsLst) {
+	// if (cls.hasStudent(std)) {
+	// classes[2] = cls;
+	// }
+	// }
+	// return classes;
+	// }
 
 }
