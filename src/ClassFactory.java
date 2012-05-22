@@ -189,6 +189,7 @@ public class ClassFactory implements Serializable {
 			if (compatible(stdt, fromCls)) {
 				fromCls.addStd(stdt);
 				unlucky.remove(stdt);
+				stdt.setWlReason("");
 				break;
 			}
 		}
@@ -238,6 +239,7 @@ public class ClassFactory implements Serializable {
 					std.getSpecialCls().addStd(stdt);
 
 					unlucky.remove(stdt);
+					stdt.setWlReason("");
 
 				}
 
