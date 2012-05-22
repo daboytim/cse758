@@ -68,6 +68,7 @@ public class Schedulizer {
 					mathClass.addStd(std.get(i));
 					foundCls = true;
 				} else {
+					std.get(i).setWlReason(ClassFactory.noFitMath);
 					ClassFactory.unlucky.add(std.get(i));
 					continue;// those unlucky students...
 				}
@@ -92,6 +93,7 @@ public class Schedulizer {
 					laClass.addStd(std.get(i));
 					foundCls = true;
 				} else {
+					std.get(i).setWlReason(ClassFactory.noFitLA);
 					ClassFactory.unlucky.add(std.get(i));
 					// roll back...
 
@@ -122,6 +124,7 @@ public class Schedulizer {
 					readClass.addStd(std.get(i));
 					foundCls = true;
 				} else {
+					std.get(i).setWlReason(ClassFactory.noFitRead);
 					ClassFactory.unlucky.add(std.get(i));
 					// roll back...
 
@@ -209,7 +212,7 @@ public class Schedulizer {
 
 		System.out.println("*******Unlucky Students********");
 		for (Students stdss : ClassFactory.unlucky) {
-			System.out.println(stdss.toString() + "WL ID:" + stdss.getWL());
+			System.out.println(stdss.toString() + "WL ID:" + stdss.getWL()+" Reason:"+stdss.getWlReason());
 		}
 
 	}
@@ -226,6 +229,7 @@ public class Schedulizer {
 		}
 		if (!foundCls) {
 			ClassFactory.unlucky.add(std);
+			std.setWlReason(ClassFactory.noFitMath);
 			Collections.sort(ClassFactory.unlucky, new Comparator<Students>() {
 				public int compare(Students std1, Students std2) {
 					return std1.getWL() - std2.getWL();
@@ -245,6 +249,7 @@ public class Schedulizer {
 		}
 		if (!foundCls) {
 			ClassFactory.unlucky.add(std);
+			std.setWlReason(ClassFactory.noFitLA);
 			Collections.sort(ClassFactory.unlucky, new Comparator<Students>() {
 				public int compare(Students std1, Students std2) {
 					return std1.getWL() - std2.getWL();
@@ -264,6 +269,7 @@ public class Schedulizer {
 		}
 		if (!foundCls) {
 			ClassFactory.unlucky.add(std);
+			std.setWlReason(ClassFactory.noFitRead);
 			Collections.sort(ClassFactory.unlucky, new Comparator<Students>() {
 				public int compare(Students std1, Students std2) {
 					return std1.getWL() - std2.getWL();

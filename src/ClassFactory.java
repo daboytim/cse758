@@ -7,6 +7,9 @@ public class ClassFactory {
 	private static int maxCls = 20;
 	private static int clsID = 1;
 	private static int maxStdPerCls = 5;
+	public final static String noFitMath = "There are no suitable math classes for this student.";
+	public final static String noFitLA = "There are no suitable language art classes for this student.";
+	public final static String noFitRead = "There are no suitable reading classes for this student.";
 
 	private ClassFactory() {
 		// empty
