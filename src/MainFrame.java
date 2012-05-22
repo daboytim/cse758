@@ -99,7 +99,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 		addStd = new AddStudentFrame(this);
 
 		sc = new StudentController(frame, students, addStd, clsFac);
-		tc = new TeacherController(frame, teachers);
+		tc = new TeacherController(frame, teachers, clsFac);
 
 		menu = new Menu(this, students, frame, sc, teachers, tc, clsFac);
 		frame.setJMenuBar(menu.getMenu());

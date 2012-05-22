@@ -22,10 +22,12 @@ public class TeacherController implements ActionListener, Serializable {
 	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	TeacherDB teachers;
-
-	public TeacherController(JFrame f, TeacherDB t) {
+	ClassFactory clsFac;
+	
+	public TeacherController(JFrame f, TeacherDB t, ClassFactory cf) {
 		frame = f;
 		teachers = t;
+		clsFac = cf;
 	}
 
 	public void actionPerformed(ActionEvent event) {
@@ -54,7 +56,7 @@ public class TeacherController implements ActionListener, Serializable {
 
 				Teachers t;
 				if (!Utilities.isBlank(params[0])) {
-					t = new Teachers(params[0]);
+					t = new Teachers(params[0], clsFac);
 				} else {
 					return;
 				}

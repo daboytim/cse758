@@ -42,6 +42,11 @@ public class Teachers implements Serializable{
 		this.capableL = new ArrayList<Integer>(la);
 	}
 	
+	public Teachers(String name, ClassFactory cf) {
+		clsFac = cf;
+		this.name = name;
+	}
+	
 	public ArrayList<Integer> teaches()
 	{
 		ArrayList<Integer> clss = new ArrayList<Integer>();
