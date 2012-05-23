@@ -72,7 +72,7 @@ public class ScheduleDisplay implements Serializable{
 		TableColumnModel cm = table.getColumnModel();
 		cm.getColumn(0).setMinWidth(100);
 		for (int i = 1; i < cm.getColumnCount()-1; i++) {
-			cm.getColumn(i).setMinWidth(150);
+			cm.getColumn(i).setMinWidth(200);
 		}
 		cm.getColumn(cm.getColumnCount() - 1).setMinWidth(500);
 		
