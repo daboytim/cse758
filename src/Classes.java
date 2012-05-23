@@ -181,5 +181,9 @@ public class Classes implements Serializable{
 	public int getClsID() {
 		return this.id;
 	}
+	
+	public void setClsLvl(int level) {
+		this.lvl = level;
+	}
 
 }

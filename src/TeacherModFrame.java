@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -23,26 +24,30 @@ public class TeacherModFrame extends JFrame implements ActionListener, Serializa
 	 * 
 	 */
 	private static final long serialVersionUID = 167L;
-	private JPanel contentPane;
+	private JPanel teachContentPane, classContentPane;
 	private JComboBox comboBoxRead;
 	private JComboBox comboBoxMath;
 	private JComboBox comboBoxLa;
 	private JComboBox comboBoxHomeroom;
 	private JComboBox comboBoxSpecials;
+	private JComboBox level;
 	private Teachers teach;
 	private JTextField nameField;
-	private JPanel btnPanel;
+	private JPanel btnPanel, clsBtnPanel;
 	private JComboBox comboBoxRoom;
-	private JButton btnOk;
-	private JButton btnCancel;
-	private Classes mathCls, readCls, laCls, hmrmCls, specCls;
+	private JButton btnOk, clsBtnOk;
+	private JButton btnCancel, clsBtnCancel;
+	private Classes mathCls, readCls, laCls, hmrmCls, specCls, selectedCls;
 	private ClassFactory clsFac;
+	
+	private String[] validStates = { "", "K", "1", "2", "3", "4", "5", "6", "7", "8" };
 
 	/**
 	 * Create the frame.
 	 */
-	public TeacherModFrame(Teachers teacher, ClassFactory cf) {
+	public TeacherModFrame(Teachers teacher, ClassFactory cf, Classes cls) {
 		clsFac = cf;
+		selectedCls = cls;
 		setAlwaysOnTop(true);
 		setResizable(false);
 		setTitle("Move Teacher");
@@ -57,19 +62,27 @@ public class TeacherModFrame extends JFrame implements ActionListener, Serializa
 	}
 	
 	private void buildFrame() {
+		JTabbedPane tabbedPane = new JTabbedPane();
+
+		
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setExtendedState(NORMAL);
 		setMaximizedBounds(new Rectangle(100,100,300,300));
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		teachContentPane = new JPanel();
+		teachContentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(tabbedPane);
+		teachContentPane.setLayout(new BoxLayout(teachContentPane, BoxLayout.Y_AXIS));
 		
+		classContentPane = new JPanel();
+		classContentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		classContentPane.setLayout(new BoxLayout(classContentPane, BoxLayout.Y_AXIS));
+
+		//Create Teacher Panel
 		JPanel teachPanel = new JPanel();
 		teachPanel.setBorder(new TitledBorder(null, "Teacher", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		teachPanel.setLayout(new GridLayout(2,2));
-		contentPane.add(teachPanel);
+		teachContentPane.add(teachPanel);
 		
 		teachPanel.add(new JLabel("Name"));
 		
@@ -89,7 +102,7 @@ public class TeacherModFrame extends JFrame implements ActionListener, Serializa
 		JPanel schedPanel = new JPanel();
 		schedPanel.setBorder(new TitledBorder(null, "Schedule", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		schedPanel.setLayout(new GridLayout(5,2));
-		contentPane.add(schedPanel);
+		teachContentPane.add(schedPanel);
 		
 		schedPanel.add(new JLabel("Reading Class"));
 		
@@ -170,7 +183,7 @@ public class TeacherModFrame extends JFrame implements ActionListener, Serializa
 		
 		btnPanel = new JPanel();
 		btnPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		contentPane.add(btnPanel);
+		teachContentPane.add(btnPanel);
 		
 		btnOk = new JButton("Ok");
 		btnOk.addActionListener(this);
@@ -180,16 +193,52 @@ public class TeacherModFrame extends JFrame implements ActionListener, Serializa
 		btnCancel.addActionListener(this);
 		btnPanel.add(btnCancel);
 		
+		//Create Class Tab
+		
+		
+		JPanel classPanel = new JPanel();
+		classPanel.setBorder(new TitledBorder(null, "Class", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		classPanel.setLayout(new GridLayout(2,2));
+		classContentPane.add(classPanel);
+		classPanel.add(new JLabel("Class Level"));
+		
+		level = new JComboBox(validStates);
+		String lvl = (selectedCls.getLvl() == 0) ? "K" : String.valueOf(selectedCls.getLvl());
+		level.setSelectedItem(lvl);
+		
+		classPanel.add(level);
+		clsBtnPanel = new JPanel();
+		clsBtnPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		
+		clsBtnOk = new JButton("Ok");
+		clsBtnOk.addActionListener(this);
+		clsBtnPanel.add(clsBtnOk);
+		
+		clsBtnCancel = new JButton("Cancel");
+		clsBtnCancel.addActionListener(this);
+		clsBtnPanel.add(clsBtnCancel);
+		
+		classContentPane.add(clsBtnPanel);
+
+		
+		tabbedPane.add("Teacher", teachContentPane);
+		tabbedPane.add("Class", classContentPane);
 		pack();
 		setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnCancel) {
+		if (e.getSource() == btnCancel || e.getSource() == clsBtnCancel) {
 			this.dispose();
 		} else if (e.getSource() == btnOk) {
 			//update stuff
+			this.dispose();
+		} else if (e.getSource() == clsBtnOk) {
+			int l;
+			l = (level.getSelectedItem().toString().equals("K")) ? 0 : Integer.parseInt(level.getSelectedItem().toString());			
+			selectedCls.setClsLvl(l);
+			
 			this.dispose();
 		}
 	}

@@ -296,7 +296,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 				if (cls != null) {
 					t = cls.getTeacher();
 					if (t != null) {
-						new TeacherModFrame(t, clsFac);
+						new TeacherModFrame(t, clsFac, cls);
 					} else {
 						JOptionPane.showMessageDialog(frame,
 								"This class does not have a teacher.", "Error",
