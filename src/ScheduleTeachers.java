@@ -164,7 +164,7 @@ public class ScheduleTeachers implements Serializable{
 			}
 			else
 			{
-				unlucky.add(lucky);
+				unlucky.add(i, lucky);
 				i++;
 			}
 		}
@@ -248,18 +248,23 @@ public class ScheduleTeachers implements Serializable{
 					assigned.get(i).setCls(unaLvl, unaID, type);
 					break;
 				}
-				else
-				{
-					Teachers temp = assigned.remove(i);
-					saveUnlucky(temp.getClsLvl(type), temp.getClsID(type), unlucky, assigned, type);
-					if(unlucky.getClsID(type) >= 0)
-					{
-						temp.setCls(unaLvl, unaID, type);
-						assigned.add(i, temp);
-						break;
-					}
+			}
+		}
+		int searchCount = 0;
+		for (int i = 0; i < assigned.size() && searchCount < 2; i++)
+		{
+			if (assigned.get(i).canTeach(unaLvl, type)) {
+				searchCount++;
+				Teachers temp = assigned.remove(i);
+				saveUnlucky(temp.getClsLvl(type), temp.getClsID(type), unlucky,
+						assigned, type);
+				if (unlucky.getClsID(type) >= 0) {
+					temp.setCls(unaLvl, unaID, type);
 					assigned.add(i, temp);
+					break;
 				}
+				assigned.add(i, temp);
+
 			}
 		}
 	}
@@ -269,8 +274,7 @@ public class ScheduleTeachers implements Serializable{
 	private static boolean swap(ArrayList<Teachers> assigned, ArrayList<Teachers> unlucky, 
 			ArrayList<Integer> classes, int unaLvl, int unaID, Teachers.Type type)
 	{
-		int i;
-		for (i = 0; i < assigned.size(); i++) {
+		for (int i = 0; i < assigned.size(); i++) {
 			if (assigned.get(i).canTeach(unaLvl, type)) {
 				int assignedLvl = assigned.get(i).getClsLvl(type);
 				int assignedID = assigned.get(i).getClsID(type);
@@ -286,21 +290,26 @@ public class ScheduleTeachers implements Serializable{
 						return true;
 					}
 				}
-				if(i < assigned.size())
-				{
-					Teachers resign = assigned.remove(i);
-					if(swap(assigned, unlucky, classes, assignedLvl, assignedID, type))
-					{
-						resign.setCls(unaLvl, unaID, type);
-						if(!classes.contains(unaID))
-						{
-							classes.add(unaID);
-						}
-						assigned.add(i, resign);
-						return true;
-					} 
+			}
+		}
+		int searchCount = 0;
+		for (int i = 0; i < assigned.size() && searchCount < 2; i++)
+		{
+			if (assigned.get(i).canTeach(unaLvl, type)) {
+				searchCount ++;
+				int assignedLvl = assigned.get(i).getClsLvl(type);
+				int assignedID = assigned.get(i).getClsID(type);
+				Teachers resign = assigned.remove(i);
+				if (swap(assigned, unlucky, classes, assignedLvl, assignedID,
+						type)) {
+					resign.setCls(unaLvl, unaID, type);
+					if (!classes.contains(unaID)) {
+						classes.add(unaID);
+					}
 					assigned.add(i, resign);
+					return true;
 				}
+				assigned.add(i, resign);
 			}
 		}
 		return false;
