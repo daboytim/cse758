@@ -113,6 +113,9 @@ public class StudentTable implements TableModelListener, Serializable {
 			while (it.hasNext()) {
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				Students s = it.next();
+				if (s.toString().contains("null"))
+					continue;
+				System.out.println("DEBUG " + s.toString());
 				data[i][0] = s.getId();
 				data[i][1] = s.getFirstName();
 				data[i][2] = s.getLastName();

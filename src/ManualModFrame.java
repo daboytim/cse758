@@ -272,6 +272,7 @@ public class ManualModFrame extends JFrame implements ActionListener, Serializab
 	}
 	
 	private void removeStudent() {
+		System.out.println(std.toString());
 		clsFac.kickout(std);
 	}
 	

@@ -67,6 +67,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 	}
 
 	public void update() {
+		students.reInit();
 		frame.setVisible(false); // Hide the old frame, this is probably NOT
 									// efficient
 		// create the right click menu

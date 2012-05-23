@@ -75,4 +75,13 @@ public class StudentDB implements Serializable {
 	public void removeAll() {
 		students.removeAll(students);
 	}
+	
+	public void reInit() {
+		for (int i = 0; i < students.size(); i ++) {
+			if(students.get(i).toString().contains("null")) {
+				students.remove(i);
+				i --;
+			}
+		}
+	}
 }

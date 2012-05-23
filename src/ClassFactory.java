@@ -280,6 +280,13 @@ public class ClassFactory implements Serializable {
 		if (unlucky.contains(std)) {
 			unlucky.remove(std);
 		} else {
+			//Get classes before kicking out
+			Classes m = std.getMathCls();
+			Classes l = std.getLACls();
+			Classes r = std.getReadCls();
+			Classes h = std.getHomeroomCls();
+			Classes s = std.getSpecialCls();
+			
 			// kick out
 			std.getMathCls().removeStd(std.getId());
 			std.getLACls().removeStd(std.getId());
@@ -289,19 +296,20 @@ public class ClassFactory implements Serializable {
 
 			// find fit from waitlist
 			for (Students stdt : unlucky) {
-				if (compatible(stdt, std.getMathCls())
-						&& compatible(stdt, std.getLACls())
-						&& compatible(stdt, std.getReadCls())
-						&& compatible(stdt, std.getHomeroomCls())
-						&& compatible(stdt, std.getSpecialCls())) {
-					std.getMathCls().addStd(stdt);
-					std.getLACls().addStd(stdt);
-					std.getReadCls().addStd(stdt);
-					std.getHomeroomCls().addStd(stdt);
-					std.getSpecialCls().addStd(stdt);
+				if (compatible(stdt, m)
+						&& compatible(stdt, l)
+						&& compatible(stdt, r)
+						&& compatible(stdt, h)
+						&& compatible(stdt, s)) {
+					m.addStd(stdt);
+					l.addStd(stdt);
+					r.addStd(stdt);
+					h.addStd(stdt);
+					s.addStd(stdt);
 
 					unlucky.remove(stdt);
 					stdt.setWlReason("");
+					break;
 
 				}
 
