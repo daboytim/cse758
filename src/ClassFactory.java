@@ -11,6 +11,8 @@ public class ClassFactory implements Serializable {
 	private int maxCls = 20;
 	private int clsID = 1;
 	private int maxStdPerCls = 5;
+	
+	
 	public final String noFitMath = "There are no suitable math classes for this student.";
 	public final String noFitLA = "There are no suitable language art classes for this student.";
 	public final String noFitRead = "There are no suitable reading classes for this student.";

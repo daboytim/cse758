@@ -118,10 +118,11 @@ public class ScheduleDisplay implements Serializable{
 		int currCol = 1;
 		for (int i = 0; i < clsFac.readClsLst.size(); ++i) {
 			Classes cls = clsFac.readClsLst.get(i);
-			String clsHeader = cls.getFormalClassName();
+			/*String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
-			clsHeader += " " + cls.getClsID();
+			clsHeader += " " + cls.getClsID();*/
+			String clsHeader = cls.getTableName();
 			
 			if (cls.hasTeacher())
 				clsHeader += ":  " + cls.getTeacher().getName();
@@ -134,8 +135,6 @@ public class ScheduleDisplay implements Serializable{
 			List<Students> students = cls.getStudents();
 			for (int j = 1; j <= students.size(); j++) {
 				Students std = students.get(j - 1);
-				String stdNameStr = std.getFirstName();
-				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
 				data[j + currRow + 1][currCol] = std; // changed
 																					// from
@@ -149,10 +148,11 @@ public class ScheduleDisplay implements Serializable{
 		currCol = 1;
 		for (int i = 0; i < clsFac.getTotalLA(); ++i) {
 			Classes cls = clsFac.laClsLst.get(i);
-			String clsHeader = cls.getFormalClassName();
+			/*String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
-			clsHeader += " " + cls.getClsID();
+			clsHeader += " " + cls.getClsID();*/
+			String clsHeader = cls.getTableName();
 
 			if (cls.hasTeacher())
 				clsHeader += ":  " + cls.getTeacher().getName();
@@ -164,8 +164,6 @@ public class ScheduleDisplay implements Serializable{
 			List<Students> students = cls.getStudents();
 			for (int j = 1; j <= students.size(); j++) {
 				Students std = students.get(j - 1);
-				String stdNameStr = std.getFirstName();
-				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
 				data[j + currRow + 1][currCol] = std; // changed
 																					// from
@@ -180,10 +178,11 @@ public class ScheduleDisplay implements Serializable{
 		currCol = 1;
 		for (int i = 0; i < clsFac.getTotalSpecial(); ++i) {
 			Classes cls = clsFac.specialClsLst.get(i);
-			String clsHeader = cls.getFormalClassName();
+			/*String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
-			clsHeader += " " + cls.getClsID();
+			clsHeader += " " + cls.getClsID();*/
+			String clsHeader = cls.getTableName();
 
 			if (cls.hasTeacher())
 				clsHeader += ":  " + cls.getTeacher().getName();
@@ -195,8 +194,6 @@ public class ScheduleDisplay implements Serializable{
 			List<Students> students = cls.getStudents();
 			for (int j = 1; j <= students.size(); j++) {
 				Students std = students.get(j - 1);
-				String stdNameStr = std.getFirstName();
-				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
 				data[j + currRow + 1][currCol] = std; // changed
 																					// from
@@ -210,11 +207,12 @@ public class ScheduleDisplay implements Serializable{
 		currCol = 1;
 		for (int i = 0; i < clsFac.getTotalMath(); ++i) {
 			Classes cls = clsFac.mathClsLst.get(i);
-			String clsHeader = cls.getFormalClassName();
+			/*String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
-			clsHeader += " " + cls.getClsID();
-
+			clsHeader += " " + cls.getClsID();*/
+			String clsHeader = cls.getTableName();
+			
 			if (cls.hasTeacher())
 				clsHeader += ":  " + cls.getTeacher().getName();
 
@@ -225,8 +223,6 @@ public class ScheduleDisplay implements Serializable{
 			List<Students> students = cls.getStudents();
 			for (int j = 1; j <= students.size(); j++) {
 				Students std = students.get(j - 1);
-				String stdNameStr = std.getFirstName();
-				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
 				data[j + currRow + 1][currCol] = std; // changed
 																					// from
@@ -240,10 +236,11 @@ public class ScheduleDisplay implements Serializable{
 		currCol = 1;
 		for (int i = 0; i < clsFac.getTotalHomeroom(); ++i) {
 			Classes cls = clsFac.homeroomClsLst.get(i);
-			String clsHeader = cls.getFormalClassName();
+			/*String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
-			clsHeader += " " + cls.getClsID();
+			clsHeader += " " + cls.getClsID();*/
+			String clsHeader = cls.getTableName();
 
 			if (cls.hasTeacher())
 				clsHeader += ":  " + cls.getTeacher().getName();
@@ -255,8 +252,6 @@ public class ScheduleDisplay implements Serializable{
 			List<Students> students = cls.getStudents();
 			for (int j = 1; j <= students.size(); j++) {
 				Students std = students.get(j - 1);
-				String stdNameStr = std.getFirstName();
-				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
 				data[j + currRow + 1][currCol] = std; // changed
 																					// from

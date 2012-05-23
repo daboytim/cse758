@@ -9,6 +9,7 @@ public class Classes implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String classname;
 	private String formalClassName;
+	private String tableClassName;
 	private int lvl;
 	private List<Students> students;
 	private double lowestAge = 999;
@@ -22,6 +23,17 @@ public class Classes implements Serializable{
 		students = new ArrayList<Students>();
 		this.classname = name;
 		this.formalClassName = name + "-" + lvl + "_" + ID;
+		if (name.equals("math")) {
+			tableClassName = "Math " + lvl + " Sec. " + ID;
+		} else if (name.equals("read")) {
+			tableClassName = "Reading " + lvl + " Sec. " + ID;
+		} else if (name.equals("la")) {
+			tableClassName = "Lang. Arts " + lvl + " Sec. " + ID;
+		} else if (name.equals("homeroom")) {
+			tableClassName = "Homeroom " + lvl + " Sec. " + ID;
+		} else if (name.equals("special")) {
+			tableClassName = "Special " + lvl + " Sec. " + ID;
+		}
 		this.lvl = lvl;
 		this.id = ID;
 	}
@@ -186,4 +198,7 @@ public class Classes implements Serializable{
 		this.lvl = level;
 	}
 
+	public String getTableName() {
+		return this.tableClassName;
+	}
 }

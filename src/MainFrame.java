@@ -289,7 +289,11 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 				// do nothing
 			} else if (cell.toString().startsWith("Ages")) {
 				// do nothing
-			} else if (cell.toString().startsWith("Class")) {
+			} else if (cell.toString().startsWith("Math") ||
+					cell.toString().startsWith("Reading") ||
+					cell.toString().startsWith("Lang.") ||
+					cell.toString().startsWith("Homeroom") ||
+					cell.toString().startsWith("Special")) {
 				// figure out what class this is
 				Classes cls = findClass(cell);
 				Teachers t = null;
@@ -318,7 +322,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 
 	private Classes findClass(Object cell) {
 		String str = cell.toString();
-		int index = str.indexOf(' '); // space before level
+		/*int index = str.indexOf(' '); // space before level
 		index++;
 		index = str.indexOf(' ', index); // space before id
 		index++;
@@ -327,30 +331,33 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 			str = str.substring(index);
 		else
 			str = str.substring(index, end);
-		int id = Integer.parseInt(str);
+		int id = Integer.parseInt(str);*/
 		// str should now contain the class id, i think
+		
+		String[] fields = str.split(":");
+		String dispName = fields[0].trim();
 		for (Classes c : clsFac.readClsLst) {
-			if (id == c.getClsID()) {
+			if (dispName.equals(c.getTableName())) {
 				return c;
 			}
 		}
 		for (Classes c : clsFac.laClsLst) {
-			if (id == c.getClsID()) {
+			if (dispName.equals(c.getTableName())) {
 				return c;
 			}
 		}
 		for (Classes c : clsFac.mathClsLst) {
-			if (id == c.getClsID()) {
+			if (dispName.equals(c.getTableName())) {
 				return c;
 			}
 		}
 		for (Classes c : clsFac.homeroomClsLst) {
-			if (id == c.getClsID()) {
+			if (dispName.equals(c.getTableName())) {
 				return c;
 			}
 		}
 		for (Classes c : clsFac.specialClsLst) {
-			if (id == c.getClsID()) {
+			if (dispName.equals(c.getTableName())) {
 				return c;
 			}
 		}
