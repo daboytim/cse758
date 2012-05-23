@@ -16,7 +16,7 @@ public class Classes implements Serializable{
 	private int bl3 = 0;
 	private int bl2 = 0;
 	private int id;
-	private Teachers teacher;
+	private Teachers teacher = null;
 	private boolean hasTeacher = false;
 
 	public Classes(String name, int lvl, int ID) {
