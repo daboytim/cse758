@@ -430,6 +430,19 @@ public class Teachers implements Serializable{
 		}
 	}
 	
+	public void reset()
+	{
+		clsIDM=-1;
+		clsIDR=-1;
+		clsIDL=-1;
+		clsIDH=-1;
+		clsIDS=-1;
+		clsLvlM=-1;
+		clsLvlR=-1;
+		clsLvlL=-1;
+		room=-1;
+	}
+	
 	// returns n > 0, if this.teacher has more available classes compare to teacher
 	public int compareTo(Teachers teacher, Type t) {
 		return this.availability(t)-teacher.availability(t);

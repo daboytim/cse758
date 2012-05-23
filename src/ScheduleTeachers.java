@@ -13,10 +13,15 @@ public class ScheduleTeachers implements Serializable{
 	{
 		Teachers.Type type;
 		ArrayList<Teachers> teachers = tch.getTeachers();
+		for(Teachers t : teachers)
+		{
+			t.reset();
+		}
 		ArrayList<Teachers> assigned = new ArrayList<Teachers>();
 		ArrayList<Teachers> unlucky = new ArrayList<Teachers>();
 		ArrayList<Integer> classes = new ArrayList<Integer>();
 		List<Classes> clsList;
+		List<Classes> emptyCls = new ArrayList<Classes> ();
 		int clsNum=0;
 		
 		/* === Algorithm ===
@@ -33,25 +38,72 @@ public class ScheduleTeachers implements Serializable{
 		 *     and one unlucky teacher who can teach same class that A was assigned to, and swap
 		 */
 		
+		clsList = clsFac.homeroomClsLst;
+		for(int i = 0; i < clsList.size(); i++)
+		{
+			if(clsList.get(i).getTotal() == 0)
+			{
+				emptyCls.add(clsList.remove(i));
+				i--;
+			}
+		}
+		while(emptyCls.size() > 0)
+			clsList.add(emptyCls.remove(0));
+		clsList = clsFac.specialClsLst;
+		for(int i = 0; i < clsList.size(); i++)
+		{
+			if(clsList.get(i).getTotal() == 0)
+			{
+				emptyCls.add(clsList.remove(i));
+				i--;
+			}
+		}
+		while(emptyCls.size() > 0)
+			clsList.add(emptyCls.remove(0));
+		
 		for (int classType = 0; classType < 3; classType++) {
 			// === reset ===
 			if (classType == 0)
 			{
 				type = Teachers.Type.MATH;
 				clsList = clsFac.mathClsLst;
-				clsNum = clsFac.getTotalMath();
+				for(int i = 0; i < clsList.size(); i++)
+				{
+					if(clsList.get(i).getTotal() == 0)
+					{
+						emptyCls.add(clsList.remove(i));
+						i--;
+					}
+				}
+				clsNum = clsFac.mathClsLst.size();
 			}
 			else if (classType == 1)
 			{
 				type = Teachers.Type.READ;
 				clsList = clsFac.readClsLst;
-				clsNum += clsFac.getTotalRead();
+				for(int i = 0; i < clsList.size(); i++)
+				{
+					if(clsList.get(i).getTotal() == 0)
+					{
+						emptyCls.add(clsList.remove(i));
+						i--;
+					}
+				}
+				clsNum += clsFac.readClsLst.size();
 			}
 			else
 			{
 				type = Teachers.Type.LA;
 				clsList = clsFac.laClsLst;
-				clsNum += clsFac.getTotalLA();
+				for(int i = 0; i < clsList.size(); i++)
+				{
+					if(clsList.get(i).getTotal() == 0)
+					{
+						emptyCls.add(clsList.remove(i));
+						i--;
+					}
+				}
+				clsNum += clsFac.laClsLst.size();
 			}
 			while(assigned.size() > 0)
 				teachers.add(assigned.remove(0));
@@ -102,6 +154,11 @@ public class ScheduleTeachers implements Serializable{
 			if(classes.size() < clsList.size())
 			{
 				clsNum = clsNum - (clsList.size() - classes.size());
+			}
+			
+			while(emptyCls.size() > 0)
+			{
+				clsList.add(emptyCls.remove(0));
 			}
 		}
 		
@@ -172,7 +229,7 @@ public class ScheduleTeachers implements Serializable{
 		//======= assign homeroom, special according to students in math class =======
 		for(int i = 0; i < assigned.size(); i++)
 		{
-			for(int j = 0; j < clsFac.getTotalMath(); j++)
+			for(int j = 0; j < clsFac.mathClsLst.size(); j++)
 			{
 				if(clsFac.mathClsLst.get(j).getClsID() == assigned.get(i).getClsID(Teachers.Type.MATH))
 				{
@@ -188,7 +245,7 @@ public class ScheduleTeachers implements Serializable{
 		}
 		for(int i = 0; i < unlucky.size(); i++)
 		{
-			for(int j = 0; j < clsFac.getTotalMath(); j++)
+			for(int j = 0; j < clsFac.mathClsLst.size(); j++)
 			{
 				if(clsFac.mathClsLst.get(j).getClsID() == unlucky.get(i).getClsID(Teachers.Type.MATH))
 				{
@@ -317,21 +374,21 @@ public class ScheduleTeachers implements Serializable{
 	// assign teacher to classes
 	private static void assignToClass(Teachers t, ClassFactory clsFac)
 	{
-		for(int i = 0; i < clsFac.getTotalMath(); i++)
+		for(int i = 0; i < clsFac.mathClsLst.size(); i++)
 		{
 			if(clsFac.mathClsLst.get(i).getClsID() == t.getClsID(Teachers.Type.MATH))
 			{
 				clsFac.mathClsLst.get(i).setTeacher(t);
 			}
 		}
-		for(int i = 0; i < clsFac.getTotalRead(); i++)
+		for(int i = 0; i < clsFac.readClsLst.size(); i++)
 		{
 			if(clsFac.readClsLst.get(i).getClsID() == t.getClsID(Teachers.Type.READ))
 			{
 				clsFac.readClsLst.get(i).setTeacher(t);
 			}
 		}
-		for(int i = 0; i < clsFac.getTotalLA(); i++)
+		for(int i = 0; i < clsFac.laClsLst.size(); i++)
 		{
 			if(clsFac.laClsLst.get(i).getClsID() == t.getClsID(Teachers.Type.LA))
 			{
@@ -363,7 +420,7 @@ public class ScheduleTeachers implements Serializable{
 			return -1; 
 		switch(type) {
 		case MATH:
-			for(int i = 0; i < clsFac.getTotalMath(); i++)
+			for(int i = 0; i < clsFac.mathClsLst.size(); i++)
 			{
 				if(clsFac.mathClsLst.get(i).getLvl() == cls 
 						&& !assignedIDs.contains(clsFac.mathClsLst.get(i).getClsID()))
@@ -371,7 +428,7 @@ public class ScheduleTeachers implements Serializable{
 			}
 			return -1;
 		case READ:
-			for(int i = 0; i < clsFac.getTotalRead(); i++)
+			for(int i = 0; i < clsFac.readClsLst.size(); i++)
 			{
 				if(clsFac.readClsLst.get(i).getLvl() == cls
 						&& !assignedIDs.contains(clsFac.readClsLst.get(i).getClsID()))
@@ -379,7 +436,7 @@ public class ScheduleTeachers implements Serializable{
 			}
 			return -1;
 		case LA:
-			for(int i = 0; i < clsFac.getTotalLA(); i++)
+			for(int i = 0; i < clsFac.laClsLst.size(); i++)
 			{
 				if(clsFac.laClsLst.get(i).getLvl() == cls
 						&& !assignedIDs.contains(clsFac.laClsLst.get(i).getClsID()))
