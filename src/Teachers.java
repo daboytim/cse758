@@ -154,6 +154,132 @@ public class Teachers implements Serializable{
 		}	
 	}
 
+	public void unassignFromClass(Type t)
+	{
+		switch(t) {
+		case MATH:
+		{
+			if(this.clsIDM == -1)
+				break;
+			for(int i = 0; i < clsFac.mathClsLst.size(); i++)
+			{
+				if(this.clsIDM == clsFac.mathClsLst.get(i).getClsID())
+				{
+					this.clsLvlM = -1;
+					this.clsIDM = -1;
+					clsFac.mathClsLst.get(i).removeTeacher();
+					break;
+				}
+			}
+			break;
+		}
+		case READ:
+		{
+			if(this.clsIDR == -1)
+				break;
+			for(int i = 0; i < clsFac.readClsLst.size(); i++)
+			{
+				if(this.clsIDR == clsFac.readClsLst.get(i).getClsID())
+				{
+					this.clsLvlR = -1;
+					this.clsIDR = -1;
+					clsFac.readClsLst.get(i).removeTeacher();
+					break;
+				}
+			}
+			break;
+		}
+		case LA:
+		{
+			if(this.clsIDL == -1)
+				break;
+			for(int i = 0; i < clsFac.laClsLst.size(); i++)
+			{
+				if(this.clsIDL == clsFac.laClsLst.get(i).getClsID())
+				{
+					this.clsLvlL = -1;
+					this.clsIDL = -1;
+					clsFac.laClsLst.get(i).removeTeacher();
+					break;
+				}
+			}
+			break;
+		}
+		case HR:
+		{
+			if(this.clsIDH == -1)
+				break;
+			for(int i = 0; i < clsFac.homeroomClsLst.size(); i++)
+			{
+				if(this.clsIDH == clsFac.homeroomClsLst.get(i).getClsID())
+				{
+					this.clsIDH = -1;
+					clsFac.homeroomClsLst.get(i).removeTeacher();
+					break;
+				}
+			}
+			break;
+		}
+		case SP:
+		{
+			if(this.clsIDS == -1)
+				break;
+			for(int i = 0; i < clsFac.specialClsLst.size(); i++)
+			{
+				if(this.clsIDS == clsFac.specialClsLst.get(i).getClsID())
+				{
+					this.clsIDS = -1;
+					clsFac.specialClsLst.get(i).removeTeacher();
+					break;
+				}
+			}
+			break;
+		}
+		}
+		
+	}
+	
+	public Teachers assignToClass(Classes cls, Type t)
+	{
+		switch(t) {
+		case MATH:
+		{
+			this.clsLvlM = cls.getLvl();
+			this.clsIDM = cls.getClsID();
+			break;
+		}
+		case READ:
+		{
+			this.clsLvlR = cls.getLvl();
+			this.clsIDR = cls.getClsID();
+			break;
+		}	
+		case LA:
+		{
+			this.clsLvlL = cls.getLvl();
+			this.clsIDL = cls.getClsID();
+			break;
+		}
+		case HR:
+		{
+			this.clsIDH = cls.getClsID();
+			break;
+		}
+		case SP:
+		{
+			this.clsIDS = cls.getClsID();
+			break;
+		}
+		}
+		Teachers unassigned = cls.getTeacher();
+		if(unassigned != null)
+		{
+			unassigned.setCls(-1, -1, t);
+		}
+		cls.setTeacher(this);
+		return unassigned;
+	}
+	
 	public void setCls(Integer clsLvl, Integer clsID, Type t){
 		switch(t) {
 		case MATH:
@@ -182,6 +308,7 @@ public class Teachers implements Serializable{
 		case SP:
 		{
 			this.clsIDS = clsID;
+			break;
 		}
 		}
 	}
