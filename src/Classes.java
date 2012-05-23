@@ -196,6 +196,19 @@ public class Classes implements Serializable{
 	
 	public void setClsLvl(int level) {
 		this.lvl = level;
+		
+		if (classname.equals("math")) {
+			tableClassName = "Math " + lvl + " Sec. " + id;
+		} else if (classname.equals("read")) {
+			tableClassName = "Reading " + lvl + " Sec. " + id;
+		} else if (classname.equals("la")) {
+			tableClassName = "Lang. Arts " + lvl + " Sec. " + id;
+		} else if (classname.equals("homeroom")) {
+			tableClassName = "Homeroom " + lvl + " Sec. " + id;
+		} else if (classname.equals("special")) {
+			tableClassName = "Special " + lvl + " Sec. " + id;
+		}
+		
 	}
 
 	public String getTableName() {

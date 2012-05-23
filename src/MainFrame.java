@@ -151,7 +151,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 			tabbedPane.setSelectedIndex(2);
 		} else if (obj.equals(editItem)) {
 			showManualMod();
-			// sched.update();
+			
 		} else if (obj.equals(addStd.add)) {
 			String tmpID = addStd.txtFieldStudentID.getText();
 			int id = -1;
@@ -300,7 +300,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 				if (cls != null) {
 					t = cls.getTeacher();
 					if (t != null) {
-						new TeacherModFrame(t, clsFac, cls);
+						new TeacherModFrame(t, clsFac, cls, students, sTab, sched);
 					} else {
 						JOptionPane.showMessageDialog(frame,
 								"This class does not have a teacher.", "Error",
