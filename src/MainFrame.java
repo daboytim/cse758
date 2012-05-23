@@ -395,7 +395,11 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 					// do nothing
 				} else if (cell.toString().startsWith("Ages")) {
 					// do nothing
-				} else if (cell.toString().startsWith("Class")) {
+				} else if (cell.toString().startsWith("Math") ||
+						cell.toString().startsWith("Reading") ||
+						cell.toString().startsWith("Lang.") ||
+						cell.toString().startsWith("Homeroom") ||
+						cell.toString().startsWith("Special")) {
 					// figure out what class this is
 					Classes cls = findClass(cell);
 					Teachers t = null;
