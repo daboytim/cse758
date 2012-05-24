@@ -246,6 +246,7 @@ public class ClassFactory implements Serializable {
 				System.out.println(sp.getFormalClassName());
 
 			}
+			break;
 
 			// if (compatible(stdt, fromCls)) { //TODO fixit: I forget to check
 			// other 4 classes compatibility
