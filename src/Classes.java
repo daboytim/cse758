@@ -111,7 +111,20 @@ public class Classes implements Serializable{
 	public void setTeacher(Teachers t)
 	{
 		this.teacher = t;
-		this.hasTeacher = true;
+		if (t != null) {
+			if (classname.equals("math")) {
+				teacher.setCls(lvl, id, Teachers.Type.MATH);
+			} else if (classname.equals("read")) {
+				teacher.setCls(lvl, id, Teachers.Type.READ);
+			} else if (classname.equals("la")) {
+				teacher.setCls(lvl, id, Teachers.Type.LA);
+			} else if (classname.equals("homeroom")) {
+				teacher.setCls(lvl, id, Teachers.Type.HR);
+			} else if (classname.equals("special")) {
+				teacher.setCls(lvl, id, Teachers.Type.SP);
+			}
+			this.hasTeacher = true;
+		}
 	}
 	
 	public Teachers removeTeacher()
@@ -119,6 +132,17 @@ public class Classes implements Serializable{
 		if(!this.hasTeacher())
 			return null;
 		this.hasTeacher = false;
+		if (classname.equals("math")) {
+			teacher.setCls(-1, -1, Teachers.Type.MATH);
+		} else if (classname.equals("read")) {
+			teacher.setCls(-1, -1, Teachers.Type.READ);
+		} else if (classname.equals("la")) {
+			teacher.setCls(-1, -1, Teachers.Type.LA);
+		} else if (classname.equals("homeroom")) {
+			teacher.setCls(-1, -1, Teachers.Type.HR);
+		} else if (classname.equals("special")) {
+			teacher.setCls(-1, -1, Teachers.Type.SP);
+		}
 		return this.teacher;
 	}
 
