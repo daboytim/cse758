@@ -180,7 +180,22 @@ public class Schedulizer implements Serializable{
 			clsFac.homeroomClsLst.add(hrCls);
 			clsFac.specialClsLst.add(spCls);
 		}
+		
+		//appending empty classes
+		for(int i=0;i<clsFac.getMaxCls()-clsFac.getTotalMath();i++) {
+			 clsFac.mathClsLst.add(clsFac.createClass("math", 0));
+			 clsFac.mathClsLst.add(clsFac.createClass("homeroom", 0));
+			 clsFac.mathClsLst.add(clsFac.createClass("special", 0));
+		}
+		for(int i=0;i<clsFac.getMaxCls()-clsFac.getTotalLA();i++) {
+			 clsFac.mathClsLst.add(clsFac.createClass("la", 0));
+		}
+		for(int i=0;i<clsFac.getMaxCls()-clsFac.getTotalRead();i++) {
+			 clsFac.mathClsLst.add(clsFac.createClass("read", 0));
+		}
+		
 
+				
 		System.out.println("*********Results************");
 		System.out.println("There are " + clsFac.mathClsLst.size()
 				+ " classes for math:");
