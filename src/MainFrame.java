@@ -411,7 +411,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 								"Class not found.", "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}
-				} else if (x > 0 && y > 0) {
+				} else if (x >= 0 && y >= 0) {
 					new StudentScheduleFrame((Students) cell);
 				}
 			}
