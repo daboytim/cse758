@@ -351,31 +351,33 @@ public class ManualModFrame extends JFrame implements ActionListener,
 		Classes newMathCls = null, newReadCls = null, newLACls = null, newHmrmCls = null, newSpecCls = null;
 		// get class that corresponds to the newClass name
 		for (int i = 0; i < clsFac.mathClsLst.size(); i++) {
-			if (newMath == clsFac.mathClsLst.get(i).getFormalClassName()) {
+			//String[] parts = newMath.split("_");
+			//int id = Integer.parseInt(parts[1]);
+			if (newMath.equals(clsFac.mathClsLst.get(i).getFormalClassName())) {
 				newMathCls = clsFac.mathClsLst.get(i);
 				break;
 			}
 		}
 		for (int i = 0; i < clsFac.readClsLst.size(); i++) {
-			if (newRead == clsFac.readClsLst.get(i).getFormalClassName()) {
+			if (newRead.equals(clsFac.readClsLst.get(i).getFormalClassName())) {
 				newReadCls = clsFac.readClsLst.get(i);
 				break;
 			}
 		}
 		for (int i = 0; i < clsFac.laClsLst.size(); i++) {
-			if (newLA == clsFac.laClsLst.get(i).getFormalClassName()) {
+			if (newLA.equals(clsFac.laClsLst.get(i).getFormalClassName())) {
 				newLACls = clsFac.laClsLst.get(i);
 				break;
 			}
 		}
 		for (int i = 0; i < clsFac.homeroomClsLst.size(); i++) {
-			if (newHmrm == clsFac.homeroomClsLst.get(i).getFormalClassName()) {
+			if (newHmrm.equals(clsFac.homeroomClsLst.get(i).getFormalClassName())) {
 				newHmrmCls = clsFac.homeroomClsLst.get(i);
 				break;
 			}
 		}
 		for (int i = 0; i < clsFac.specialClsLst.size(); i++) {
-			if (newSpec == clsFac.specialClsLst.get(i).getFormalClassName()) {
+			if (newSpec.equals(clsFac.specialClsLst.get(i).getFormalClassName())) {
 				newSpecCls = clsFac.specialClsLst.get(i);
 				break;
 			}

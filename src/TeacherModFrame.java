@@ -330,6 +330,8 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 					.parseInt(level.getSelectedItem().toString());
 
 			selectedCls.setClsLvl(l);
+			//clsFac.modifyCls(selectedCls.getClsID(), selectedCls);
+
 
 			if (teacher.getSelectedItem() != null) {
 				String t = teacher.getSelectedItem().toString();

@@ -415,4 +415,36 @@ public class ClassFactory implements Serializable {
 			this.readClsLst.add(this.createClass("read", 0));
 		}
 	}
+	
+	public void modifyCls(int ID, Classes cls) {
+		for (int i = 0; i < mathClsLst.size(); i ++) {
+			if (mathClsLst.get(i).getClsID() == ID) {
+				mathClsLst.set(i, cls);
+			}
+		}
+		
+		for (int i = 0; i < laClsLst.size(); i ++) {
+			if (laClsLst.get(i).getClsID() == ID) {
+				laClsLst.set(i, cls);
+			}
+		}
+		
+		for (int i = 0; i < readClsLst.size(); i ++) {
+			if (readClsLst.get(i).getClsID() == ID) {
+				readClsLst.set(i, cls);
+			}
+		}
+		
+		for (int i = 0; i < homeroomClsLst.size(); i ++) {
+			if (homeroomClsLst.get(i).getClsID() == ID) {
+				homeroomClsLst.set(i, cls);
+			}
+		}
+		
+		for (int i = 0; i < specialClsLst.size(); i ++) {
+			if (specialClsLst.get(i).getClsID() == ID) {
+				specialClsLst.set(i, cls);
+			}
+		}
+	}
 }
