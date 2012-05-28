@@ -241,6 +241,7 @@ public class Teachers implements Serializable{
 	
 	public Teachers assignToClass(Classes cls, Type t)
 	{
+		this.unassignFromClass(t);
 		switch(t) {
 		case MATH:
 		{
@@ -274,7 +275,7 @@ public class Teachers implements Serializable{
 		Teachers unassigned = cls.getTeacher();
 		if(unassigned != null)
 		{
-			unassigned.setCls(-1, -1, t);
+			unassigned.unassignFromClass(t);
 		}
 		cls.setTeacher(this);
 		return unassigned;
