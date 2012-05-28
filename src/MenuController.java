@@ -32,6 +32,7 @@ public class MenuController implements ActionListener, Serializable {
 			try {
 				if (str != null) {
 					clsFac.setMaxCls(Integer.parseInt(str));
+					clsFac.appendEmtpyCls();
 					JOptionPane.showMessageDialog(null,
 							"Max number of classes successfully set to"
 									+ clsFac.getMaxCls(), "Success", 1);
