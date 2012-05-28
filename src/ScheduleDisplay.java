@@ -50,7 +50,6 @@ public class ScheduleDisplay implements Serializable{
 		table = new RowColoredTable(data);  
 		table.setModel(tm);
 		
-
 		update();
 	}
 
@@ -62,7 +61,8 @@ public class ScheduleDisplay implements Serializable{
 			columnNames[i] = " ";
 		}
 		columnNames[numRooms + 1] = "Waitlist";
-
+		
+		
 		populateTable();
 		tm.setDataVector(data, columnNames);
 		// format table
