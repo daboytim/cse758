@@ -299,7 +299,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 				Teachers t = null;
 				if (cls != null) {
 					t = cls.getTeacher();
-					new TeacherModFrame(t, clsFac, cls, students, sTab, sched);
+					new TeacherModFrame(t, clsFac, cls, students, sTab, sched, teachers);
 				} else {
 					JOptionPane.showMessageDialog(frame, "Class not found.",
 							"Error", JOptionPane.ERROR_MESSAGE);

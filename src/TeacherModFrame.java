@@ -34,6 +34,7 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 	private JComboBox comboBoxHomeroom;
 	private JComboBox comboBoxSpecials;
 	private JComboBox level;
+	private JComboBox teacher;
 	private Teachers teach;
 	private JTextField nameField;
 	private JTextField roomField;
@@ -42,6 +43,7 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 	private JButton btnCancel, clsBtnCancel;
 	private Classes mathCls, readCls, laCls, hmrmCls, specCls, selectedCls;
 	private ClassFactory clsFac;
+	private TeacherDB teachers;
 	private StudentDB students;
 	private StudentTable sTab;
 	private ScheduleDisplay sched;
@@ -53,7 +55,8 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 	 * Create the frame.
 	 */
 	public TeacherModFrame(Teachers teacher, ClassFactory cf, Classes cls,
-			StudentDB s, StudentTable sT, ScheduleDisplay sD) {
+			StudentDB s, StudentTable sT, ScheduleDisplay sD, TeacherDB ts) {
+		teachers = ts;
 		students = s;
 		clsFac = cf;
 		selectedCls = cls;
@@ -89,7 +92,7 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 		classContentPane = new JPanel();
 		classContentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		classContentPane.setLayout(new BorderLayout());
-		
+
 		if (teach != null) {
 			// Create Teacher Panel
 			JPanel teachPanel = new JPanel();
@@ -97,32 +100,33 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 					TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			teachPanel.setLayout(new GridLayout(2, 2));
 			teachContentPane.add(teachPanel);
-	
+
 			teachPanel.add(new JLabel("Name"));
-	
+
 			nameField = new JTextField(teach.getName());
 			nameField.setEditable(false);
 			teachPanel.add(nameField);
 			nameField.setColumns(10);
-	
+
 			teachPanel.add(new JLabel("Class Room"));
-			
-			roomField = new JTextField(""+teach.getRoom());
+
+			roomField = new JTextField("" + teach.getRoom());
 			roomField.setColumns(10);
 			teachPanel.add(roomField);
-	
+
 			JPanel schedPanel = new JPanel();
 			schedPanel.setBorder(new TitledBorder(null, "Schedule",
 					TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			schedPanel.setLayout(new GridLayout(5, 2));
 			teachContentPane.add(schedPanel);
-	
+
 			schedPanel.add(new JLabel("Reading Class"));
-	
+
 			// add list of current math classes
 			Vector<String> mathClassNames = new Vector<String>();
 			for (int i = 0; i < clsFac.mathClsLst.size(); i++) {
-				mathClassNames.add(clsFac.mathClsLst.get(i).getFormalClassName());
+				mathClassNames.add(clsFac.mathClsLst.get(i)
+						.getFormalClassName());
 			}
 			mathClassNames.add("No Class");
 			comboBoxMath = new JComboBox(mathClassNames);
@@ -131,7 +135,7 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 			} else {
 				comboBoxMath.setSelectedItem("No Class");
 			}
-	
+
 			// add list of current la classes
 			Vector<String> laClassNames = new Vector<String>();
 			for (int i = 0; i < clsFac.laClsLst.size(); i++) {
@@ -144,11 +148,12 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 			} else {
 				comboBoxLa.setSelectedItem("No Class");
 			}
-	
+
 			// add list of current reading classes
 			Vector<String> readClassNames = new Vector<String>();
 			for (int i = 0; i < clsFac.readClsLst.size(); i++) {
-				readClassNames.add(clsFac.readClsLst.get(i).getFormalClassName());
+				readClassNames.add(clsFac.readClsLst.get(i)
+						.getFormalClassName());
 			}
 			readClassNames.add("No Class");
 			comboBoxRead = new JComboBox(readClassNames);
@@ -157,7 +162,7 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 			} else {
 				comboBoxRead.setSelectedItem("No Class");
 			}
-	
+
 			// add list of current homeroom classes
 			Vector<String> hmrmClassNames = new Vector<String>();
 			for (int i = 0; i < clsFac.homeroomClsLst.size(); i++) {
@@ -171,12 +176,12 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 			} else {
 				comboBoxHomeroom.setSelectedItem("No Class");
 			}
-	
+
 			// add list of current special classes
 			Vector<String> specClassNames = new Vector<String>();
 			for (int i = 0; i < clsFac.specialClsLst.size(); i++) {
-				specClassNames
-						.add(clsFac.specialClsLst.get(i).getFormalClassName());
+				specClassNames.add(clsFac.specialClsLst.get(i)
+						.getFormalClassName());
 			}
 			specClassNames.add("No Class");
 			comboBoxSpecials = new JComboBox(specClassNames);
@@ -185,7 +190,7 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 			} else {
 				comboBoxSpecials.setSelectedItem("No Class");
 			}
-	
+
 			schedPanel.add(comboBoxRead);
 			schedPanel.add(new JLabel("Math Class"));
 			schedPanel.add(comboBoxMath);
@@ -195,15 +200,15 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 			schedPanel.add(comboBoxHomeroom);
 			schedPanel.add(new JLabel("Specials"));
 			schedPanel.add(comboBoxSpecials);
-	
+
 			btnPanel = new JPanel();
 			btnPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			teachContentPane.add(btnPanel);
-	
+
 			btnOk = new JButton("Ok");
 			btnOk.addActionListener(this);
 			btnPanel.add(btnOk);
-	
+
 			btnCancel = new JButton("Cancel");
 			btnCancel.addActionListener(this);
 			btnPanel.add(btnCancel);
@@ -222,7 +227,55 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 				.valueOf(selectedCls.getLvl());
 		level.setSelectedItem(lvl);
 		classPanel.add(level);
-		
+
+		// Assign Teacher to class
+		ArrayList<Teachers> canTeach = new ArrayList<Teachers>();
+		for (Teachers t : teachers.getTeachers()) {
+			String cName = selectedCls.getClsName();
+			System.out.println(cName);
+			if (cName.toLowerCase().contains("math")) {
+				if (t.canTeach(selectedCls.getLvl(), Teachers.Type.MATH)
+						&& t.getCls(Teachers.Type.MATH) == null) {
+					canTeach.add(t);
+				}
+			} else if (cName.toLowerCase().contains("la")) {
+				if (t.canTeach(selectedCls.getLvl(), Teachers.Type.LA)
+						&& t.getCls(Teachers.Type.LA) == null) {
+					canTeach.add(t);
+				}
+			} else if (cName.toLowerCase().contains("read")) {
+				if (t.canTeach(selectedCls.getLvl(), Teachers.Type.READ)
+						&& t.getCls(Teachers.Type.READ) == null) {
+					canTeach.add(t);
+				}
+			} else if (cName.toLowerCase().contains("spec")
+					&& t.getCls(Teachers.Type.SP) == null) {
+				canTeach.add(t);
+
+			} else if (cName.toLowerCase().contains("home")
+					&& t.getCls(Teachers.Type.HR) == null) {
+				canTeach.add(t);
+			}
+		}
+
+		if (selectedCls.hasTeacher()) {
+			canTeach.add(selectedCls.getTeacher());
+		}
+
+		String[] tNames = new String[canTeach.size()];
+		for (int i = 0; i < canTeach.size(); i++) {
+			tNames[i] = canTeach.get(i).getName();
+		}
+
+		classPanel.add(new JLabel("\nTeacher"));
+
+		teacher = new JComboBox(tNames);
+		if (selectedCls.hasTeacher()) {
+			teacher.setSelectedItem(selectedCls.getTeacher().getName());
+		}
+
+		classPanel.add(teacher);
+
 		clsBtnPanel = new JPanel();
 		clsBtnPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
@@ -253,16 +306,14 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 				if (newRoom != teach.getRoom())
 					teach.setRoom(newRoom);
 			} catch (NumberFormatException e1) {
-				JOptionPane.showMessageDialog(this,
-						"'"+roomField.getText()+"' is not a valid room number.\n"+
-								"Please enter an integer.",
-						"Error",
+				JOptionPane.showMessageDialog(this, "'" + roomField.getText()
+						+ "' is not a valid room number.\n"
+						+ "Please enter an integer.", "Error",
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			} catch (NullPointerException e2) {
 				JOptionPane.showMessageDialog(this,
-						"Please enter a room number.",
-						"Error",
+						"Please enter a room number.", "Error",
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -277,12 +328,79 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 			int l;
 			l = (level.getSelectedItem().toString().equals("K")) ? 0 : Integer
 					.parseInt(level.getSelectedItem().toString());
-			if (l == selectedCls.getLvl()) {
-				this.dispose();
-				return;
-			}
+
 			selectedCls.setClsLvl(l);
 
+			if (teacher.getSelectedItem() != null) {
+				String t = teacher.getSelectedItem().toString();
+				Teachers tch = teachers.getTeacher(t);
+
+				String cName = selectedCls.getClsName();
+				if (cName.contains("math")) {
+					if (!tch.canTeach(selectedCls.getLvl(), Teachers.Type.MATH)) {
+						JOptionPane
+								.showMessageDialog(
+										this,
+										tch.getName()
+												+ " has not included this class level in their preferred classes list");
+					} else {
+						if (tch.getCls(Teachers.Type.MATH) != null) {
+							JOptionPane.showMessageDialog(this, tch.getName()
+									+ " is already teaching a Math class.");
+						} else {
+							tch.assignToClass(selectedCls, Teachers.Type.MATH);
+						}
+					}
+				} else if (cName.contains("la")) {
+					if (!tch.canTeach(selectedCls.getLvl(), Teachers.Type.LA)) {
+						JOptionPane
+								.showMessageDialog(
+										this,
+										tch.getName()
+												+ " has not included this class level in their preferred classes list");
+					} else {
+						if (tch.getCls(Teachers.Type.LA) != null) {
+							JOptionPane
+									.showMessageDialog(
+											this,
+											tch.getName()
+													+ " is already teaching a Language Arts class.");
+						} else {
+							tch.assignToClass(selectedCls, Teachers.Type.LA);
+						}
+					}
+				} else if (cName.contains("read")) {
+					if (!tch.canTeach(selectedCls.getLvl(), Teachers.Type.READ)) {
+						JOptionPane
+								.showMessageDialog(
+										this,
+										tch.getName()
+												+ " has not included this class level in their preferred classes list");
+					} else {
+						if (tch.getCls(Teachers.Type.READ) != null) {
+							JOptionPane.showMessageDialog(this, tch.getName()
+									+ " is already teaching a Reading class.");
+						} else {
+							tch.assignToClass(selectedCls, Teachers.Type.READ);
+						}
+					}
+				} else if (cName.contains("spec")) {
+					if (tch.getCls(Teachers.Type.SP) != null) {
+						JOptionPane.showMessageDialog(this, tch.getName()
+								+ " is already teaching a Specials class.");
+					} else {
+						tch.assignToClass(selectedCls, Teachers.Type.SP);
+					}
+
+				} else if (cName.contains("home")) {
+					if (tch.getCls(Teachers.Type.HR) != null) {
+						JOptionPane.showMessageDialog(this, tch.getName()
+								+ " is already teaching a Homeroom class.");
+					} else {
+						tch.assignToClass(selectedCls, Teachers.Type.HR);
+					}
+				}
+			}
 			int rtn = JOptionPane
 					.showConfirmDialog(
 							this,
@@ -316,60 +434,63 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 			this.dispose();
 		}
 	}
-	
+
 	private void swithcClass() {
 		String newMath, newRead, newLA, newHmrm, newSpec;
-		
+
 		newMath = (String) comboBoxMath.getSelectedItem();
 		newRead = (String) comboBoxRead.getSelectedItem();
 		newLA = (String) comboBoxLa.getSelectedItem();
 		newHmrm = (String) comboBoxHomeroom.getSelectedItem();
 		newSpec = (String) comboBoxSpecials.getSelectedItem();
-		
-		Classes newMathCls=null, newReadCls=null, newLACls=null, newHmrmCls=null, newSpecCls=null;
-		//get class that corresponds to the newClass name
-		for(int i=0; i<clsFac.mathClsLst.size(); i++) {
+
+		Classes newMathCls = null, newReadCls = null, newLACls = null, newHmrmCls = null, newSpecCls = null;
+		// get class that corresponds to the newClass name
+		for (int i = 0; i < clsFac.mathClsLst.size(); i++) {
 			if (newMath == clsFac.mathClsLst.get(i).getFormalClassName()) {
 				newMathCls = clsFac.mathClsLst.get(i);
 				break;
 			}
 		}
-		for(int i=0; i<clsFac.readClsLst.size(); i++) {
+		for (int i = 0; i < clsFac.readClsLst.size(); i++) {
 			if (newRead == clsFac.readClsLst.get(i).getFormalClassName()) {
 				newReadCls = clsFac.readClsLst.get(i);
 				break;
 			}
 		}
-		for(int i=0; i<clsFac.laClsLst.size(); i++) {
+		for (int i = 0; i < clsFac.laClsLst.size(); i++) {
 			if (newLA == clsFac.laClsLst.get(i).getFormalClassName()) {
 				newLACls = clsFac.laClsLst.get(i);
 				break;
 			}
 		}
-		for(int i=0; i<clsFac.homeroomClsLst.size(); i++) {
+		for (int i = 0; i < clsFac.homeroomClsLst.size(); i++) {
 			if (newHmrm == clsFac.homeroomClsLst.get(i).getFormalClassName()) {
 				newHmrmCls = clsFac.homeroomClsLst.get(i);
 				break;
 			}
 		}
-		for(int i=0; i<clsFac.specialClsLst.size(); i++) {
+		for (int i = 0; i < clsFac.specialClsLst.size(); i++) {
 			if (newSpec == clsFac.specialClsLst.get(i).getFormalClassName()) {
 				newSpecCls = clsFac.specialClsLst.get(i);
 				break;
 			}
 		}
-		if (newMath==null || newRead==null || newLA==null || newHmrm==null || newSpec==null) {
-			//System.out.println("Error: new class does not exist");
-			//return;
-			//error
+		if (newMath == null || newRead == null || newLA == null
+				|| newHmrm == null || newSpec == null) {
+			// System.out.println("Error: new class does not exist");
+			// return;
+			// error
 		}
-		//put the student in the new class
+		// put the student in the new class
 		if (mathCls != newMathCls) {
 			if (newMath.equals("No Class")) {
 				teach.unassignFromClass(Teachers.Type.MATH);
 			} else if (teach.canTeach(newMathCls.getLvl(), Teachers.Type.MATH)) {
 				teach.assignToClass(newMathCls, Teachers.Type.MATH);
-				System.out.println("teacher moved from "+mathCls.getFormalClassName()+" to "+newMathCls.getFormalClassName());
+				System.out.println("teacher moved from "
+						+ mathCls.getFormalClassName() + " to "
+						+ newMathCls.getFormalClassName());
 			}
 		}
 		if (readCls != newReadCls) {
@@ -377,7 +498,9 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 				teach.unassignFromClass(Teachers.Type.READ);
 			} else if (teach.canTeach(newReadCls.getLvl(), Teachers.Type.READ)) {
 				teach.assignToClass(newReadCls, Teachers.Type.READ);
-				System.out.println("teacher moved from "+readCls.getFormalClassName()+" to "+newReadCls.getFormalClassName());
+				System.out.println("teacher moved from "
+						+ readCls.getFormalClassName() + " to "
+						+ newReadCls.getFormalClassName());
 			}
 		}
 		if (laCls != newLACls) {
@@ -385,7 +508,9 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 				teach.unassignFromClass(Teachers.Type.LA);
 			} else if (teach.canTeach(newLACls.getLvl(), Teachers.Type.LA)) {
 				teach.assignToClass(newLACls, Teachers.Type.LA);
-				System.out.println("teacher moved from "+laCls.getFormalClassName()+" to "+newLACls.getFormalClassName());
+				System.out.println("teacher moved from "
+						+ laCls.getFormalClassName() + " to "
+						+ newLACls.getFormalClassName());
 			}
 		}
 		if (hmrmCls != newHmrmCls) {
@@ -393,7 +518,9 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 				teach.unassignFromClass(Teachers.Type.HR);
 			} else {
 				teach.assignToClass(newHmrmCls, Teachers.Type.HR);
-				System.out.println("teacher moved from "+hmrmCls.getFormalClassName()+" to "+newHmrmCls.getFormalClassName());
+				System.out.println("teacher moved from "
+						+ hmrmCls.getFormalClassName() + " to "
+						+ newHmrmCls.getFormalClassName());
 			}
 		}
 		if (specCls != newSpecCls) {
@@ -401,9 +528,11 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 				teach.unassignFromClass(Teachers.Type.SP);
 			} else {
 				teach.assignToClass(newSpecCls, Teachers.Type.SP);
-				System.out.println("teacher moved from "+specCls.getFormalClassName()+" to "+newSpecCls.getFormalClassName());
+				System.out.println("teacher moved from "
+						+ specCls.getFormalClassName() + " to "
+						+ newSpecCls.getFormalClassName());
 			}
 		}
 	}
-	
+
 }
