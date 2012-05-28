@@ -297,20 +297,74 @@ public class ClassFactory implements Serializable {
 
 			// find fit from waitlist
 			for (Students stdt : unlucky) {
-				if (compatible(stdt, m) && compatible(stdt, l)
-						&& compatible(stdt, r) && compatible(stdt, h)
-						&& compatible(stdt, s)) {
-					m.addStd(stdt);
-					l.addStd(stdt);
-					r.addStd(stdt);
-					h.addStd(stdt);
-					s.addStd(stdt);
-
+				Classes math = null, la = null, read = null, hr = null, sp = null;
+				for (Classes cls : this.mathClsLst) {
+					if (this.compatible(stdt, cls)) {
+						math = cls;
+					}
+				}
+				for (Classes cls : this.laClsLst) {
+					if (this.compatible(stdt, cls)) {
+						la = cls;
+					}
+				}
+				for (Classes cls : this.readClsLst) {
+					if (this.compatible(stdt, cls)) {
+						read = cls;
+					}
+				}
+				for (Classes cls : this.homeroomClsLst) {
+					if (this.compatible(stdt, cls)) {
+						hr = cls;
+					}
+				}
+				for (Classes cls : this.specialClsLst) {
+					if (this.compatible(stdt, cls)) {
+						sp = cls;
+					}
+				}
+				if (math != null && la != null && read != null && sp != null
+						&& hr != null) {
 					unlucky.remove(stdt);
 					stdt.setWlReason("");
+					math.addStd(stdt);
+					la.addStd(stdt);
+					read.addStd(stdt);
+					hr.addStd(stdt);
+					sp.addStd(stdt);
+
+					System.out.println("From waitlist,student:" + stdt.toString()
+							+ " has been added to following classes: ");
+					System.out.println(math.getFormalClassName());
+					System.out.println(la.getFormalClassName());
+					System.out.println(read.getFormalClassName());
+					System.out.println(hr.getFormalClassName());
+					System.out.println(sp.getFormalClassName());
 					break;
 
 				}
+//			for (Students stdt : unlucky) {
+//				if (compatible(stdt, m) && compatible(stdt, l)
+//						&& compatible(stdt, r) && compatible(stdt, h)
+//						&& compatible(stdt, s)) {
+//					m.addStd(stdt);
+//					l.addStd(stdt);
+//					r.addStd(stdt);
+//					h.addStd(stdt);
+//					s.addStd(stdt);
+//
+//					unlucky.remove(stdt);
+//					stdt.setWlReason("");
+//					System.out.println("From waitlist,student:" + stdt.toString()
+//							+ " has been added to following classes: ");
+//					System.out.println(m.getFormalClassName());
+//					System.out.println(l.getFormalClassName());
+//					System.out.println(r.getFormalClassName());
+//					System.out.println(h.getFormalClassName());
+//					System.out.println(s.getFormalClassName());
+//					break;
+//
+//				}
 
 			}
 		}

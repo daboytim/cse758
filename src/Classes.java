@@ -163,6 +163,7 @@ public class Classes implements Serializable{
 	}
 	
 	public String getFormalClassName() {
+		this.formalClassName = classname + "-" + lvl + "_" + id;
 		return this.formalClassName;
 	}
 
