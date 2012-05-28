@@ -43,7 +43,12 @@ public class ScheduleTeachers implements Serializable{
 		{
 			if(clsList.get(i).getTotal() == 0)
 			{
-				emptyCls.add(clsList.remove(i));
+				Classes tempCls = clsList.remove(i);
+				if(tempCls.hasTeacher())
+				{
+					tempCls.removeTeacher();
+				}
+				emptyCls.add(tempCls);
 				i--;
 			}
 		}
@@ -54,7 +59,12 @@ public class ScheduleTeachers implements Serializable{
 		{
 			if(clsList.get(i).getTotal() == 0)
 			{
-				emptyCls.add(clsList.remove(i));
+				Classes tempCls = clsList.remove(i);
+				if(tempCls.hasTeacher())
+				{
+					tempCls.removeTeacher();
+				}
+				emptyCls.add(tempCls);
 				i--;
 			}
 		}
@@ -71,7 +81,12 @@ public class ScheduleTeachers implements Serializable{
 				{
 					if(clsList.get(i).getTotal() == 0)
 					{
-						emptyCls.add(clsList.remove(i));
+						Classes tempCls = clsList.remove(i);
+						if(tempCls.hasTeacher())
+						{
+							tempCls.removeTeacher();
+						}
+						emptyCls.add(tempCls);
 						i--;
 					}
 				}
@@ -85,7 +100,12 @@ public class ScheduleTeachers implements Serializable{
 				{
 					if(clsList.get(i).getTotal() == 0)
 					{
-						emptyCls.add(clsList.remove(i));
+						Classes tempCls = clsList.remove(i);
+						if(tempCls.hasTeacher())
+						{
+							tempCls.removeTeacher();
+						}
+						emptyCls.add(tempCls);
 						i--;
 					}
 				}
@@ -99,7 +119,12 @@ public class ScheduleTeachers implements Serializable{
 				{
 					if(clsList.get(i).getTotal() == 0)
 					{
-						emptyCls.add(clsList.remove(i));
+						Classes tempCls = clsList.remove(i);
+						if(tempCls.hasTeacher())
+						{
+							tempCls.removeTeacher();
+						}
+						emptyCls.add(tempCls);
 						i--;
 					}
 				}
