@@ -11,6 +11,7 @@ public class ClassFactory implements Serializable {
 	private int maxCls = 20;
 	private int clsID = 1;
 	private int maxStdPerCls = 5;
+	private MainFrame mf;
 
 	public final String noFitMath = "There are no suitable math classes for this student.";
 	public final String noFitLA = "There are no suitable language art classes for this student.";
@@ -23,13 +24,18 @@ public class ClassFactory implements Serializable {
 	List<Classes> specialClsLst;
 	List<Students> unlucky;
 
-	public ClassFactory() {
+	public ClassFactory(MainFrame m) {
+		mf = m;
 		mathClsLst = new ArrayList<Classes>();
 		laClsLst = new ArrayList<Classes>();
 		readClsLst = new ArrayList<Classes>();
 		homeroomClsLst = new ArrayList<Classes>();
 		specialClsLst = new ArrayList<Classes>();
 		unlucky = new ArrayList<Students>();
+	}
+	
+	public void reinit (MainFrame m) {
+		mf = m;
 	}
 
 	/**
@@ -148,7 +154,9 @@ public class ClassFactory implements Serializable {
 	 */
 	public void setMaxCls(int i) {
 		maxCls = i;
-		System.out.println("max number of cls set to:" + i);
+		System.out.println("max number of cls set to: " + i);
+		if (mf.sched != null)
+			mf.sched.update();
 	}
 
 	/**

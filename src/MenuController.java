@@ -31,13 +31,13 @@ public class MenuController implements ActionListener, Serializable {
 					"Set Max number of Classes", 1);
 			try {
 				if (str != null) {
-					clsFac.setMaxCls(Integer.parseInt(str));
+					clsFac.setMaxCls(Integer.parseInt(str.trim()));
 					clsFac.appendEmtpyCls();
 					JOptionPane.showMessageDialog(null,
 							"Max number of classes successfully set to"
 									+ clsFac.getMaxCls(), "Success", 1);
 				}
-			} catch (Exception e) {
+			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(null, "Please input an integer.",
 						"Warning", 1);
 			}

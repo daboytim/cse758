@@ -60,7 +60,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 			students = new StudentDB(clsFac);
 		if (teachers == null)
 			teachers = new TeacherDB();
-		clsFac = new ClassFactory();
+		clsFac = new ClassFactory(this);
 		frame = new JFrame("Scheduling Tool");
 
 		update();
@@ -68,6 +68,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 
 	public void update() {
 		students.reInit();
+		clsFac.reinit(this);
 		frame.setVisible(false); // Hide the old frame, this is probably NOT
 									// efficient
 		// create the right click menu
