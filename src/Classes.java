@@ -39,7 +39,19 @@ public class Classes implements Serializable{
 	}
 
 	public void addStd(Students std) {
+		if(students.size()==0) {
+			if(this.classname.equals("math")) {
+				this.lvl=std.getMath();
+			}
+			if(this.classname.equals("la")) {
+				this.lvl=std.getLA();
+			}
+			if(this.classname.equals("read")) {
+				this.lvl=std.getRead();
+			}
+		}
 		students.add(std);
+		
 		
 		std.assginCls(this.classname,this.id);
 		
@@ -236,6 +248,17 @@ public class Classes implements Serializable{
 	}
 
 	public String getTableName() {
-		return this.tableClassName;
+		if (classname.equals("math")) {
+			tableClassName = "Math " + lvl + " Sec. " + id;
+		} else if (classname.equals("read")) {
+			tableClassName = "Reading " + lvl + " Sec. " + id;
+		} else if (classname.equals("la")) {
+			tableClassName = "Lang. Arts " + lvl + " Sec. " + id;
+		} else if (classname.equals("homeroom")) {
+			tableClassName = "Homeroom " + lvl + " Sec. " + id;
+		} else if (classname.equals("special")) {
+			tableClassName = "Special " + lvl + " Sec. " + id;
+		}
+		return tableClassName;
 	}
 }

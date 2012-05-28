@@ -251,9 +251,10 @@ public class ClassFactory implements Serializable {
 				System.out.println(read.getFormalClassName());
 				System.out.println(hr.getFormalClassName());
 				System.out.println(sp.getFormalClassName());
+				break;
 
 			}
-			break;
+			
 
 		}
 	}
