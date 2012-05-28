@@ -163,9 +163,10 @@ public class TeacherTable implements TableModelListener, Serializable {
 						table.setValueAt("", row, column);
 					} else {
 						t.setName(d.toString());
+						System.out.println(t.getName());
 					}
 				}
-				cleanTeacherDB();
+				//cleanTeacherDB();
 				break;
 			case 1:
 				if (data[row][0].toString().isEmpty()) {
