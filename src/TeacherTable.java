@@ -151,7 +151,12 @@ public class TeacherTable implements TableModelListener, Serializable {
 				if (isBlank) {
 					cleanTeacherDB();
 				} else {
-					if (teachers.hasTeacher(d.toString())) {
+					boolean isRepeat = false;
+					for (int i = 0; i < 300; i ++) {
+						if (d.toString().equals(data[i][0].toString()) && i != row)
+							isRepeat = true;
+					}
+					if (isRepeat) {
 						JOptionPane
 								.showMessageDialog(frame,
 										"A teacher with that name already exists in the scheduling system.");
@@ -260,6 +265,7 @@ public class TeacherTable implements TableModelListener, Serializable {
 				// if we got here, the student is not in the data array anymore
 				teachers.removeTeacher(name);
 			}
+			update();
 		}
 	
 	

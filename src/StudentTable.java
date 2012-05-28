@@ -23,7 +23,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public class StudentTable implements TableModelListener, Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -32,7 +32,7 @@ public class StudentTable implements TableModelListener, Serializable {
 	DefaultTableModel tm;
 	StudentDB students;
 	transient JFrame frame;
-	
+
 	Object[][] data;
 	String[] columnNames = { "Student ID", "First Name", "Last Name",
 			"Birth Date", "Math Level", "Reading Level", "Language Arts Level",
@@ -55,19 +55,19 @@ public class StudentTable implements TableModelListener, Serializable {
 		table = new JTable();
 		table.setModel(tm);
 		tm.addTableModelListener(this);
-		
+
 		update();
 	}
-	
+
 	public JTable getStudentTable() {
 		return table;
 	}
-	
-	public void update () {
+
+	public void update() {
 		populateTable(students);
 		renderTable();
 	}
-	
+
 	public void renderTable() {
 		ComboRenderer cr = new ComboRenderer();
 
@@ -154,7 +154,6 @@ public class StudentTable implements TableModelListener, Serializable {
 		}
 		tm.setDataVector(data, columnNames);
 	}
-	
 
 	public boolean isValidValue(Object value) {
 		if (value instanceof String) {
@@ -170,15 +169,14 @@ public class StudentTable implements TableModelListener, Serializable {
 		return false;
 	}
 
-	
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		int row = e.getFirstRow();
 		int column = e.getColumn();
-		
-		if (row < 0 || column < 0) 
+
+		if (row < 0 || column < 0)
 			return;
-		
+
 		TableModel model = (TableModel) e.getSource();
 		Object d = model.getValueAt(row, column);
 		data[row][column] = d;
@@ -194,12 +192,16 @@ public class StudentTable implements TableModelListener, Serializable {
 
 		Object oldIDObj = data[row][0];
 		int oldId;
-		try {
-			oldId = Integer.parseInt(oldIDObj.toString());
-		} catch (NumberFormatException ne) {
+
+		if (!Utilities.isBlank(oldIDObj.toString())) {
+			try {
+				oldId = Integer.parseInt(oldIDObj.toString());
+			} catch (Exception ne) {
+				oldId = -1;
+			}
+		} else {
 			oldId = -1;
 		}
-
 		Students s;
 		boolean newStudent = false;
 		if (students.hasStudent(oldId)) {
@@ -215,16 +217,26 @@ public class StudentTable implements TableModelListener, Serializable {
 			int id;
 
 			if (isBlank) {
+				// System.out.println(d.toString());
 				cleanStudentDB();
 			} else {
 				try {
-					System.out.println("got here");
 					id = Integer.parseInt(d.toString());
 					if (students.hasStudent(id)) {
-						JOptionPane
-								.showMessageDialog(frame,
-										"A student with that ID already exists in the scheduling system.");
-						table.setValueAt("", row, column);
+						boolean isRepeat = false;
+
+						for (int i = 0; i < 300; i++) {
+							if (Integer.parseInt(data[i][0].toString()) == id
+									&& id != row) {
+								isRepeat = true;
+							}
+						}
+						if (isRepeat) {
+							JOptionPane
+									.showMessageDialog(frame,
+											"A student with that ID already exists in the scheduling system.");
+							table.setValueAt("", row, column);
+						}
 					} else {
 						if (id > 0)
 							s.setId(id);
@@ -236,6 +248,8 @@ public class StudentTable implements TableModelListener, Serializable {
 
 				}
 			}
+			cleanStudentDB();
+			update();
 			break;
 		case 1:
 			if (data[row][0].toString().isEmpty()) {
@@ -367,7 +381,6 @@ public class StudentTable implements TableModelListener, Serializable {
 		tm.setDataVector(data, columnNames);
 		renderTable();
 	}
-	
 
 	/*
 	 * I apologize for the inefficiency of this, but given the small data set,
@@ -391,6 +404,5 @@ public class StudentTable implements TableModelListener, Serializable {
 			students.removeStudent(id);
 		}
 	}
-	
-	
+
 }

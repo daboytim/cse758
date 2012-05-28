@@ -58,7 +58,8 @@ public class StudentDB implements Serializable {
 			Students std = students.get(i);
 			if (std.getId() == id) {
 				students.remove(i);
-				clsFac.kickout(std);
+				if (clsFac != null) 
+					clsFac.kickout(std);
 			}
 			
 		}
