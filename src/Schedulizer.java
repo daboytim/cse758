@@ -21,6 +21,7 @@ public class Schedulizer implements Serializable{
 		clsFac.homeroomClsLst.clear();
 		clsFac.specialClsLst.clear();
 		clsFac.unlucky.clear();
+		clsFac.resetClsID();
 
 		/*
 		 * Scanner in = new Scanner(System.in);
