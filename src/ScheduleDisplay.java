@@ -91,7 +91,13 @@ public class ScheduleDisplay implements Serializable{
 
 	public void populateTable() {
 		int tabRows = (7 * maxStudentsPerClass) + 1;
-		data = new Object[tabRows][numRooms + 2];
+		unluckyStudents = clsFac.unlucky;
+
+		if (unluckyStudents.size() > tabRows) {
+			data = new Object[unluckyStudents.size()][numRooms + 2];
+		} else {
+			data = new Object[tabRows][numRooms + 2];
+		}
 
 		data[0][0] = " Reading";
 		data[1][0] = " 9 - 10:35";
@@ -261,7 +267,6 @@ public class ScheduleDisplay implements Serializable{
 		}
 
 		// fill in unlucky students
-		unluckyStudents = clsFac.unlucky;
 		System.out.println("unlucky students size: " + unluckyStudents);
 		if (unluckyStudents != null) {
 			System.out.println("there are unlucky students!");
@@ -269,8 +274,6 @@ public class ScheduleDisplay implements Serializable{
 					+ unluckyStudents.size());
 			for (int i = 0; i < unluckyStudents.size(); ++i) {
 				Students std = unluckyStudents.get(i);
-				String stdNameStr = std.getFirstName();
-				stdNameStr += " " + std.getLastName();
 				data[i][numRooms + 1] = std;
 			}
 		} else {
