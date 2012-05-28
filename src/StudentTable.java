@@ -248,8 +248,8 @@ public class StudentTable implements TableModelListener, Serializable {
 
 				}
 			}
-			cleanStudentDB();
-			update();
+			//cleanStudentDB();
+			//update();
 			break;
 		case 1:
 			if (data[row][0].toString().isEmpty()) {
@@ -402,6 +402,7 @@ public class StudentTable implements TableModelListener, Serializable {
 			}
 			// if we got here, the student is not in the data array anymore
 			students.removeStudent(id);
+			update();
 		}
 	}
 
