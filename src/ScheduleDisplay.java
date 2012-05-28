@@ -31,7 +31,6 @@ public class ScheduleDisplay implements Serializable{
 
 		clsFac = cf;
 		numRooms = clsFac.getMaxCls();
-		maxStudentsPerClass = clsFac.getMaxStdPerCls() + 2;
 
 		
 		int tabRows = (7 * maxStudentsPerClass) + 1;
@@ -56,6 +55,8 @@ public class ScheduleDisplay implements Serializable{
 	}
 
 	public void update() {
+		maxStudentsPerClass = clsFac.getMaxStdPerCls() + 2;
+
 		populateTable();
 		tm.setDataVector(data, columnNames);
 		// format table
