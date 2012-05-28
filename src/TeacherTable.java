@@ -149,7 +149,7 @@ public class TeacherTable implements TableModelListener, Serializable {
 			switch (column) {
 			case 0:
 				if (isBlank) {
-					cleanTeacherDB();
+					//cleanTeacherDB();
 				} else {
 					boolean isRepeat = false;
 					for (int i = 0; i < 300; i ++) {
@@ -165,6 +165,7 @@ public class TeacherTable implements TableModelListener, Serializable {
 						t.setName(d.toString());
 					}
 				}
+				cleanTeacherDB();
 				break;
 			case 1:
 				if (data[row][0].toString().isEmpty()) {
