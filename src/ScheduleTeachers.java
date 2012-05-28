@@ -38,6 +38,7 @@ public class ScheduleTeachers implements Serializable{
 		 *     and one unlucky teacher who can teach same class that A was assigned to, and swap
 		 */
 		
+		// push empty classes from homeroom and special to end of class list
 		clsList = clsFac.homeroomClsLst;
 		for(int i = 0; i < clsList.size(); i++)
 		{
@@ -134,6 +135,7 @@ public class ScheduleTeachers implements Serializable{
 				teachers.add(assigned.remove(0));
 			while(unlucky.size() > 0)
 				teachers.add(unlucky.remove(0));
+			// === reset end ===
 			
 			// if teacher has class can teach, move to assigned
 			// else move to unlucky
@@ -292,17 +294,14 @@ public class ScheduleTeachers implements Serializable{
 		for(int i = 0; i < unlucky.size(); i++)
 			System.out.println(unlucky.get(i).toString());
 		
-		// assign to class
+		// assign to class officially
 		Teachers temp;
 		while(assigned.size() > 0)
 		{
 			temp = assigned.remove(0);
-			for(int i = 0; i < 3; i++)
-			{
-				temp.setPreference(temp.capableM, Teachers.Type.MATH);
-				temp.setPreference(temp.capableL, Teachers.Type.LA);
-				temp.setPreference(temp.capableR, Teachers.Type.READ);
-			}
+			temp.setPreference(temp.capableM, Teachers.Type.MATH);
+			temp.setPreference(temp.capableL, Teachers.Type.LA);
+			temp.setPreference(temp.capableR, Teachers.Type.READ);
 			assignToClass(temp, clsFac);
 			teachers.add(temp);
 		}
@@ -317,6 +316,7 @@ public class ScheduleTeachers implements Serializable{
 		}
 	}
 
+	// search through assigned teachers to check if there's class that unlucky teacher can teach. if so, swap
 	private static void saveUnlucky(Integer unaLvl, Integer unaID, 
 			Teachers unlucky, ArrayList<Teachers> assigned, Teachers.Type type)
 	{
