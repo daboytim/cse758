@@ -189,15 +189,23 @@ public class ClassFactory implements Serializable {
 		// throw new StdClsCompatibleException(4);
 		// } else {
 		toCls.addStd(std);
-		fromCls.removeStd(std.getId());
+		if (fromCls != null) {
+			fromCls.removeStd(std.getId());
+		} else {
+			unlucky.remove(std);
+			std.setWlReason("");
+		}
 
 		// console output
 		System.out.println(toCls.getFormalClassName() + " added student:"
 				+ std.toString() + ":");
 		System.out.println(toCls.toString());
-		System.out.println(fromCls.getFormalClassName() + " deleted student:"
+		if (fromCls != null) {
+			System.out.println(fromCls.getFormalClassName() + " deleted student:"
 				+ std.toString() + ":");
-		System.out.println(fromCls.toString());
+		
+			System.out.println(fromCls.toString());
+		}
 
 		//find a fit std from waitlist
 		for (Students stdt : unlucky) {

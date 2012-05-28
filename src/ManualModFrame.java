@@ -364,7 +364,7 @@ public class ManualModFrame extends JFrame implements ActionListener, Serializab
 				//TODO: remove the student
 			} else if (check(mathClass, newMathCls)) {
 				clsFac.moveStd(mathClass, newMathCls, std);
-				System.out.println("student moved from "+mathClass.getFormalClassName()+" to "+newMathCls.getFormalClassName());
+				//System.out.println("student moved from "+mathClass.getFormalClassName()+" to "+newMathCls.getFormalClassName());
 			}
 		}
 		if (readClass != newReadCls) {
@@ -372,7 +372,7 @@ public class ManualModFrame extends JFrame implements ActionListener, Serializab
 				//TODO: remove the student
 			} else if (check(readClass, newReadCls)) {
 				clsFac.moveStd(readClass, newReadCls, std);
-				System.out.println("student moved from "+readClass.getFormalClassName()+" to "+newReadCls.getFormalClassName());
+				//System.out.println("student moved from "+readClass.getFormalClassName()+" to "+newReadCls.getFormalClassName());
 			}
 		}
 		if (laClass != newLACls) {
@@ -380,7 +380,7 @@ public class ManualModFrame extends JFrame implements ActionListener, Serializab
 				//TODO: remove the student
 			} else if (check(laClass, newLACls)) {
 				clsFac.moveStd(laClass, newLACls, std);
-				System.out.println("student moved from "+laClass.getFormalClassName()+" to "+newLACls.getFormalClassName());
+				//System.out.println("student moved from "+laClass.getFormalClassName()+" to "+newLACls.getFormalClassName());
 			}
 		}
 		if (hmrmClass != newHmrmCls) {
@@ -388,7 +388,7 @@ public class ManualModFrame extends JFrame implements ActionListener, Serializab
 				//TODO: remove the student
 			} else if (check(hmrmClass, newHmrmCls)) {
 				clsFac.moveStd(hmrmClass, newHmrmCls, std);
-				System.out.println("student moved from "+hmrmClass.getFormalClassName()+" to "+newHmrmCls.getFormalClassName());
+				//System.out.println("student moved from "+hmrmClass.getFormalClassName()+" to "+newHmrmCls.getFormalClassName());
 			}
 		}
 		if (specClass != newSpecCls) {
@@ -396,7 +396,7 @@ public class ManualModFrame extends JFrame implements ActionListener, Serializab
 				//TODO: remove the student
 			} else if (check(specClass, newSpecCls)) {
 				clsFac.moveStd(specClass, newSpecCls, std);
-				System.out.println("student moved from "+specClass.getFormalClassName()+" to "+newSpecCls.getFormalClassName());
+				//System.out.println("student moved from "+specClass.getFormalClassName()+" to "+newSpecCls.getFormalClassName());
 			}
 		}
 	}
@@ -412,7 +412,7 @@ public class ManualModFrame extends JFrame implements ActionListener, Serializab
 					JOptionPane.WARNING_MESSAGE);
 			if (rtn == JOptionPane.NO_OPTION)
 				return false;
-		} else if (Math.abs(fromCls.getLowestAge() - toCls.getLowestAge()) > 3.92) {
+		} else if (Math.abs(toCls.getLowestAge() - std.getAge()) > 3.92) {
 			rtn = JOptionPane.showConfirmDialog(this,
 					std.getFirstName()+" "+std.getLastName()+" is outside of the age range for this class.\n"+
 					"Do you want to continue?",
