@@ -256,16 +256,7 @@ public class ClassFactory implements Serializable {
 			}
 			break;
 
-			// if (compatible(stdt, fromCls)) { //TODO fixit: I forget to check
-			// other 4 classes compatibility
-			// fromCls.addStd(stdt);
-			// unlucky.remove(stdt);
-			//
-			// System.out.println("From waitlist,student:" + stdt.toString()
-			// + " has been added to class "
-			// + fromCls.getFormalClassName());
-			// break;
-			// }
+			
 		}
 	}
 
@@ -349,4 +340,7 @@ public class ClassFactory implements Serializable {
 	// return classes;
 	// }
 
+	public void resetClsID() {
+		this.clsID=1;
+	}
 }
