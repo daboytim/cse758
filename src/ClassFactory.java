@@ -11,8 +11,7 @@ public class ClassFactory implements Serializable {
 	private int maxCls = 20;
 	private int clsID = 1;
 	private int maxStdPerCls = 5;
-	
-	
+
 	public final String noFitMath = "There are no suitable math classes for this student.";
 	public final String noFitLA = "There are no suitable language art classes for this student.";
 	public final String noFitRead = "There are no suitable reading classes for this student.";
@@ -87,8 +86,8 @@ public class ClassFactory implements Serializable {
 	 * @return True if yes, false otherwise.
 	 */
 	public boolean compatible(Students std, Classes cls) {
-		if(cls.getTotal()==0) {
-			
+		if (cls.getTotal() == 0) {
+
 			return true;
 		}
 		if (!BLfit(std, cls)) {
@@ -201,13 +200,13 @@ public class ClassFactory implements Serializable {
 				+ std.toString() + ":");
 		System.out.println(toCls.toString());
 		if (fromCls != null) {
-			System.out.println(fromCls.getFormalClassName() + " deleted student:"
-				+ std.toString() + ":");
-		
+			System.out.println(fromCls.getFormalClassName()
+					+ " deleted student:" + std.toString() + ":");
+
 			System.out.println(fromCls.toString());
 		}
 
-		//find a fit std from waitlist
+		// find a fit std from waitlist
 		for (Students stdt : unlucky) {
 			Classes math = null, la = null, read = null, hr = null, sp = null;
 			for (Classes cls : this.mathClsLst) {
@@ -256,7 +255,6 @@ public class ClassFactory implements Serializable {
 			}
 			break;
 
-			
 		}
 	}
 
@@ -282,13 +280,13 @@ public class ClassFactory implements Serializable {
 		if (unlucky.contains(std)) {
 			unlucky.remove(std);
 		} else {
-			//Get classes before kicking out
+			// Get classes before kicking out
 			Classes m = std.getMathCls();
 			Classes l = std.getLACls();
 			Classes r = std.getReadCls();
 			Classes h = std.getHomeroomCls();
 			Classes s = std.getSpecialCls();
-			
+
 			// kick out
 			std.getMathCls().removeStd(std.getId());
 			std.getLACls().removeStd(std.getId());
@@ -298,10 +296,8 @@ public class ClassFactory implements Serializable {
 
 			// find fit from waitlist
 			for (Students stdt : unlucky) {
-				if (compatible(stdt, m)
-						&& compatible(stdt, l)
-						&& compatible(stdt, r)
-						&& compatible(stdt, h)
+				if (compatible(stdt, m) && compatible(stdt, l)
+						&& compatible(stdt, r) && compatible(stdt, h)
 						&& compatible(stdt, s)) {
 					m.addStd(stdt);
 					l.addStd(stdt);
@@ -341,6 +337,27 @@ public class ClassFactory implements Serializable {
 	// }
 
 	public void resetClsID() {
-		this.clsID=1;
+		this.clsID = 1;
+	}
+
+	/**
+	 * Append empty classes to each of 5 class list, up to max cls # allowed.
+	 */
+	public void appendEmtpyCls() {
+		int totalMath=this.getTotalMath();
+		int totalLA = this.getTotalLA();
+		int totalRead = this.getTotalRead();
+
+		for (int i = 0; i < this.getMaxCls() - totalMath; i++) {
+			this.mathClsLst.add(this.createClass("math", 0));
+			this.homeroomClsLst.add(this.createClass("homeroom", 0));
+			this.specialClsLst.add(this.createClass("special", 0));
+		}
+		for (int i = 0; i < this.getMaxCls() - totalLA; i++) {
+			this.laClsLst.add(this.createClass("la", 0));
+		}
+		for (int i = 0; i < this.getMaxCls() - totalRead; i++) {
+			this.readClsLst.add(this.createClass("read", 0));
+		}
 	}
 }
