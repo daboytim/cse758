@@ -35,11 +35,10 @@ public class ScheduleDisplay {
 			columnNames[i] = " ";
 		}
 		columnNames[numRooms + 1] = "Waitlist";
-		tm = new DefaultTableModel(data, columnNames);  
-		
-		table = new RowColoredTable(data);  
+		tm = new DefaultTableModel(data, columnNames);
+
+		table = new RowColoredTable(data);
 		table.setModel(tm);
-		
 
 		update();
 	}
@@ -60,11 +59,10 @@ public class ScheduleDisplay {
 		// Fix Sizing
 		TableColumnModel cm = table.getColumnModel();
 		cm.getColumn(0).setMinWidth(100);
-		for (int i = 1; i < cm.getColumnCount()-1; i++) {
+		for (int i = 1; i < cm.getColumnCount() - 1; i++) {
 			cm.getColumn(i).setMinWidth(150);
 		}
 		cm.getColumn(cm.getColumnCount() - 1).setMinWidth(500);
-		
 
 		// for (int i = 0; i < table.getRowCount(); i++) {
 		// for (int j = 0; j < table.getColumnCount(); j++) {
@@ -103,13 +101,14 @@ public class ScheduleDisplay {
 		// fill in students for Reading
 		int currRow = 0;
 		int currCol = 1;
-		for (int i = 0; i < ClassFactory.readClsLst.size(); ++i) {
+		int readClsSize = ClassFactory.readClsLst.size();
+		for (int i = 0; i < readClsSize; ++i) {
 			Classes cls = ClassFactory.readClsLst.get(i);
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
 			clsHeader += " " + cls.getLvl();
 			clsHeader += " " + cls.getClsID();
-			
+
 			if (cls.hasTeacher())
 				clsHeader += ":  " + cls.getTeacher().getName();
 
@@ -125,16 +124,23 @@ public class ScheduleDisplay {
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
 				data[j + currRow + 1][currCol] = std; // changed
-																					// from
-																					// stdNameStr
+														// from
+														// stdNameStr
 			}
 			currCol++;
 		}
 
+		// fill in remaining rows for class 0
+		for (int i = readClsSize; i < ClassFactory.getMaxCls(); i++) {
+			data[0][currCol] = "Reading 0";
+			currCol++;
+		}
+
 		// fill in students for LA
+		int laClsSize = ClassFactory.laClsLst.size();
 		currRow = maxStudentsPerClass + 3;
 		currCol = 1;
-		for (int i = 0; i < ClassFactory.getTotalLA(); ++i) {
+		for (int i = 0; i < laClsSize; ++i) {
 			Classes cls = ClassFactory.laClsLst.get(i);
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
@@ -155,17 +161,24 @@ public class ScheduleDisplay {
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
 				data[j + currRow + 1][currCol] = std; // changed
-																					// from
-																					// stdNameStr
+														// from
+														// stdNameStr
 			}
+			currCol++;
+		}
+
+		// fill in remaining rows for class 0
+		for (int i = laClsSize; i < ClassFactory.getMaxCls(); i++) {
+			data[maxStudentsPerClass + 3][currCol] = "Language Arts 0";
 			currCol++;
 		}
 
 		// fill in students for Specials- currently using same class list as
 		// homeroom
+		int specialsClsSize = ClassFactory.specialClsLst.size();
 		currRow = (2 * maxStudentsPerClass) + 6;
 		currCol = 1;
-		for (int i = 0; i < ClassFactory.getTotalSpecial(); ++i) {
+		for (int i = 0; i < specialsClsSize; ++i) {
 			Classes cls = ClassFactory.specialClsLst.get(i);
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
@@ -186,16 +199,23 @@ public class ScheduleDisplay {
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
 				data[j + currRow + 1][currCol] = std; // changed
-																					// from
-																					// stdNameStr
+														// from
+														// stdNameStr
 			}
 			currCol++;
 		}
 
+		// fill in remaining rows for class 0
+		for (int i = specialsClsSize; i < ClassFactory.getMaxCls(); i++) {
+			data[(2 * maxStudentsPerClass) + 6][currCol] = "Specials 0";
+			currCol++;
+		}
+
 		// fill in students for Math
+		int mathClsSize = ClassFactory.mathClsLst.size();
 		currRow = (3 * maxStudentsPerClass) + 9;
 		currCol = 1;
-		for (int i = 0; i < ClassFactory.getTotalMath(); ++i) {
+		for (int i = 0; i < mathClsSize; ++i) {
 			Classes cls = ClassFactory.mathClsLst.get(i);
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
@@ -216,16 +236,23 @@ public class ScheduleDisplay {
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
 				data[j + currRow + 1][currCol] = std; // changed
-																					// from
-																					// stdNameStr
+														// from
+														// stdNameStr
 			}
 			currCol++;
 		}
 
+		// fill in remaining rows for class 0
+		for (int i = mathClsSize; i < ClassFactory.getMaxCls(); i++) {
+			data[(3 * maxStudentsPerClass) + 9][currCol] = "Math 0";
+			currCol++;
+		}
+
 		// fill in students for homeroom
+		int hrClsSize = ClassFactory.homeroomClsLst.size();
 		currRow = (4 * maxStudentsPerClass) + 12;
 		currCol = 1;
-		for (int i = 0; i < ClassFactory.getTotalHomeroom(); ++i) {
+		for (int i = 0; i < hrClsSize; ++i) {
 			Classes cls = ClassFactory.homeroomClsLst.get(i);
 			String clsHeader = cls.getFormalClassName();
 			clsHeader = formatName(clsHeader);
@@ -246,12 +273,17 @@ public class ScheduleDisplay {
 				stdNameStr += " " + std.getLastName();
 				// table.setValueAt(stdNameStr, j + 15, i + 1);
 				data[j + currRow + 1][currCol] = std; // changed
-																					// from
-																					// stdNameStr
+														// from
+														// stdNameStr
 			}
 			currCol++;
 		}
 
+		// fill in remaining rows for class 0
+		for (int i = mathClsSize; i < ClassFactory.getMaxCls(); i++) {
+			data[(4 * maxStudentsPerClass) + 12][currCol] = "Homeroom 0";
+			currCol++;
+		}
 		// fill in unlucky students
 		unluckyStudents = ClassFactory.unlucky;
 		System.out.println("unlucky students size: " + unluckyStudents);
@@ -304,5 +336,5 @@ public class ScheduleDisplay {
 
 		return (3 * maxStudentsPerClass) + 3;
 	}
-	
+
 }
