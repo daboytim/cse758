@@ -248,8 +248,8 @@ public class StudentTable implements TableModelListener, Serializable {
 
 				}
 			}
-			//cleanStudentDB();
-			//update();
+			// cleanStudentDB();
+			// update();
 			break;
 		case 1:
 			if (data[row][0].toString().isEmpty()) {
@@ -291,17 +291,34 @@ public class StudentTable implements TableModelListener, Serializable {
 					if (year < 1900) {
 						JOptionPane
 								.showMessageDialog(frame,
-										"Invalid Year. Expected Birth Date in the form yyyy-mm-dd");
+										"Invalid Year. Expected Birth Date in the form yyyy-mm-dd or mm/dd/yyyy");
 						table.setValueAt("", row, column);
 					} else {
 						s.setBirthDate(bDate);
 					}
 				}
 			} catch (ParseException n) {
-				if (!isBlank) {
-					JOptionPane.showMessageDialog(frame,
-							"Expected Birth Date in the form yyyy-mm-dd");
-					table.setValueAt("", row, column);
+				try {
+					DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+					Date bDate = df.parse(d.toString());
+					System.out.println(bDate);
+					Calendar c = new GregorianCalendar();
+					c.setTime(bDate);
+					int year = c.get(Calendar.YEAR);
+					if (year < 1900) {
+						JOptionPane
+								.showMessageDialog(frame,
+										"Invalid Year. Expected Birth Date in the form yyyy-mm-dd or mm/dd/yyyy");
+						table.setValueAt("", row, column);
+					} else {
+						s.setBirthDate(bDate);
+					}
+				} catch (ParseException n2) {
+					if (!isBlank) {
+						JOptionPane.showMessageDialog(frame,
+								"Expected Birth Date in the form yyyy-mm-dd");
+						table.setValueAt("", row, column);
+					}
 				}
 			}
 			break;
