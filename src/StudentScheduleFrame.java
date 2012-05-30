@@ -70,7 +70,7 @@ public class StudentScheduleFrame extends JFrame implements ActionListener,
 		btnClose.addActionListener(this);
 		btnPanel.add(btnClose);
 
-		setPreferredSize(new Dimension(400, 200));
+		setPreferredSize(new Dimension(400, 400));
 		pack();
 		setVisible(true);
 	}
