@@ -187,6 +187,7 @@ public class Students implements Comparable<Students>, Serializable {
 			this.laClsID=id;
 		}else if(clsName.equals("read")){
 			this.readClsID=id;
+			System.out.println("Set readClsID to " + readClsID);
 		}else if(clsName.equals("homeroom")){
 			this.homeroomClsID = id;
 		}else if(clsName.equals("special")){
