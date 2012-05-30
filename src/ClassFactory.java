@@ -195,7 +195,6 @@ public class ClassFactory implements Serializable {
 		// } else if (!compatible(std, toCls)) {
 		// throw new StdClsCompatibleException(4);
 		// } else {
-		toCls.addStd(std);
 		if (fromCls != null) {
 			fromCls.removeStd(std.getId());
 		} else {
@@ -213,6 +212,9 @@ public class ClassFactory implements Serializable {
 
 			System.out.println(fromCls.toString());
 		}
+		
+		toCls.addStd(std);
+
 
 		// find a fit std from waitlist
 		for (Students stdt : unlucky) {
