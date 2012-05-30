@@ -13,13 +13,13 @@ public class Teachers implements Serializable{
 	private String name;
 	// tracks the classes a teacher can teach. K-8:1-9
 	// preference: ordering most preferred in position 0. changes while scheduling.
-	private ArrayList<Integer> mathPreference;
-	private ArrayList<Integer> readPreference;
-	private ArrayList<Integer> laPreference;
+	private ArrayList<Integer> mathPreference = new ArrayList<Integer>();
+	private ArrayList<Integer> readPreference = new ArrayList<Integer>();
+	private ArrayList<Integer> laPreference = new ArrayList<Integer>();
 	// capable: order does not matter. does not change. 
-	public ArrayList<Integer> capableM;
-	public ArrayList<Integer> capableR;
-	public ArrayList<Integer> capableL;
+	public ArrayList<Integer> capableM = new ArrayList<Integer>();
+	public ArrayList<Integer> capableR = new ArrayList<Integer>();
+	public ArrayList<Integer> capableL = new ArrayList<Integer>();
 	private int clsIDM=-1;
 	private int clsIDR=-1;
 	private int clsIDL=-1;
@@ -34,12 +34,15 @@ public class Teachers implements Serializable{
 	public Teachers(String name, ArrayList<Integer> math, ArrayList<Integer> read, ArrayList<Integer> la, ClassFactory cf){
 		clsFac = cf;
 		this.name = name;
-		this.mathPreference = math;
-		this.capableM = new ArrayList<Integer>(math);
-		this.readPreference = read;
-		this.capableR = new ArrayList<Integer>(read);
-		this.laPreference = la;
-		this.capableL = new ArrayList<Integer>(la);
+			this.mathPreference = math;
+			this.capableM = new ArrayList<Integer>(math);
+		
+			this.readPreference = read;
+			this.capableR = new ArrayList<Integer>(read);
+		
+			this.laPreference = la;
+			this.capableL = new ArrayList<Integer>(la);
+		
 	}
 	
 	public Teachers(String name, ClassFactory cf) {

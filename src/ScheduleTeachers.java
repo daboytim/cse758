@@ -333,7 +333,7 @@ public class ScheduleTeachers implements Serializable{
 			}
 		}
 		int searchCount = 0;
-		for (int i = 0; i < assigned.size() && searchCount < 2; i++)
+		for (int i = 0; i < assigned.size() && searchCount < 1; i++)
 		{
 			if (assigned.get(i).canTeach(unaLvl, type)) {
 				searchCount++;
@@ -375,7 +375,7 @@ public class ScheduleTeachers implements Serializable{
 			}
 		}
 		int searchCount = 0;
-		for (int i = 0; i < assigned.size() && searchCount < 2; i++)
+		for (int i = 0; i < assigned.size() && searchCount < 1; i++)
 		{
 			if (assigned.get(i).canTeach(unaLvl, type)) {
 				searchCount ++;
