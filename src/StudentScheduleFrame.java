@@ -45,7 +45,7 @@ public class StudentScheduleFrame extends JFrame implements ActionListener,
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setExtendedState(NORMAL);
-		setMaximizedBounds(new Rectangle(100, 100, 400, 200));
+		setMaximizedBounds(new Rectangle(100, 100, 400, 400));
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
