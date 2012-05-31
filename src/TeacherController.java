@@ -9,18 +9,25 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
-public class TeacherController implements ActionListener {
+public class TeacherController implements ActionListener, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	TeacherDB teachers;
-
-	public TeacherController(JFrame f, TeacherDB t) {
+	ClassFactory clsFac;
+	
+	public TeacherController(JFrame f, TeacherDB t, ClassFactory cf) {
 		frame = f;
 		teachers = t;
+		clsFac = cf;
 	}
 
 	public void actionPerformed(ActionEvent event) {
@@ -49,7 +56,7 @@ public class TeacherController implements ActionListener {
 
 				Teachers t;
 				if (!Utilities.isBlank(params[0])) {
-					t = new Teachers(params[0]);
+					t = new Teachers(params[0], clsFac);
 				} else {
 					return;
 				}

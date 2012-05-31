@@ -1,28 +1,57 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Classes {
+public class Classes implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String classname;
 	private String formalClassName;
+	private String tableClassName;
 	private int lvl;
 	private List<Students> students;
 	private double lowestAge = 999;
 	private int bl3 = 0;
 	private int bl2 = 0;
 	private int id;
-	private Teachers teacher;
+	private Teachers teacher = null;
 	private boolean hasTeacher = false;
 
 	public Classes(String name, int lvl, int ID) {
 		students = new ArrayList<Students>();
 		this.classname = name;
 		this.formalClassName = name + "-" + lvl + "_" + ID;
+		if (name.equals("math")) {
+			tableClassName = "Math " + lvl + " Sec. " + ID;
+		} else if (name.equals("read")) {
+			tableClassName = "Reading " + lvl + " Sec. " + ID;
+		} else if (name.equals("la")) {
+			tableClassName = "Lang. Arts " + lvl + " Sec. " + ID;
+		} else if (name.equals("homeroom")) {
+			tableClassName = "Homeroom " + lvl + " Sec. " + ID;
+		} else if (name.equals("special")) {
+			tableClassName = "Special " + lvl + " Sec. " + ID;
+		}
 		this.lvl = lvl;
 		this.id = ID;
 	}
 
 	public void addStd(Students std) {
+		if(students.size()==0) {
+			if(this.classname.equals("math")) {
+				this.lvl=std.getMath();
+			}
+			if(this.classname.equals("la")) {
+				this.lvl=std.getLA();
+			}
+			if(this.classname.equals("read")) {
+				this.lvl=std.getRead();
+			}
+		}
 		students.add(std);
+		
 		
 		std.assginCls(this.classname,this.id);
 		
@@ -44,6 +73,7 @@ public class Classes {
 	public Students removeStd(int id) {
 		for (Students std : this.students) {
 			if (std.getId() == id) {
+				std.resignCls(this.classname);
 				this.students.remove(std);
 				
 				//update # of bl3 and bl2 std
@@ -93,7 +123,20 @@ public class Classes {
 	public void setTeacher(Teachers t)
 	{
 		this.teacher = t;
-		this.hasTeacher = true;
+		if (t != null) {
+			if (classname.equals("math")) {
+				teacher.setCls(lvl, id, Teachers.Type.MATH);
+			} else if (classname.equals("read")) {
+				teacher.setCls(lvl, id, Teachers.Type.READ);
+			} else if (classname.equals("la")) {
+				teacher.setCls(lvl, id, Teachers.Type.LA);
+			} else if (classname.equals("homeroom")) {
+				teacher.setCls(lvl, id, Teachers.Type.HR);
+			} else if (classname.equals("special")) {
+				teacher.setCls(lvl, id, Teachers.Type.SP);
+			}
+			this.hasTeacher = true;
+		}
 	}
 	
 	public Teachers removeTeacher()
@@ -101,6 +144,17 @@ public class Classes {
 		if(!this.hasTeacher())
 			return null;
 		this.hasTeacher = false;
+		if (classname.equals("math")) {
+			teacher.setCls(-1, -1, Teachers.Type.MATH);
+		} else if (classname.equals("read")) {
+			teacher.setCls(-1, -1, Teachers.Type.READ);
+		} else if (classname.equals("la")) {
+			teacher.setCls(-1, -1, Teachers.Type.LA);
+		} else if (classname.equals("homeroom")) {
+			teacher.setCls(-1, -1, Teachers.Type.HR);
+		} else if (classname.equals("special")) {
+			teacher.setCls(-1, -1, Teachers.Type.SP);
+		}
 		return this.teacher;
 	}
 
@@ -109,6 +163,7 @@ public class Classes {
 	}
 	
 	public String getFormalClassName() {
+		this.formalClassName = classname + "-" + lvl + "_" + id;
 		return this.formalClassName;
 	}
 
@@ -175,5 +230,36 @@ public class Classes {
 	public int getClsID() {
 		return this.id;
 	}
+	
+	public void setClsLvl(int level) {
+		this.lvl = level;
+		
+		if (classname.equals("math")) {
+			tableClassName = "Math " + lvl + " Sec. " + id;
+		} else if (classname.equals("read")) {
+			tableClassName = "Reading " + lvl + " Sec. " + id;
+		} else if (classname.equals("la")) {
+			tableClassName = "Lang. Arts " + lvl + " Sec. " + id;
+		} else if (classname.equals("homeroom")) {
+			tableClassName = "Homeroom " + lvl + " Sec. " + id;
+		} else if (classname.equals("special")) {
+			tableClassName = "Special " + lvl + " Sec. " + id;
+		}
+		
+	}
 
+	public String getTableName() {
+		if (classname.equals("math")) {
+			tableClassName = "Math " + lvl + " Sec. " + id;
+		} else if (classname.equals("read")) {
+			tableClassName = "Reading " + lvl + " Sec. " + id;
+		} else if (classname.equals("la")) {
+			tableClassName = "Lang. Arts " + lvl + " Sec. " + id;
+		} else if (classname.equals("homeroom")) {
+			tableClassName = "Homeroom " + lvl + " Sec. " + id;
+		} else if (classname.equals("special")) {
+			tableClassName = "Special " + lvl + " Sec. " + id;
+		}
+		return tableClassName;
+	}
 }

@@ -1,13 +1,20 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-public class MenuController implements ActionListener {
+public class MenuController implements ActionListener, Serializable {
 	
-	public MenuController() {
-		
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ClassFactory clsFac;
+
+	public MenuController(ClassFactory cf) {
+		clsFac = cf;
 	}
 
 	public void actionPerformed(ActionEvent event) {
@@ -24,12 +31,13 @@ public class MenuController implements ActionListener {
 					"Set Max number of Classes", 1);
 			try {
 				if (str != null) {
-					ClassFactory.setMaxCls(Integer.parseInt(str));
+					clsFac.setMaxCls(Integer.parseInt(str.trim()));
+					clsFac.appendEmtpyCls();
 					JOptionPane.showMessageDialog(null,
 							"Max number of classes successfully set to"
-									+ ClassFactory.getMaxCls(), "Success", 1);
+									+ clsFac.getMaxCls(), "Success", 1);
 				}
-			} catch (Exception e) {
+			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(null, "Please input an integer.",
 						"Warning", 1);
 			}

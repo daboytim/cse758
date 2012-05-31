@@ -1,7 +1,13 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Teachers {
+public class Teachers implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public enum Type {MATH, READ, LA, HR, SP}
 	private String name;
@@ -23,8 +29,10 @@ public class Teachers {
 	private int clsLvlR=-1;
 	private int clsLvlL=-1;
 	private int room=-1;
+	private ClassFactory clsFac;
 	
-	public Teachers(String name, ArrayList<Integer> math, ArrayList<Integer> read, ArrayList<Integer> la){
+	public Teachers(String name, ArrayList<Integer> math, ArrayList<Integer> read, ArrayList<Integer> la, ClassFactory cf){
+		clsFac = cf;
 		this.name = name;
 		this.mathPreference = math;
 		this.capableM = new ArrayList<Integer>(math);
@@ -32,6 +40,11 @@ public class Teachers {
 		this.capableR = new ArrayList<Integer>(read);
 		this.laPreference = la;
 		this.capableL = new ArrayList<Integer>(la);
+	}
+	
+	public Teachers(String name, ClassFactory cf) {
+		clsFac = cf;
+		this.name = name;
 	}
 	
 	public ArrayList<Integer> teaches()
@@ -61,7 +74,7 @@ public class Teachers {
 	{
 		switch (t) {
 		case MATH: {
-			for (Classes c : ClassFactory.mathClsLst) {
+			for (Classes c : clsFac.mathClsLst) {
 				if (c.getClsID() == this.clsIDM) {
 					return c;
 				}
@@ -70,7 +83,7 @@ public class Teachers {
 		}
 		case READ:
 		{
-			for (Classes c : ClassFactory.readClsLst) {
+			for (Classes c : clsFac.readClsLst) {
 				if (c.getClsID() == this.clsIDR) {
 					return c;
 				}
@@ -79,7 +92,7 @@ public class Teachers {
 		}
 		case LA:
 		{
-			for (Classes c : ClassFactory.laClsLst) {
+			for (Classes c : clsFac.laClsLst) {
 				if (c.getClsID() == this.clsIDL) {
 					return c;
 				}
@@ -89,7 +102,7 @@ public class Teachers {
 	
 		case HR:
 		{
-			for (Classes c : ClassFactory.homeroomClsLst) {
+			for (Classes c : clsFac.homeroomClsLst) {
 				if (c.getClsID() == this.clsIDH) {
 					return c;
 				}
@@ -99,7 +112,7 @@ public class Teachers {
 
 		case SP:
 		{
-			for (Classes c : ClassFactory.specialClsLst) {
+			for (Classes c : clsFac.specialClsLst) {
 				if (c.getClsID() == this.clsIDS) {
 					return c;
 				}
@@ -141,6 +154,133 @@ public class Teachers {
 		}	
 	}
 
+	public void unassignFromClass(Type t)
+	{
+		switch(t) {
+		case MATH:
+		{
+			if(this.clsIDM == -1)
+				break;
+			for(int i = 0; i < clsFac.mathClsLst.size(); i++)
+			{
+				if(this.clsIDM == clsFac.mathClsLst.get(i).getClsID())
+				{
+					this.clsLvlM = -1;
+					this.clsIDM = -1;
+					clsFac.mathClsLst.get(i).removeTeacher();
+					break;
+				}
+			}
+			break;
+		}
+		case READ:
+		{
+			if(this.clsIDR == -1)
+				break;
+			for(int i = 0; i < clsFac.readClsLst.size(); i++)
+			{
+				if(this.clsIDR == clsFac.readClsLst.get(i).getClsID())
+				{
+					this.clsLvlR = -1;
+					this.clsIDR = -1;
+					clsFac.readClsLst.get(i).removeTeacher();
+					break;
+				}
+			}
+			break;
+		}
+		case LA:
+		{
+			if(this.clsIDL == -1)
+				break;
+			for(int i = 0; i < clsFac.laClsLst.size(); i++)
+			{
+				if(this.clsIDL == clsFac.laClsLst.get(i).getClsID())
+				{
+					this.clsLvlL = -1;
+					this.clsIDL = -1;
+					clsFac.laClsLst.get(i).removeTeacher();
+					break;
+				}
+			}
+			break;
+		}
+		case HR:
+		{
+			if(this.clsIDH == -1)
+				break;
+			for(int i = 0; i < clsFac.homeroomClsLst.size(); i++)
+			{
+				if(this.clsIDH == clsFac.homeroomClsLst.get(i).getClsID())
+				{
+					this.clsIDH = -1;
+					clsFac.homeroomClsLst.get(i).removeTeacher();
+					break;
+				}
+			}
+			break;
+		}
+		case SP:
+		{
+			if(this.clsIDS == -1)
+				break;
+			for(int i = 0; i < clsFac.specialClsLst.size(); i++)
+			{
+				if(this.clsIDS == clsFac.specialClsLst.get(i).getClsID())
+				{
+					this.clsIDS = -1;
+					clsFac.specialClsLst.get(i).removeTeacher();
+					break;
+				}
+			}
+			break;
+		}
+		}
+		
+	}
+	
+	public Teachers assignToClass(Classes cls, Type t)
+	{
+		this.unassignFromClass(t);
+		switch(t) {
+		case MATH:
+		{
+			this.clsLvlM = cls.getLvl();
+			this.clsIDM = cls.getClsID();
+			break;
+		}
+		case READ:
+		{
+			this.clsLvlR = cls.getLvl();
+			this.clsIDR = cls.getClsID();
+			break;
+		}	
+		case LA:
+		{
+			this.clsLvlL = cls.getLvl();
+			this.clsIDL = cls.getClsID();
+			break;
+		}
+		case HR:
+		{
+			this.clsIDH = cls.getClsID();
+			break;
+		}
+		case SP:
+		{
+			this.clsIDS = cls.getClsID();
+			break;
+		}
+		}
+		Teachers unassigned = cls.getTeacher();
+		if(unassigned != null)
+		{
+			unassigned.unassignFromClass(t);
+		}
+		cls.setTeacher(this);
+		return unassigned;
+	}
+	
 	public void setCls(Integer clsLvl, Integer clsID, Type t){
 		switch(t) {
 		case MATH:
@@ -169,6 +309,7 @@ public class Teachers {
 		case SP:
 		{
 			this.clsIDS = clsID;
+			break;
 		}
 		}
 	}
@@ -288,6 +429,19 @@ public class Teachers {
 			break;
 		}
 		}
+	}
+	
+	public void reset()
+	{
+		clsIDM=-1;
+		clsIDR=-1;
+		clsIDL=-1;
+		clsIDH=-1;
+		clsIDS=-1;
+		clsLvlM=-1;
+		clsLvlR=-1;
+		clsLvlL=-1;
+		room=-1;
 	}
 	
 	// returns n > 0, if this.teacher has more available classes compare to teacher

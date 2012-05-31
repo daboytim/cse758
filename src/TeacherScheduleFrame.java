@@ -3,18 +3,19 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
+import java.io.Serializable;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTable.PrintMode;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.JButton;
 
 
-public class TeacherScheduleFrame extends JFrame implements ActionListener {
+public class TeacherScheduleFrame extends JFrame implements ActionListener, Serializable {
 
 	/**
 	 * 

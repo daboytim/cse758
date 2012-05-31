@@ -1,25 +1,42 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassFactory {
+public class ClassFactory implements Serializable {
 
-	private static int maxCls = 20;
-	private static int clsID = 1;
-	private static int maxStdPerCls = 5;
-	public final static String noFitMath = "There are no suitable math classes for this student.";
-	public final static String noFitLA = "There are no suitable language art classes for this student.";
-	public final static String noFitRead = "There are no suitable reading classes for this student.";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int maxCls = 20;
+	private int clsID = 1;
+	private int maxStdPerCls = 5;
+	private MainFrame mf;
 
-	private ClassFactory() {
-		// empty
+	public final String noFitMath = "There are no suitable math classes for this student.";
+	public final String noFitLA = "There are no suitable language art classes for this student.";
+	public final String noFitRead = "There are no suitable reading classes for this student.";
+
+	List<Classes> mathClsLst;
+	List<Classes> laClsLst;
+	List<Classes> readClsLst;
+	List<Classes> homeroomClsLst;
+	List<Classes> specialClsLst;
+	List<Students> unlucky;
+
+	public ClassFactory(MainFrame m) {
+		mf = m;
+		mathClsLst = new ArrayList<Classes>();
+		laClsLst = new ArrayList<Classes>();
+		readClsLst = new ArrayList<Classes>();
+		homeroomClsLst = new ArrayList<Classes>();
+		specialClsLst = new ArrayList<Classes>();
+		unlucky = new ArrayList<Students>();
 	}
-
-	static List<Classes> mathClsLst = new ArrayList<Classes>();
-	static List<Classes> laClsLst = new ArrayList<Classes>();
-	static List<Classes> readClsLst = new ArrayList<Classes>();
-	static List<Classes> homeroomClsLst = new ArrayList<Classes>();
-	static List<Classes> specialClsLst = new ArrayList<Classes>();
-	static List<Students> unlucky = new ArrayList<Students>();
+	
+	public void reinit (MainFrame m) {
+		mf = m;
+	}
 
 	/**
 	 * Check if std's behavior level fit with class.
@@ -28,7 +45,7 @@ public class ClassFactory {
 	 * @param cls
 	 * @return
 	 */
-	public static boolean BLfit(Students std, Classes cls) {
+	public boolean BLfit(Students std, Classes cls) {
 		if (cls.getBL3() == 1 && std.getBL() == 3) {
 			return false;
 		}
@@ -38,31 +55,32 @@ public class ClassFactory {
 		return true;
 	}
 
-	public static Classes createClass(String name, int lvl) {
+	public Classes createClass(String name, int lvl) {
 		return new Classes(name, lvl, clsID++);
 	}
 
-	public static int getTotalClasses() {
-		return mathClsLst.size() + laClsLst.size() + readClsLst.size() + homeroomClsLst.size() + specialClsLst.size();
+	public int getTotalClasses() {
+		return mathClsLst.size() + laClsLst.size() + readClsLst.size()
+				+ homeroomClsLst.size() + specialClsLst.size();
 	}
 
-	public static int getTotalMath() {
+	public int getTotalMath() {
 		return mathClsLst.size();
 	}
 
-	public static int getTotalLA() {
+	public int getTotalLA() {
 		return laClsLst.size();
 	}
 
-	public static int getTotalRead() {
+	public int getTotalRead() {
 		return readClsLst.size();
 	}
-	
-	public static int getTotalHomeroom () {
+
+	public int getTotalHomeroom() {
 		return homeroomClsLst.size();
 	}
-	
-	public static int getTotalSpecial () {
+
+	public int getTotalSpecial() {
 		return specialClsLst.size();
 	}
 
@@ -73,7 +91,11 @@ public class ClassFactory {
 	 * @param cls
 	 * @return True if yes, false otherwise.
 	 */
-	public static boolean compatible(Students std, Classes cls) {
+	public boolean compatible(Students std, Classes cls) {
+		if (cls.getTotal() == 0) {
+
+			return true;
+		}
 		if (!BLfit(std, cls)) {
 			return false;
 		}
@@ -130,9 +152,11 @@ public class ClassFactory {
 	 * @param i
 	 *            max number of cls allowed.
 	 */
-	public static void setMaxCls(int i) {
+	public void setMaxCls(int i) {
 		maxCls = i;
-		System.out.println("max number of cls set to:" + i);
+		System.out.println("max number of cls set to: " + i);
+		if (mf.sched != null)
+			mf.sched.update();
 	}
 
 	/**
@@ -140,11 +164,11 @@ public class ClassFactory {
 	 * 
 	 * @return number of max classes.
 	 */
-	public static int getMaxCls() {
+	public int getMaxCls() {
 		return maxCls;
 	}
 
-	public static int getMaxStdPerCls() {
+	public int getMaxStdPerCls() {
 		return maxStdPerCls;
 	}
 
@@ -156,8 +180,8 @@ public class ClassFactory {
 	 * @param std
 	 * @throws StdClsCompatibleException
 	 */
-	public static void moveStd(Classes fromCls, Classes toCls, Students std) {
-		//	throws StdClsCompatibleException {
+	public void moveStd(Classes fromCls, Classes toCls, Students std) {
+		// throws StdClsCompatibleException {
 		// throwing these exceptions defeats the purpose of manual modification
 		// if (!fromCls.getClsName().equals(toCls.getClsName())) {
 		// throw new StdClsCompatibleException(0);
@@ -172,19 +196,78 @@ public class ClassFactory {
 		// throw new StdClsCompatibleException(4);
 		// } else {
 		toCls.addStd(std);
-		fromCls.removeStd(std.getId());
-
-		for (Students stdt : unlucky) {
-			if (compatible(stdt, fromCls)) {
-				fromCls.addStd(stdt);
-				unlucky.remove(stdt);
-				break;
-			}
+		if (fromCls != null) {
+			fromCls.removeStd(std.getId());
+		} else {
+			unlucky.remove(std);
+			std.setWlReason("");
 		}
-		// }
+
+		// console output
+		System.out.println(toCls.getFormalClassName() + " added student:"
+				+ std.toString() + ":");
+		System.out.println(toCls.toString());
+		if (fromCls != null) {
+			System.out.println(fromCls.getFormalClassName()
+					+ " deleted student:" + std.toString() + ":");
+
+			System.out.println(fromCls.toString());
+		}
+
+		// find a fit std from waitlist
+		for (Students stdt : unlucky) {
+			Classes math = null, la = null, read = null, hr = null, sp = null;
+			for (Classes cls : this.mathClsLst) {
+				if (this.compatible(stdt, cls)) {
+					math = cls;
+				}
+			}
+			for (Classes cls : this.laClsLst) {
+				if (this.compatible(stdt, cls)) {
+					la = cls;
+				}
+			}
+			for (Classes cls : this.readClsLst) {
+				if (this.compatible(stdt, cls)) {
+					read = cls;
+				}
+			}
+			for (Classes cls : this.homeroomClsLst) {
+				if (this.compatible(stdt, cls)) {
+					hr = cls;
+				}
+			}
+			for (Classes cls : this.specialClsLst) {
+				if (this.compatible(stdt, cls)) {
+					sp = cls;
+				}
+			}
+			if (math != null && la != null && read != null && sp != null
+					&& hr != null) {
+				unlucky.remove(stdt);
+				stdt.setWlReason("");
+				math.addStd(stdt);
+				la.addStd(stdt);
+				read.addStd(stdt);
+				hr.addStd(stdt);
+				sp.addStd(stdt);
+
+				System.out.println("From waitlist,student:" + stdt.toString()
+						+ " has been added to following classes: ");
+				System.out.println(math.getFormalClassName());
+				System.out.println(la.getFormalClassName());
+				System.out.println(read.getFormalClassName());
+				System.out.println(hr.getFormalClassName());
+				System.out.println(sp.getFormalClassName());
+				break;
+
+			}
+			
+
+		}
 	}
 
-	public static int getMostClasses() {
+	public int getMostClasses() {
 		return Math.max(getTotalRead(), Math.max(getTotalMath(), getTotalLA()));
 	}
 
@@ -192,7 +275,7 @@ public class ClassFactory {
 	 * Even distribute any 2 classes with movable students so that we won't have
 	 * one class of 5 std while one in another.
 	 */
-	public static void evenDistribute() {
+	public void evenDistribute() {
 		// TODO
 	}
 
@@ -202,33 +285,94 @@ public class ClassFactory {
 	 * @param id
 	 *            student ID
 	 */
-	public static void kickout(Students std) {
+	public void kickout(Students std) {
 		if (unlucky.contains(std)) {
 			unlucky.remove(std);
 		} else {
-			//kick out
+			// Get classes before kicking out
+			Classes m = std.getMathCls();
+			Classes l = std.getLACls();
+			Classes r = std.getReadCls();
+			Classes h = std.getHomeroomCls();
+			Classes s = std.getSpecialCls();
+
+			// kick out
 			std.getMathCls().removeStd(std.getId());
 			std.getLACls().removeStd(std.getId());
 			std.getReadCls().removeStd(std.getId());
 			std.getHomeroomCls().removeStd(std.getId());
 			std.getSpecialCls().removeStd(std.getId());
 
-			//find fit from waitlist
+			// find fit from waitlist
 			for (Students stdt : unlucky) {
-				if (compatible(stdt, std.getMathCls())
-						&& compatible(stdt, std.getLACls())
-						&& compatible(stdt, std.getReadCls())
-						&& compatible(stdt, std.getHomeroomCls())
-						&& compatible(stdt, std.getSpecialCls())) {
-					std.getMathCls().addStd(stdt);
-					std.getLACls().addStd(stdt);
-					std.getReadCls().addStd(stdt);
-					std.getHomeroomCls().addStd(stdt);
-					std.getSpecialCls().addStd(stdt);
-
+				Classes math = null, la = null, read = null, hr = null, sp = null;
+				for (Classes cls : this.mathClsLst) {
+					if (this.compatible(stdt, cls)) {
+						math = cls;
+					}
+				}
+				for (Classes cls : this.laClsLst) {
+					if (this.compatible(stdt, cls)) {
+						la = cls;
+					}
+				}
+				for (Classes cls : this.readClsLst) {
+					if (this.compatible(stdt, cls)) {
+						read = cls;
+					}
+				}
+				for (Classes cls : this.homeroomClsLst) {
+					if (this.compatible(stdt, cls)) {
+						hr = cls;
+					}
+				}
+				for (Classes cls : this.specialClsLst) {
+					if (this.compatible(stdt, cls)) {
+						sp = cls;
+					}
+				}
+				if (math != null && la != null && read != null && sp != null
+						&& hr != null) {
 					unlucky.remove(stdt);
+					stdt.setWlReason("");
+					math.addStd(stdt);
+					la.addStd(stdt);
+					read.addStd(stdt);
+					hr.addStd(stdt);
+					sp.addStd(stdt);
+
+					System.out.println("From waitlist,student:" + stdt.toString()
+							+ " has been added to following classes: ");
+					System.out.println(math.getFormalClassName());
+					System.out.println(la.getFormalClassName());
+					System.out.println(read.getFormalClassName());
+					System.out.println(hr.getFormalClassName());
+					System.out.println(sp.getFormalClassName());
+					break;
 
 				}
+//			for (Students stdt : unlucky) {
+//				if (compatible(stdt, m) && compatible(stdt, l)
+//						&& compatible(stdt, r) && compatible(stdt, h)
+//						&& compatible(stdt, s)) {
+//					m.addStd(stdt);
+//					l.addStd(stdt);
+//					r.addStd(stdt);
+//					h.addStd(stdt);
+//					s.addStd(stdt);
+//
+//					unlucky.remove(stdt);
+//					stdt.setWlReason("");
+//					System.out.println("From waitlist,student:" + stdt.toString()
+//							+ " has been added to following classes: ");
+//					System.out.println(m.getFormalClassName());
+//					System.out.println(l.getFormalClassName());
+//					System.out.println(r.getFormalClassName());
+//					System.out.println(h.getFormalClassName());
+//					System.out.println(s.getFormalClassName());
+//					break;
+//
+//				}
 
 			}
 		}
@@ -255,4 +399,60 @@ public class ClassFactory {
 	// return classes;
 	// }
 
+	public void resetClsID() {
+		this.clsID = 1;
+	}
+
+	/**
+	 * Append empty classes to each of 5 class list, up to max cls # allowed.
+	 */
+	public void appendEmtpyCls() {
+		int totalMath=this.getTotalMath();
+		int totalLA = this.getTotalLA();
+		int totalRead = this.getTotalRead();
+
+		for (int i = 0; i < this.getMaxCls() - totalMath; i++) {
+			this.mathClsLst.add(this.createClass("math", 0));
+			this.homeroomClsLst.add(this.createClass("homeroom", 0));
+			this.specialClsLst.add(this.createClass("special", 0));
+		}
+		for (int i = 0; i < this.getMaxCls() - totalLA; i++) {
+			this.laClsLst.add(this.createClass("la", 0));
+		}
+		for (int i = 0; i < this.getMaxCls() - totalRead; i++) {
+			this.readClsLst.add(this.createClass("read", 0));
+		}
+	}
+	
+	public void modifyCls(int ID, Classes cls) {
+		for (int i = 0; i < mathClsLst.size(); i ++) {
+			if (mathClsLst.get(i).getClsID() == ID) {
+				mathClsLst.set(i, cls);
+			}
+		}
+		
+		for (int i = 0; i < laClsLst.size(); i ++) {
+			if (laClsLst.get(i).getClsID() == ID) {
+				laClsLst.set(i, cls);
+			}
+		}
+		
+		for (int i = 0; i < readClsLst.size(); i ++) {
+			if (readClsLst.get(i).getClsID() == ID) {
+				readClsLst.set(i, cls);
+			}
+		}
+		
+		for (int i = 0; i < homeroomClsLst.size(); i ++) {
+			if (homeroomClsLst.get(i).getClsID() == ID) {
+				homeroomClsLst.set(i, cls);
+			}
+		}
+		
+		for (int i = 0; i < specialClsLst.size(); i ++) {
+			if (specialClsLst.get(i).getClsID() == ID) {
+				specialClsLst.set(i, cls);
+			}
+		}
+	}
 }

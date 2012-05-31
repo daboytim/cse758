@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,8 +13,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 
-public class TeacherTable implements TableModelListener {
+public class TeacherTable implements TableModelListener, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	TeacherDB teachers;
 	JTable table;
 	DefaultTableModel tm;
@@ -22,8 +27,10 @@ public class TeacherTable implements TableModelListener {
 	String[] columnNames = { "Name", "Math Class Levels",
 			"Reading Class Levels", "Language Arts Class Levels" };
 	TeacherController controller;
+	ClassFactory clsFac;
 
-	public TeacherTable(JFrame f, TeacherDB t) {
+	public TeacherTable(JFrame f, TeacherDB t, ClassFactory cf) {
+		clsFac = cf;
 		teachers = t;
 		frame = f;	
 		data = new Object[300][4];
@@ -135,24 +142,31 @@ public class TeacherTable implements TableModelListener {
 			if (teachers.hasTeacher(currName)) {
 				t = teachers.getTeacher(currName);
 			} else {
-				t = new Teachers(currName);
+				t = new Teachers(currName, clsFac);
 				newTeacher = true;
 			}
 
 			switch (column) {
 			case 0:
 				if (isBlank) {
-					cleanTeacherDB();
+					//cleanTeacherDB();
 				} else {
-					if (teachers.hasTeacher(d.toString())) {
+					boolean isRepeat = false;
+					for (int i = 0; i < 300; i ++) {
+						if (d.toString().equals(data[i][0].toString()) && i != row)
+							isRepeat = true;
+					}
+					if (isRepeat) {
 						JOptionPane
 								.showMessageDialog(frame,
 										"A teacher with that name already exists in the scheduling system.");
 						table.setValueAt("", row, column);
 					} else {
 						t.setName(d.toString());
+						System.out.println(t.getName());
 					}
 				}
+				//cleanTeacherDB();
 				break;
 			case 1:
 				if (data[row][0].toString().isEmpty()) {
@@ -253,6 +267,7 @@ public class TeacherTable implements TableModelListener {
 				// if we got here, the student is not in the data array anymore
 				teachers.removeTeacher(name);
 			}
+			update();
 		}
 	
 	

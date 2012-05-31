@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,21 +22,27 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-public class StudentTable implements TableModelListener {
-	
-	JTable table;
+public class StudentTable implements TableModelListener, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	transient JTable table;
 	DefaultTableModel tm;
 	StudentDB students;
-	JFrame frame;
-	
+	transient JFrame frame;
+
 	Object[][] data;
 	String[] columnNames = { "Student ID", "First Name", "Last Name",
 			"Birth Date", "Math Level", "Reading Level", "Language Arts Level",
 			"Behavioral Level" };
 	String[] validStates = { "", "K", "1", "2", "3", "4", "5", "6", "7", "8" };
 	String[] behaviorLevels = { "1", "2", "3" };
+	private ClassFactory clsFac;
 
-	public StudentTable(JFrame f, StudentDB s) {
+	public StudentTable(JFrame f, StudentDB s, ClassFactory cf) {
+		clsFac = cf;
 		frame = f;
 		students = s;
 		data = new Object[300][8];
@@ -48,19 +55,19 @@ public class StudentTable implements TableModelListener {
 		table = new JTable();
 		table.setModel(tm);
 		tm.addTableModelListener(this);
-		
+
 		update();
 	}
-	
+
 	public JTable getStudentTable() {
 		return table;
 	}
-	
-	public void update () {
+
+	public void update() {
 		populateTable(students);
 		renderTable();
 	}
-	
+
 	public void renderTable() {
 		ComboRenderer cr = new ComboRenderer();
 
@@ -106,6 +113,9 @@ public class StudentTable implements TableModelListener {
 			while (it.hasNext()) {
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				Students s = it.next();
+				if (s.toString().contains("null"))
+					continue;
+				System.out.println("DEBUG " + s.toString());
 				data[i][0] = s.getId();
 				data[i][1] = s.getFirstName();
 				data[i][2] = s.getLastName();
@@ -144,7 +154,6 @@ public class StudentTable implements TableModelListener {
 		}
 		tm.setDataVector(data, columnNames);
 	}
-	
 
 	public boolean isValidValue(Object value) {
 		if (value instanceof String) {
@@ -160,15 +169,14 @@ public class StudentTable implements TableModelListener {
 		return false;
 	}
 
-	
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		int row = e.getFirstRow();
 		int column = e.getColumn();
-		
-		if (row < 0 || column < 0) 
+
+		if (row < 0 || column < 0)
 			return;
-		
+
 		TableModel model = (TableModel) e.getSource();
 		Object d = model.getValueAt(row, column);
 		data[row][column] = d;
@@ -184,18 +192,22 @@ public class StudentTable implements TableModelListener {
 
 		Object oldIDObj = data[row][0];
 		int oldId;
-		try {
-			oldId = Integer.parseInt(oldIDObj.toString());
-		} catch (NumberFormatException ne) {
+
+		if (!Utilities.isBlank(oldIDObj.toString())) {
+			try {
+				oldId = Integer.parseInt(oldIDObj.toString());
+			} catch (Exception ne) {
+				oldId = -1;
+			}
+		} else {
 			oldId = -1;
 		}
-
 		Students s;
 		boolean newStudent = false;
 		if (students.hasStudent(oldId)) {
 			s = students.getStudent(oldId);
 		} else {
-			s = new Students();
+			s = new Students(clsFac);
 			newStudent = true;
 		}
 
@@ -205,16 +217,26 @@ public class StudentTable implements TableModelListener {
 			int id;
 
 			if (isBlank) {
+				// System.out.println(d.toString());
 				cleanStudentDB();
 			} else {
 				try {
-					System.out.println("got here");
 					id = Integer.parseInt(d.toString());
 					if (students.hasStudent(id)) {
-						JOptionPane
-								.showMessageDialog(frame,
-										"A student with that ID already exists in the scheduling system.");
-						table.setValueAt("", row, column);
+						boolean isRepeat = false;
+
+						for (int i = 0; i < 300; i++) {
+							if (Integer.parseInt(data[i][0].toString()) == id
+									&& id != row) {
+								isRepeat = true;
+							}
+						}
+						if (isRepeat) {
+							JOptionPane
+									.showMessageDialog(frame,
+											"A student with that ID already exists in the scheduling system.");
+							table.setValueAt("", row, column);
+						}
 					} else {
 						if (id > 0)
 							s.setId(id);
@@ -226,6 +248,8 @@ public class StudentTable implements TableModelListener {
 
 				}
 			}
+			// cleanStudentDB();
+			// update();
 			break;
 		case 1:
 			if (data[row][0].toString().isEmpty()) {
@@ -267,17 +291,34 @@ public class StudentTable implements TableModelListener {
 					if (year < 1900) {
 						JOptionPane
 								.showMessageDialog(frame,
-										"Invalid Year. Expected Birth Date in the form yyyy-mm-dd");
+										"Invalid Year. Expected Birth Date in the form yyyy-mm-dd or mm/dd/yyyy");
 						table.setValueAt("", row, column);
 					} else {
 						s.setBirthDate(bDate);
 					}
 				}
 			} catch (ParseException n) {
-				if (!isBlank) {
-					JOptionPane.showMessageDialog(frame,
-							"Expected Birth Date in the form yyyy-mm-dd");
-					table.setValueAt("", row, column);
+				try {
+					DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+					Date bDate = df.parse(d.toString());
+					System.out.println(bDate);
+					Calendar c = new GregorianCalendar();
+					c.setTime(bDate);
+					int year = c.get(Calendar.YEAR);
+					if (year < 1900) {
+						JOptionPane
+								.showMessageDialog(frame,
+										"Invalid Year. Expected Birth Date in the form yyyy-mm-dd or mm/dd/yyyy");
+						table.setValueAt("", row, column);
+					} else {
+						s.setBirthDate(bDate);
+					}
+				} catch (ParseException n2) {
+					if (!isBlank) {
+						JOptionPane.showMessageDialog(frame,
+								"Expected Birth Date in the form yyyy-mm-dd");
+						table.setValueAt("", row, column);
+					}
 				}
 			}
 			break;
@@ -357,7 +398,6 @@ public class StudentTable implements TableModelListener {
 		tm.setDataVector(data, columnNames);
 		renderTable();
 	}
-	
 
 	/*
 	 * I apologize for the inefficiency of this, but given the small data set,
@@ -379,8 +419,8 @@ public class StudentTable implements TableModelListener {
 			}
 			// if we got here, the student is not in the data array anymore
 			students.removeStudent(id);
+			update();
 		}
 	}
-	
-	
+
 }
