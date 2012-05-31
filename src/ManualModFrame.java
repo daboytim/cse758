@@ -63,6 +63,7 @@ public class ManualModFrame extends JFrame implements ActionListener,
 		readClass = std.getReadCls();
 		hmrmClass = std.getHomeroomCls();
 		specClass = std.getSpecialCls();
+		
 
 		// create the frame
 		setAlwaysOnTop(true);

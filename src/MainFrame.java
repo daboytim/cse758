@@ -309,8 +309,10 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 				new ManualModFrame((Students) cell, sched, clsFac);
 			}
 		} catch (NullPointerException np) {
+			//np.printStackTrace();
 			// Do Nothing
 		} catch (ArrayIndexOutOfBoundsException a) {
+			//a.printStackTrace();
 			// Do Nothing
 		}
 	}
