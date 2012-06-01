@@ -49,7 +49,7 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 	private ScheduleDisplay sched;
 
 	private String[] validStates = { "", "K", "1", "2", "3", "4", "5", "6",
-			"7", "8" };
+			"7", "8", "9", "10", "11", "12" };
 
 	/**
 	 * Create the frame.

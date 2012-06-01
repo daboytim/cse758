@@ -46,7 +46,7 @@ public class ClassFactory implements Serializable {
 	 * @return
 	 */
 	public boolean BLfit(Students std, Classes cls) {
-		if (cls.getBL3() == 1 && std.getBL() == 3) {
+		if (cls.getBL1() == 1 && std.getBL() == 1) {
 			return false;
 		}
 		if (cls.getBL2() == 3 && (std.getBL() == 2 || std.getBL() == 3)) {

@@ -63,6 +63,14 @@ public class StudentController implements ActionListener, Serializable {
 			while (br.ready()) {
 				String line = br.readLine();
 				String[] params = line.split(",");
+				if (params[0].contains("Student ID")) {
+					continue;
+				}
+				for (int i = 0; i < params.length; i++) {
+					params[i] = params[i].replaceAll("\"", "");
+					//params[i] = params[i].substring(1, params[i].length()-1);
+					System.out.println(params[i]);
+				}
 				while (params.length < 8) {
 					String[] tmp = new String[params.length + 1];
 					for (int i = 0; i < params.length; i++) {
@@ -87,13 +95,17 @@ public class StudentController implements ActionListener, Serializable {
 					}
 
 				}
+				
+				if (params[4].isEmpty()){
+					params[4] = "3";
+				}
 
 				Students s = new Students(Integer.parseInt(params[0]),
-						params[1], params[2], bDate,
-						Integer.parseInt(params[4]),
+						params[2], params[1], bDate,
 						Integer.parseInt(params[5]),
 						Integer.parseInt(params[6]),
-						Integer.parseInt(params[7]), clsFac);
+						Integer.parseInt(params[7]),
+						Integer.parseInt(params[4]), clsFac);
 				students.addStudent(s);
 			}
 		} catch (FileNotFoundException e) {

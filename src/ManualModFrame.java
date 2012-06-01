@@ -118,7 +118,7 @@ public class ManualModFrame extends JFrame implements ActionListener,
 		combBoxBhLevel.addItem(new Integer(3));
 		combBoxBhLevel.setSelectedItem(new Integer(std.getBL()));
 
-		String[] validStates = { "K", "1", "2", "3", "4", "5", "6", "7", "8" };
+		String[] validStates = { "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
 		combBoxMathAsses = new JComboBox(validStates);
 		combBoxMathAsses.setSelectedItem(new Integer(std.getMath()).toString());
 		combBoxLaAsses = new JComboBox(validStates);
@@ -452,7 +452,7 @@ public class ManualModFrame extends JFrame implements ActionListener,
 				return false;
 		} else if (!clsFac.BLfit(std, toCls)) {
 			rtn = JOptionPane.showConfirmDialog(this, "There are already "
-					+ toCls.getBL3() + " behavior level 3 students and "
+					+ toCls.getBL1() + " behavior level 1 students and "
 					+ toCls.getBL2()
 					+ "\nbehavior level 2 students in this class.\n"
 					+ "Do you want to continue?", "Warning",

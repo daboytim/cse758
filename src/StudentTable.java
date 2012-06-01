@@ -37,7 +37,7 @@ public class StudentTable implements TableModelListener, Serializable {
 	String[] columnNames = { "Student ID", "First Name", "Last Name",
 			"Birth Date", "Math Level", "Reading Level", "Language Arts Level",
 			"Behavioral Level" };
-	String[] validStates = { "", "K", "1", "2", "3", "4", "5", "6", "7", "8" };
+	String[] validStates = { "", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
 	String[] behaviorLevels = { "1", "2", "3" };
 	private ClassFactory clsFac;
 

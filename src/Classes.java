@@ -13,7 +13,7 @@ public class Classes implements Serializable{
 	private int lvl;
 	private List<Students> students;
 	private double lowestAge = 999;
-	private int bl3 = 0;
+	private int bl1 = 0;
 	private int bl2 = 0;
 	private int id;
 	private Teachers teacher = null;
@@ -59,7 +59,7 @@ public class Classes implements Serializable{
 			this.lowestAge = (int) Math.floor(std.getAge());
 		}
 		if (std.getBL() == 3) {
-			this.bl3++;
+			this.bl1++;
 		} else if (std.getBL() == 2) {
 			this.bl2++;
 		}
@@ -77,8 +77,8 @@ public class Classes implements Serializable{
 				this.students.remove(std);
 				
 				//update # of bl3 and bl2 std
-				if(std.getBL()==3){
-					this.bl3--;
+				if(std.getBL()==1){
+					this.bl1--;
 				}else if(std.getBL()==2){
 					this.bl2--;
 				}
@@ -209,8 +209,8 @@ public class Classes implements Serializable{
 	 * 
 	 * @return Number of BL3 students
 	 */
-	public int getBL3() {
-		return this.bl3;
+	public int getBL1() {
+		return this.bl1;
 	}
 
 	/**

@@ -70,7 +70,7 @@ public class AddStudentFrame extends JFrame implements ActionListener, Serializa
 		combBoxBhLevel.addItem(new Integer(2));
 		combBoxBhLevel.addItem(new Integer(3));
 		
-		String[] validStates = { "K", "1", "2", "3", "4", "5", "6", "7", "8" };
+		String[] validStates = { "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
 		combBoxMathAsses = new JComboBox(validStates);
 		combBoxLaAsses = new JComboBox(validStates);
 		combBoxReadAsses = new JComboBox(validStates);
