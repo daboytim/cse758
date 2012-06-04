@@ -19,7 +19,7 @@ public class Menu extends JFrame  {
 	JFrame frame;
 	JMenu student, teacher, schedule, edit, file, pref;
 	static JMenuItem sOpen, sSave, sAdd, tOpen, tSave, schedulize, assign,
-			copy, paste, exit1, pref1, print, lock, unlock, save, load;
+			copy, paste, exit1, pref1, pref2, print, lock, unlock, save, load;
 	JTextArea textArea;
 	FileOutputStream fos;
 	BufferedWriter bwriter;
@@ -98,8 +98,11 @@ public class Menu extends JFrame  {
 
 		pref = new JMenu(" Preference ");
 		pref1 = new JMenuItem("Set Max number of classes");
-		pref1.addActionListener(mc);
+		pref1.addActionListener(mf);
+		pref2 = new JMenuItem("Set Max number of students");
+		pref2.addActionListener(mf);
 		pref.add(pref1);
+		pref.add(pref2);
 		bar.add(pref);
 		// end of Kai's edit
 

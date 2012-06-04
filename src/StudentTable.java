@@ -31,6 +31,7 @@ public class StudentTable implements TableModelListener, Serializable {
 	transient JTable table;
 	DefaultTableModel tm;
 	StudentDB students;
+	int max_students = 300;
 	transient JFrame frame;
 
 	Object[][] data;
@@ -45,8 +46,8 @@ public class StudentTable implements TableModelListener, Serializable {
 		clsFac = cf;
 		frame = f;
 		students = s;
-		data = new Object[300][8];
-		for (int i = 0; i < 300; i++) {
+		data = new Object[max_students][8];
+		for (int i = 0; i < max_students; i++) {
 			for (int j = 0; j < 8; j++)
 				data[i][j] = "";
 		}
@@ -65,6 +66,7 @@ public class StudentTable implements TableModelListener, Serializable {
 
 	public void update() {
 		populateTable(students);
+		tm.setDataVector(data, columnNames);
 		renderTable();
 	}
 
@@ -105,6 +107,7 @@ public class StudentTable implements TableModelListener, Serializable {
 	}
 
 	public void populateTable(StudentDB st) {
+		data = new Object[max_students][8];
 		students = st;
 		int i = 0;
 		if (students.getSize() > 0) {
@@ -140,7 +143,7 @@ public class StudentTable implements TableModelListener, Serializable {
 
 		// Add an empty row
 
-		while (i < 300) {
+		while (i < max_students) {
 			data[i][0] = "";
 			data[i][1] = "";
 			data[i][2] = "";
@@ -225,7 +228,7 @@ public class StudentTable implements TableModelListener, Serializable {
 					if (students.hasStudent(id)) {
 						boolean isRepeat = false;
 
-						for (int i = 0; i < 300; i++) {
+						for (int i = 0; i < max_students; i++) {
 							if (Integer.parseInt(data[i][0].toString()) == id
 									&& id != row) {
 								isRepeat = true;

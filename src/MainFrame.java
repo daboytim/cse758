@@ -132,6 +132,39 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 			sTab.update();
 			tabbedPane.setSelectedIndex(0);
 
+		} else if (obj.equals(Menu.pref1)) {
+			String str = JOptionPane.showInputDialog(null,
+					"Enter max number of classes : ",
+					"Set Max number of Classes", 1);
+			try {
+				if (str != null) {
+					clsFac.setMaxCls(Integer.parseInt(str.trim()));
+					clsFac.appendEmtpyCls();
+					JOptionPane.showMessageDialog(null,
+							"Max number of classes successfully set to"
+									+ clsFac.getMaxCls(), "Success", 1);
+					sched.update();
+				}
+			} catch (NumberFormatException n3) {
+				JOptionPane.showMessageDialog(null, "Please input an integer.",
+						"Warning", 1);
+			}
+		} else if (obj.equals(Menu.pref2)) {
+			String str = JOptionPane.showInputDialog(null,
+					"Enter max number of students : ",
+					"Set Max number of Students", 1);
+			try {
+				if (str != null) {
+					sTab.max_students = Integer.parseInt(str.trim());
+					JOptionPane.showMessageDialog(null,
+							"Max number of students successfully set to"
+									+ sTab.max_students, "Success", 1);
+					sTab.update();
+				}
+			} catch (NumberFormatException n2) {
+				JOptionPane.showMessageDialog(null, "Please input an integer.",
+						"Warning", 1);
+			}
 		} else if (obj.equals(Menu.tOpen)) {
 			// use chooser.getSelectedFile() to get file
 			// Some code here to parse or call a parser
