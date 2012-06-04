@@ -92,7 +92,7 @@ public class Menu extends JFrame  {
 		paste = new JMenuItem(" Paste ");
 		edit.add(copy);
 		edit.add(paste);
-		bar.add(edit);
+		//bar.add(edit);
 
 		// *****add by Kai****
 
