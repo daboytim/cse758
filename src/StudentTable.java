@@ -406,22 +406,25 @@ public class StudentTable implements TableModelListener, Serializable {
 	 * I apologize for the inefficiency of this, but given the small data set,
 	 * it shouldn't be awful
 	 */
-	private void cleanStudentDB() {
+	public void cleanStudentDB() {
 		List<Students> stds = students.getStudents();
 		for (int i = 0; i < stds.size(); i++) {
+			boolean valid = false;
+
 			Students std = stds.get(i);
 			int id = std.getId();
 			for (int j = 0; j < students.getSize(); j++) {
 				try {
 					if (id == Integer.parseInt(data[j][0].toString())) {
-						return;
+						valid = true;
 					}
 				} catch (NumberFormatException n) {
 					// do nothing
 				}
 			}
 			// if we got here, the student is not in the data array anymore
-			students.removeStudent(id);
+			if (!valid)
+				students.removeStudent(id);
 			update();
 		}
 	}

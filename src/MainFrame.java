@@ -175,6 +175,7 @@ public class MainFrame implements ActionListener, MouseListener, Serializable {
 
 		} else if (obj.equals(Menu.schedulize)) {
 			// Code here to call schedule algorithm and display schedules
+			sTab.cleanStudentDB();
 			Schedulizer.genSchedule(students, clsFac);
 			sched.update();
 			tabbedPane.setSelectedIndex(2);
