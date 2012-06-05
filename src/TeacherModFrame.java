@@ -449,31 +449,31 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 		Classes newMathCls = null, newReadCls = null, newLACls = null, newHmrmCls = null, newSpecCls = null;
 		// get class that corresponds to the newClass name
 		for (int i = 0; i < clsFac.mathClsLst.size(); i++) {
-			if (newMath == clsFac.mathClsLst.get(i).getFormalClassName()) {
+			if (newMath.equals(clsFac.mathClsLst.get(i).getFormalClassName())) {
 				newMathCls = clsFac.mathClsLst.get(i);
 				break;
 			}
 		}
 		for (int i = 0; i < clsFac.readClsLst.size(); i++) {
-			if (newRead == clsFac.readClsLst.get(i).getFormalClassName()) {
+			if (newRead.equals(clsFac.readClsLst.get(i).getFormalClassName())) {
 				newReadCls = clsFac.readClsLst.get(i);
 				break;
 			}
 		}
 		for (int i = 0; i < clsFac.laClsLst.size(); i++) {
-			if (newLA == clsFac.laClsLst.get(i).getFormalClassName()) {
+			if (newLA.equals(clsFac.laClsLst.get(i).getFormalClassName())) {
 				newLACls = clsFac.laClsLst.get(i);
 				break;
 			}
 		}
 		for (int i = 0; i < clsFac.homeroomClsLst.size(); i++) {
-			if (newHmrm == clsFac.homeroomClsLst.get(i).getFormalClassName()) {
+			if (newHmrm.equals(clsFac.homeroomClsLst.get(i).getFormalClassName())) {
 				newHmrmCls = clsFac.homeroomClsLst.get(i);
 				break;
 			}
 		}
 		for (int i = 0; i < clsFac.specialClsLst.size(); i++) {
-			if (newSpec == clsFac.specialClsLst.get(i).getFormalClassName()) {
+			if (newSpec.equals(clsFac.specialClsLst.get(i).getFormalClassName())) {
 				newSpecCls = clsFac.specialClsLst.get(i);
 				break;
 			}
@@ -485,7 +485,7 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 			// error
 		}
 		// put the student in the new class
-		if (mathCls != newMathCls) {
+		if (newMathCls != null && !mathCls.getFormalClassName().equals(newMathCls.getFormalClassName())) {
 			if (newMath.equals("No Class")) {
 				teach.unassignFromClass(Teachers.Type.MATH);
 			} else if (teach.canTeach(newMathCls.getLvl(), Teachers.Type.MATH)) {
@@ -493,9 +493,18 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 				System.out.println("teacher moved from "
 						+ mathCls.getFormalClassName() + " to "
 						+ newMathCls.getFormalClassName());
+			} else {
+				int rtn = JOptionPane
+						.showConfirmDialog(
+								this,
+								teach.getName() + " is not qualified to teach this class. Would you like to assign them anyway?\n",
+								"Notice!", JOptionPane.YES_NO_OPTION);
+				if (rtn == JOptionPane.YES_OPTION) {
+					teach.assignToClass(newMathCls, Teachers.Type.MATH);
+				}
 			}
 		}
-		if (readCls != newReadCls) {
+		if (!readCls.getFormalClassName().equals(newReadCls.getFormalClassName())) {
 			if (newRead.equals("No Class")) {
 				teach.unassignFromClass(Teachers.Type.READ);
 			} else if (teach.canTeach(newReadCls.getLvl(), Teachers.Type.READ)) {
@@ -503,9 +512,18 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 				System.out.println("teacher moved from "
 						+ readCls.getFormalClassName() + " to "
 						+ newReadCls.getFormalClassName());
+			} else {
+				int rtn = JOptionPane
+						.showConfirmDialog(
+								this,
+								teach.getName() + " is not qualified to teach this class. Would you like to assign them anyway?\n",
+								"Notice!", JOptionPane.YES_NO_OPTION);
+				if (rtn == JOptionPane.YES_OPTION) {
+					teach.assignToClass(newReadCls, Teachers.Type.READ);
+				}
 			}
 		}
-		if (laCls != newLACls) {
+		if (!laCls.getFormalClassName().equals(newLACls.getFormalClassName())) {
 			if (newLA.equals("No Class")) {
 				teach.unassignFromClass(Teachers.Type.LA);
 			} else if (teach.canTeach(newLACls.getLvl(), Teachers.Type.LA)) {
@@ -513,9 +531,18 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 				System.out.println("teacher moved from "
 						+ laCls.getFormalClassName() + " to "
 						+ newLACls.getFormalClassName());
+			} else {
+				int rtn = JOptionPane
+						.showConfirmDialog(
+								this,
+								teach.getName() + " is not qualified to teach this class. Would you like to assign them anyway?\n",
+								"Notice!", JOptionPane.YES_NO_OPTION);
+				if (rtn == JOptionPane.YES_OPTION) {
+					teach.assignToClass(newLACls, Teachers.Type.MATH);
+				}
 			}
 		}
-		if (hmrmCls != newHmrmCls) {
+		if (!hmrmCls.getFormalClassName().equals(newHmrmCls.getFormalClassName())) {
 			if (newHmrm.equals("No Class")) {
 				teach.unassignFromClass(Teachers.Type.HR);
 			} else {
@@ -525,7 +552,7 @@ public class TeacherModFrame extends JFrame implements ActionListener,
 						+ newHmrmCls.getFormalClassName());
 			}
 		}
-		if (specCls != newSpecCls) {
+		if (!specCls.getFormalClassName().equals(newSpecCls.getFormalClassName())) {
 			if (newSpec.equals("No Class")) {
 				teach.unassignFromClass(Teachers.Type.SP);
 			} else {

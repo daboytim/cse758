@@ -83,7 +83,7 @@ public class Classes implements Serializable{
 					this.bl2--;
 				}
 				//update new lowest age, if ever need to change.
-				if (std.getAge() == lowestAge) {
+				if (Math.floor(std.getAge()) == lowestAge) {
 					this.lowestAge = 999;
 					for(Students s:this.students){
 						if(s.getAge()<this.lowestAge){
