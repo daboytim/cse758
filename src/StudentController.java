@@ -126,14 +126,15 @@ public class StudentController implements ActionListener, Serializable {
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 			ArrayList<Students> stds = students.getStudents();
 
+			bw.append("Student ID, Last Name, First Name, Birth Date, Bx Code, Math, Reading, LA\n");
 			for (int i = 0; i < students.getSize(); i++) {
 				Students s = stds.get(i);
 				String line;
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				line = s.getId() + "," + s.getFirstName() + ","
-						+ s.getLastName() + "," + df.format(s.getBirthDate())
-						+ "," + s.getMath() + "," + s.getRead() + ","
-						+ s.getLA() + "," + s.getBL() + "\n";
+				line = s.getId() + "," + s.getLastName() + ","
+						+ s.getFirstName() + "," + df.format(s.getBirthDate())
+						+ ","  + s.getBL()+","+ s.getMath() + "," + s.getRead() + ","
+						+ s.getLA() + "\n";
 				bw.append(line);
 
 			}
